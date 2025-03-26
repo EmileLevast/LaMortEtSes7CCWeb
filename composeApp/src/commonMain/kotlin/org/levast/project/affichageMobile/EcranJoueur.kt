@@ -121,7 +121,7 @@ fun EcranJoueur(
             EcranDecouverteEquipe(selectedEquipe, isRefreshedJoueur, selectedJoueur, onSave)
         }//si la selection c'est l'affichage des statistiques
         FilterUser.STATISTIQUES -> {
-            EcranStatistiques(selectedJoueur) {
+            EcranStatistiques(selectedJoueur, isWideScreen) {
                 onSave()
             }
         }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -33,7 +35,7 @@ import kotlinx.coroutines.launch
 import kotlin.reflect.KMutableProperty1
 
 @Composable
-fun EcranStatistiques(actuelJoueur: Joueur, onSave: () -> Unit) {
+fun EcranStatistiques(actuelJoueur: Joueur, isWideScreen : Boolean, onSave: () -> Unit) {
     val scrollState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -46,7 +48,7 @@ fun EcranStatistiques(actuelJoueur: Joueur, onSave: () -> Unit) {
     }
 
     LazyColumn(
-        Modifier.draggable(
+        Modifier.fillMaxWidth(if(isWideScreen) 0.5f else 1f).draggable(
             orientation = Orientation.Vertical,
             state = rememberDraggableState { delta ->
                 coroutineScope.launch {
@@ -54,6 +56,8 @@ fun EcranStatistiques(actuelJoueur: Joueur, onSave: () -> Unit) {
                 }
             },
         ),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
         state = scrollState,
     ) {
         //Affichage niveau
