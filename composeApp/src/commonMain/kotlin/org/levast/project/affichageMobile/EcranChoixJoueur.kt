@@ -20,6 +20,7 @@ fun EcranChoixJoueur(
     selectedEquipe: Equipe,
     selectedJoueur: Joueur?,
     onSelectedJoueurChange: (Joueur) -> Unit,
+    iSWideScreen: Boolean,
 ) {
     val apiApp = getApiApp()
     val config = getConfiguration()
@@ -63,7 +64,8 @@ fun EcranChoixJoueur(
                 refreshData = refreshData.not()
                 isLoadingJoueur = true
                 println("REFRESH JOUEUR")
-            })//on declenche la mise à jour du joueur
+            },
+            isWideScreen = iSWideScreen)//on declenche la mise à jour du joueur
 
     }
 }

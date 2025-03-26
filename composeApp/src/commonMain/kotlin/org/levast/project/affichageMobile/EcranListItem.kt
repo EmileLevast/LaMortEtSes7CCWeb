@@ -9,7 +9,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -49,6 +52,7 @@ fun EcranListItem(
     itemsUtilisations: Map<String, Int>? = null,
     onUtilisationItem: ((IListItem, Int) -> Unit)? = null,
     joueur: Joueur? = null,
+    isWideScreen:Boolean = false,
     onSave: () -> Unit
 ) {
     val colorBackground =
@@ -60,7 +64,7 @@ fun EcranListItem(
 
 
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = if(isWideScreen) GridCells.FixedSize(350.dp) else GridCells.Fixed(2),
         state = scrollListState,
     ) {
         items(equipementsAfficher) { equipement ->

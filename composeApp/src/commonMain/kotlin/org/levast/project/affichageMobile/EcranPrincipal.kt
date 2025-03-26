@@ -44,6 +44,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -57,7 +59,6 @@ import lamortetses7ccweb.composeapp.generated.resources.Res
 import lamortetses7ccweb.composeapp.generated.resources.UnknownImage
 import model.HeadBodyShowable
 import org.jetbrains.compose.resources.painterResource
-import org.levast.project.affichageMobile.EcranChoixJoueur
 import org.levast.project.viewModel.FilterViewModel
 import org.levast.project.viewModel.stateviewmodel.FilterModelState
 import org.levast.project.viewModel.stateviewmodel.FilterUser
@@ -86,6 +87,12 @@ fun EcranPrincipal(
     val onCloseChangeIpDialog: () -> Unit = { openChangeIpDialog = false }
     val filterUiState by filterViewModel.uiState.collectAsState()
 
+    //pour sizer l'image selon la taille du titre
+    var iSWideScreen by remember {
+        mutableStateOf(false)
+    }
+    // Get local density from composable
+    val localDensity = LocalDensity.current
 
     LaunchedEffect(triggerEquipe) {
 
@@ -119,7 +126,9 @@ fun EcranPrincipal(
 
     LayoutDrawerMenu({
         if (selectEquipe == null) {
-            Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(Modifier.fillMaxWidth().onGloballyPositioned { coordinates ->
+                iSWideScreen = with(localDensity) { coordinates.size.width.toDp() >500.dp }
+            }, horizontalAlignment = Alignment.CenterHorizontally) {
                 buttonDarkStyled("Rafraîchissez vous") { setTriggerEquipe(triggerEquipe.not()) }
                 LayoutListSelectableItem(equipes) { setSelectEquipe(it) }
             }
@@ -128,7 +137,7 @@ fun EcranPrincipal(
                 selectedJoueur = it
                 config.setUserName(it.nom)
                 nameSavedUser = it.nom
-            })
+            },iSWideScreen)
         }
     }, {
 

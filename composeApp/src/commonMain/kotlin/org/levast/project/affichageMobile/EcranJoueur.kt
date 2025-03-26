@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import getListItemFiltered
@@ -53,6 +56,7 @@ fun EcranJoueur(
     joueurLoaded: () -> Unit,
     isRefreshedJoueur: Boolean,
     refreshJoueur: () -> Unit,
+    isWideScreen:Boolean,
     filterViewModel: FilterViewModel = viewModel { FilterViewModel() }
 ) {
 
@@ -131,12 +135,13 @@ fun EcranJoueur(
                 togglePinItem = togglePinnedItem,
                 itemsUtilisations = mapUtilisationItems,
                 onUtilisationItem = useItem,
+                isWideScreen = isWideScreen,
                 onSave
             )
         }
     }
 
-    ProfileImage(selectedJoueur, isLoadingJoueur, refreshJoueur)
+    ProfileImage(selectedJoueur, isLoadingJoueur, refreshJoueur, isWideScreen)
 
 }
 
@@ -149,6 +154,7 @@ fun FilterListItem(
     togglePinItem: (String, Boolean) -> Unit = { _: String, _: Boolean -> },
     itemsUtilisations: Map<String, Int>? = null,
     onUtilisationItem: (IListItem, Int) -> Unit,
+    isWideScreen:Boolean,
     onSave: () -> Unit
 ) {
 
@@ -160,12 +166,18 @@ fun FilterListItem(
         togglePinItem = togglePinItem,
         itemsUtilisations = itemsUtilisations,
         onUtilisationItem = onUtilisationItem,
+        isWideScreen = isWideScreen,
         onSave = onSave
     )
 }
 
 @Composable
-fun ProfileImage(selectedJoueur: Joueur, isLoadingJoueur: Boolean, refreshJoueur: () -> Unit) {
+fun ProfileImage(
+    selectedJoueur: Joueur,
+    isLoadingJoueur: Boolean,
+    refreshJoueur: () -> Unit,
+    isWideScreen: Boolean
+) {
     val infiniteTransition = rememberInfiniteTransition(label = "infinite transition")
     val rotation by infiniteTransition.animateFloat(
         initialValue = 0f,
@@ -177,7 +189,7 @@ fun ProfileImage(selectedJoueur: Joueur, isLoadingJoueur: Boolean, refreshJoueur
     //Affichage de l'image et du nom de profil
     Box(Modifier.fillMaxSize()) {
         IconProfilRefreshable(
-            selectedJoueur, Modifier.fillMaxWidth(0.2f).align(Alignment.TopEnd)
+            selectedJoueur, Modifier.size(if(isWideScreen) 150.dp else 70.dp).align(Alignment.TopEnd)
                 .graphicsLayer {
                     rotationZ = rotation
                 }, refreshJoueur
