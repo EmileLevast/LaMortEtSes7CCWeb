@@ -41,6 +41,7 @@ fun layoutBigImage(
     isShowingStats: Boolean,
     itemUtilisation: Int?,
     joueur: Joueur? = null,
+    isWideScreen : Boolean = false
 ) {
     val graphicsConsts = getGraphicConstants()
     var notesJoueur by remember { mutableStateOf("") }
@@ -62,14 +63,15 @@ fun layoutBigImage(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Card(
+            modifier = Modifier.fillMaxWidth(if(isWideScreen) 0.3f else 1f),
             colors = CardDefaults.cardColors()
                 .copy(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
         ) {
 
-            Column {
+            Column(modifier = Modifier.fillMaxWidth()) {
 
                 LazyColumn(
-                    modifier = Modifier.clickable {
+                    modifier = Modifier.fillMaxWidth().clickable {
                         onClick(equipement,nbrUtilisationItem)
                     }.padding(10.dp).weight(1f,false),
                     verticalArrangement = Arrangement.Center,

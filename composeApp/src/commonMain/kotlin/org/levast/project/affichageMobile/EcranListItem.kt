@@ -188,6 +188,7 @@ fun EcranListItem(
             isShowingStats,
             itemsUtilisations?.get(equipementToShow?.nom),
             joueur,
+            isWideScreen = isWideScreen
         )
         handleBackButton { equipementToShow = null }
     }
