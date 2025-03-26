@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    kotlin("plugin.serialization") version "2.1.0"
 }
 
 kotlin {
@@ -54,6 +55,8 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.ktor.client.cio)
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -65,8 +68,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.cio)
             implementation(libs.ktor.client.logging)
+
 
             //Library to make call to the api DarkSoul
             implementation(libs.ktor.client.content.negotiation)
@@ -82,6 +85,11 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor3)
         }
+
+        wasmJsMain.dependencies {
+            implementation(libs.ktor.client.js)
+        }
+
     }
 }
 
