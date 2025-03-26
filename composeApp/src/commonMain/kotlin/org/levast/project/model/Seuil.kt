@@ -24,6 +24,6 @@ class Seuil {
         seuils.joinToString("/") + joiningChar + degats.joinToString("|") { it.first.shortname + ":" + it.second }
 
     fun toPrettyString(): String  {
-        return toFormattedString("⇒")
+        return toFormattedString("=>")
     }
 }

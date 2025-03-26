@@ -74,12 +74,12 @@ fun String.getIntOrZeroOrNull(): Int? {
 
 
 enum class SpellType(val shortname:String, val symbol:String){
-    AME("ame","✨"),
-    PYROMANCIE("pyromancie","\uD83D\uDD25"),
-    PSIONIQUE("psionique","\uD83E\uDD2F"),
-    MIRACLE("miracle","\uD83D\uDC50"),
-    NECROMANCIE("necromancie","\uD83D\uDC80"),
-    ARACHNOMANCIE("arachnomancie","\uD83D\uDD77");
+    AME("ame","Sort d'âme"),
+    PYROMANCIE("pyromancie","Sort de Pyromancie"),
+    PSIONIQUE("psionique","Sort Psionique"),
+    MIRACLE("miracle","Miracle"),
+    NECROMANCIE("necromancie","Sort de Nécromancie"),
+    ARACHNOMANCIE("arachnomancie","Sort d'Arachnomancie");
 }
 
 enum class SpecialItemType{
