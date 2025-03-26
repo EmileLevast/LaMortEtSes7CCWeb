@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -22,9 +24,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import getNbrUtilisationAccordingItem
 import lamortetses7ccweb.composeapp.generated.resources.Res
@@ -82,7 +87,7 @@ fun layoutBigImage(
                         Text(
                             text = equipement.nomComplet.ifBlank { equipement.nom },
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleMedium,
+                            style = if(isWideScreen) TextStyle.Default.copy(fontSize = 50.sp) else MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.tertiary
                         )
                     }
@@ -90,6 +95,7 @@ fun layoutBigImage(
                     item {
                         AsyncImage(
                             model = apiApp.createUrlImageFromItem(equipement),
+                            modifier = Modifier.clip(RoundedCornerShape(10.dp)),
                             contentDescription = null,
                             error = painterResource(Res.drawable.UnknownImage),
                         )
@@ -100,7 +106,7 @@ fun layoutBigImage(
                             Text(
                                 modifier = Modifier.padding(graphicsConsts.statsBigImagePadding),
                                 text = equipement.getStatsAsStrings(),
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = if(isWideScreen) TextStyle.Default.copy(fontSize = 20.sp) else MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
 
                             )

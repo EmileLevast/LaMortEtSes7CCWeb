@@ -6,7 +6,7 @@ package org.levast.project.configuration
 
 class ConfigurationImpl() : IConfiguration {
 
-    private var properties: AppProperties = AppProperties("192.168.113.178","franck",9090)
+    private var properties: AppProperties = AppProperties("192.168.113.178","voldemort",9090)
 
     override fun getEndpointServer() = "http://${properties.ipAdressServer}:${properties.portServer}"
 

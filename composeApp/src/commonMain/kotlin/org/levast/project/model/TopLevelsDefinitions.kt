@@ -17,10 +17,10 @@ const val TYPE_LISTE_CHAINE = "${CHAR_SEP_EQUIPEMENT}String$CHAR_SEP_EQUIPEMENT$
 const val IMAGENAME_CARD_BACKGROUND = "fondCarte.jpg"
 
 enum class EffectType(val shortname:String, val symbol:String){
-    FIRE("F","🔥"),
-    MAGIC("Ma","✨"),
-    POISON("Po","\uD83E\uDDEA"),
-    PHYSICAL("Ph","⚔");
+    FIRE("F"," Feu"),
+    MAGIC("Ma"," Magique"),
+    POISON("Po"," Poison"),
+    PHYSICAL("Ph"," Physique");
 }
 
 //une map qui contient toutes les images déjà téléchargées

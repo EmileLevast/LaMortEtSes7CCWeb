@@ -17,6 +17,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,10 +29,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import org.levast.project.configuration.getApiApp
 import getNbrUtilisationAccordingItem
@@ -103,14 +108,14 @@ fun EcranListItem(
                                 modifier = Modifier.fillMaxWidth(),
                                 text = equipement.nomComplet.ifBlank { equipement.nom },
                                 textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.bodySmall,
+                                style = if(isWideScreen) TextStyle.Default.copy(fontSize = 20.sp) else MaterialTheme.typography.titleMedium,
                                 color = if (isItemPinned == true) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.scrim
                             )
 
                             AsyncImage(
                                 model = apiApp.createUrlImageFromItem(equipement),
                                 modifier = Modifier.align(Alignment.CenterHorizontally)
-                                    .padding(bottom = 10.dp),
+                                    .padding(bottom = 10.dp).clip(RoundedCornerShape(10.dp)),
                                 contentDescription = null,
                                 error = painterResource(Res.drawable.UnknownImage),
 
