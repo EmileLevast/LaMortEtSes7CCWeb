@@ -1,8 +1,8 @@
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import model.HeadBodyShowable
-import network.ApiApp
-import viewModel.stateviewmodel.FilterUser
+import org.levast.project.network.ApiApp
+import org.levast.project.viewModel.stateviewmodel.FilterUser
 
 interface IListItem : HeadBodyShowable {
     val _id:Int

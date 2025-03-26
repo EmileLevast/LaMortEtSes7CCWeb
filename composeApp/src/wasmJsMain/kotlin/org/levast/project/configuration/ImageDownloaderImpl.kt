@@ -1,8 +1,7 @@
 package org.levast.project.configuration
 
 import androidx.compose.ui.graphics.ImageBitmap
-import configuration.IConfiguration
-import network.IImageDownloader
+import org.levast.project.network.IImageDownloader
 
 
 class ImageDownloaderImpl(val config: IConfiguration) : IImageDownloader{

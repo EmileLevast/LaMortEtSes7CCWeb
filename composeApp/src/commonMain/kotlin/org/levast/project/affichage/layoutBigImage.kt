@@ -28,7 +28,9 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import getNbrUtilisationAccordingItem
 import lamortetses7ccweb.composeapp.generated.resources.Res
+import lamortetses7ccweb.composeapp.generated.resources.UnknownImage
 import org.jetbrains.compose.resources.painterResource
+import org.levast.project.affichageMobile.layoutDetailJoueur
 import org.levast.project.configuration.getGraphicConstants
 import org.levast.project.configuration.getApiApp
 

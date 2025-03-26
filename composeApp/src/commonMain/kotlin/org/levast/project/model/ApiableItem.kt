@@ -1,7 +1,7 @@
 import androidx.compose.ui.graphics.ImageBitmap
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import network.ApiApp
+import org.levast.project.network.ApiApp
 
 @Serializable
 sealed class ApiableItem() : IListItem {

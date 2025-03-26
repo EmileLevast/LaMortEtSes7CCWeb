@@ -1,7 +1,7 @@
 package org.levast.project.configuration
 
-import configuration.GraphicConstantsFullGrid
-import network.ApiApp
+import org.levast.project.configuration.GraphicConstantsFullGrid
+import org.levast.project.network.ApiApp
 
 val graphicConstantsFullGrid = GraphicConstantsFullGrid()
 val configurationImpl = ConfigurationImpl()

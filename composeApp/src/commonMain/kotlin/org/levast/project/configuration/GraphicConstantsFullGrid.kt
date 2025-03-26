@@ -3,6 +3,7 @@ package org.levast.project.configuration
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import lamortetses7ccweb.composeapp.generated.resources.Aniron_7BaP
 import lamortetses7ccweb.composeapp.generated.resources.Res
 
 class GraphicConstantsFullGrid {

@@ -54,6 +54,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import lamortetses7ccweb.composeapp.generated.resources.Res
+import lamortetses7ccweb.composeapp.generated.resources.UnknownImage
 import model.HeadBodyShowable
 import org.jetbrains.compose.resources.painterResource
 import org.levast.project.affichageMobile.EcranChoixJoueur

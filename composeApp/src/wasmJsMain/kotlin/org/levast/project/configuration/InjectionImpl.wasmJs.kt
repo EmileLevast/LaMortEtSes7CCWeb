@@ -1,27 +1,17 @@
 package org.levast.project.configuration
 
 import androidx.compose.runtime.Composable
-import configuration.GraphicConstantsFullGrid
-import configuration.IConfiguration
-import network.ApiApp
-import network.IImageDownloader
+import org.levast.project.network.ApiApp
+import org.levast.project.network.IImageDownloader
 
 @Composable
-actual fun getConfiguration(): IConfiguration {
-    TODO("Not yet implemented")
-}
+actual fun getConfiguration(): IConfiguration = configurationImpl
 
 @Composable
-actual fun getApiApp(): ApiApp {
-    TODO("Not yet implemented")
-}
+actual fun getApiApp(): ApiApp = apiApp
 
 @Composable
-actual fun getImageDownloader(): IImageDownloader {
-    TODO("Not yet implemented")
-}
+actual fun getImageDownloader(): IImageDownloader = imageDownloaderImpl
 
 @Composable
-actual fun getGraphicConstants(): GraphicConstantsFullGrid {
-    TODO("Not yet implemented")
-}
+actual fun getGraphicConstants(): GraphicConstantsFullGrid = graphicConstantsFullGrid

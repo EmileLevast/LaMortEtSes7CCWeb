@@ -2,8 +2,6 @@ package org.levast.project.affichageMobile
 
 import Equipe
 import Joueur
-import affichageMobile.EcranJoueur
-import affichageMobile.LayoutListSelectableItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -11,8 +9,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import configuration.getApiApp
-import configuration.getConfiguration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

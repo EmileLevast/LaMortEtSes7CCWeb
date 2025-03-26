@@ -38,6 +38,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import lamortetses7ccweb.composeapp.generated.resources.Res
+import lamortetses7ccweb.composeapp.generated.resources.UnknownImage
+import lamortetses7ccweb.composeapp.generated.resources.refreshSymbol
 import org.jetbrains.compose.resources.painterResource
 import org.levast.project.configuration.getApiApp
 import org.levast.project.viewModel.FilterViewModel

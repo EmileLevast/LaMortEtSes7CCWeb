@@ -1,7 +1,5 @@
 package org.levast.project.configuration
 
-import configuration.AppProperties
-import configuration.IConfiguration
 
 
 // At the top level of your kotlin file:

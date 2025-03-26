@@ -9,8 +9,8 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.LineBreak
-import lamortetses7cc.composeapp.generated.resources.Aniron_7BaP
-import lamortetses7cc.composeapp.generated.resources.Res
+import lamortetses7ccweb.composeapp.generated.resources.Aniron_7BaP
+import lamortetses7ccweb.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.Font
 
 private val lightScheme = lightColorScheme(

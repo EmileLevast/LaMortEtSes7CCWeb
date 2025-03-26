@@ -32,6 +32,9 @@ import coil3.compose.AsyncImage
 import org.levast.project.configuration.getApiApp
 import getNbrUtilisationAccordingItem
 import lamortetses7ccweb.composeapp.generated.resources.Res
+import lamortetses7ccweb.composeapp.generated.resources.UnknownImage
+import lamortetses7ccweb.composeapp.generated.resources.mainFermee
+import lamortetses7ccweb.composeapp.generated.resources.mainOuverte
 import org.jetbrains.compose.resources.painterResource
 
 
