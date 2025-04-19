@@ -2,6 +2,7 @@ package org.levast.project.configuration
 
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import java.io.File
 
 
@@ -21,14 +22,15 @@ class ConfigurationImplDesktop() : IConfiguration {
     private fun loadFileProperties(){
         runBlocking {
             coroutineScope {
-                properties = AppProperties(
+                properties =
                     try {
-                        File(PROPERTY_FILE_PATH).readText()
+                        Json.decodeFromString<AppProperties>(File(PROPERTY_FILE_PATH).readText())
                     } catch (e: Exception) {
                         println(e.stackTraceToString())
-                        "localhost"
+                        saveToFile()//on cree le fichier
+                        AppProperties("localhost")
                     }
-                )
+
             }
         }
     }
@@ -37,7 +39,11 @@ class ConfigurationImplDesktop() : IConfiguration {
 
     override fun setIpAdressTargetServer(adresseIp: String) {
         properties.ipAdressServer=adresseIp
-        File(PROPERTY_FILE_PATH).writeText(adresseIp)
+        saveToFile()
+    }
+
+    private fun saveToFile() {
+        File(PROPERTY_FILE_PATH).writeText(Json.encodeToString(properties))
     }
 
     /*
@@ -46,5 +52,12 @@ class ConfigurationImplDesktop() : IConfiguration {
     override fun setUserName(nomUser: String) {
     }
 
-    override fun getUserName(): String =""
+    override fun getUserName(): String = properties.userName
+
+    override fun setMode(isUserMode: Boolean) {
+        properties.isUserMode=isUserMode
+        saveToFile()
+    }
+
+    override fun getMode(): Boolean = properties.isUserMode?:true
 }

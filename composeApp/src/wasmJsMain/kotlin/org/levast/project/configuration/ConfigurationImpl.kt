@@ -1,12 +1,13 @@
 package org.levast.project.configuration
 
+import org.levast.project.SERVER_KTOR_PORT
 
 
 // At the top level of your kotlin file:
 
 class ConfigurationImpl() : IConfiguration {
 
-    private var properties: AppProperties = AppProperties("localhost","voldemort",9090)
+    private var properties: AppProperties = AppProperties("localhost","",)
 
     override fun getEndpointServer() = "http://${properties.ipAdressServer}:${properties.portServer}"
 
@@ -22,4 +23,9 @@ class ConfigurationImpl() : IConfiguration {
 
     override fun getUserName(): String = properties.userName
 
+    override fun setMode(isUserMode: Boolean) {
+        properties.isUserMode = isUserMode
+    }
+
+    override fun getMode(): Boolean = properties.isUserMode ?: true
 }
