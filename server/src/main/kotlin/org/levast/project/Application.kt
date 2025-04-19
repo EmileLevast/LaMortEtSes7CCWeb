@@ -60,7 +60,7 @@ fun main() {
     createCollectionTables()
 
 
-    embeddedServer(Netty, port = SERVER_PORT, host = "0.0.0.0", module = Application::module)
+    embeddedServer(Netty, port = SERVER_KTOR_PORT, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
 }
 
