@@ -394,12 +394,12 @@ fun <T : HeadBodyShowable> LayoutListSelectableItem(
     elementsAfficher: List<T>,
     onSelectElement: (T) -> Unit
 ) {
-    LazyColumn {
+    LazyColumn(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
         items(elementsAfficher) {
-            Card(Modifier.fillMaxWidth().padding(15.dp).clickable { onSelectElement(it) }) {
+            Card(Modifier.padding(15.dp).clickable { onSelectElement(it) }) {
                 Column(
-                    Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(10.dp)
                 ) {
                     Text(
                         it.getHead(),
