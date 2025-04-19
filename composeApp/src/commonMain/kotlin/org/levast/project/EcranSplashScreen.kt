@@ -22,7 +22,9 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import lamortetses7ccweb.composeapp.generated.resources.Res
+import lamortetses7ccweb.composeapp.generated.resources.joueurbandeau
 import lamortetses7ccweb.composeapp.generated.resources.joueurmenu
+import lamortetses7ccweb.composeapp.generated.resources.mjbandeau
 import lamortetses7ccweb.composeapp.generated.resources.mjmenu
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -56,7 +58,7 @@ fun EcranSplashScreen() {
         ) {
 
             Box(Modifier.weight(1f).fillMaxHeight(0.5f), contentAlignment = Alignment.Center) {
-                imageBandeau(Res.drawable.joueurmenu, Modifier)
+                imageBandeau(if(iSWideScreen) Res.drawable.joueurbandeau else Res.drawable.joueurmenu, Modifier)
                 Button({
                     isModeUser = true
                     configuration.setMode(isModeUser!!)
@@ -65,7 +67,7 @@ fun EcranSplashScreen() {
                 }
             }
             Box(Modifier.weight(1f).fillMaxHeight(0.5f), contentAlignment = Alignment.Center) {
-                imageBandeau(Res.drawable.mjmenu, Modifier.rotate(180f))
+                imageBandeau(if(iSWideScreen) Res.drawable.mjbandeau else Res.drawable.mjmenu, Modifier.rotate(180f))
                 Button({
                     isModeUser = false
                     configuration.setMode(isModeUser!!)
@@ -83,7 +85,7 @@ fun EcranSplashScreen() {
 @Composable
 fun imageBandeau(image : DrawableResource, modifier: Modifier){
     Image(painterResource(image),"bandeau",
-        contentScale = ContentScale.Crop,
+        contentScale = ContentScale.FillBounds,
         modifier = modifier.fillMaxSize()
             .graphicsLayer {
                 this.alpha = 0.65f
