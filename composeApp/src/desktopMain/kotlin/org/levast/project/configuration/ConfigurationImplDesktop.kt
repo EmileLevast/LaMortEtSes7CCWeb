@@ -10,10 +10,9 @@ class ConfigurationImplDesktop() : IConfiguration {
 
     private val PROPERTY_FILE_PATH ="properties"
 
-    private lateinit var properties:AppProperties
+    private var properties:AppProperties = AppProperties()
 
     override fun getEndpointServer() = "http://${properties.ipAdressServer}:${properties.portServer}"
-
 
     init {
         loadFileProperties()
@@ -43,6 +42,7 @@ class ConfigurationImplDesktop() : IConfiguration {
     }
 
     private fun saveToFile() {
+
         File(PROPERTY_FILE_PATH).writeText(Json.encodeToString(properties))
     }
 
@@ -59,5 +59,5 @@ class ConfigurationImplDesktop() : IConfiguration {
         saveToFile()
     }
 
-    override fun getMode(): Boolean = properties.isUserMode?:true
+    override fun getMode(): Boolean? = properties.isUserMode
 }

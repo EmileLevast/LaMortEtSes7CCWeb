@@ -59,7 +59,7 @@ class ConfigurationImpl() : IConfiguration {
         saveToDatastore(isUserMode, KEY_MODE)
     }
 
-    override fun getMode(): Boolean = properties.isUserMode ?: true
+    override fun getMode(): Boolean? = properties.isUserMode
 
 
     private fun <T> saveToDatastore(adresseIp: T, keyToUse: Preferences.Key<T>) {

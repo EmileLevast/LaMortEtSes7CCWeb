@@ -1,7 +1,5 @@
 package org.levast.project.configuration
 
-import org.levast.project.SERVER_KTOR_PORT
-
 
 // At the top level of your kotlin file:
 
@@ -27,5 +25,5 @@ class ConfigurationImpl() : IConfiguration {
         properties.isUserMode = isUserMode
     }
 
-    override fun getMode(): Boolean = properties.isUserMode ?: true
+    override fun getMode(): Boolean? = properties.isUserMode
 }

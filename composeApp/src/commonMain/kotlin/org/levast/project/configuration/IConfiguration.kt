@@ -7,5 +7,5 @@ interface IConfiguration {
     fun setUserName(nomUser:String)
     fun getUserName():String
     fun setMode(isUserMode: Boolean)
-    fun getMode():Boolean
+    fun getMode():Boolean?
 }
