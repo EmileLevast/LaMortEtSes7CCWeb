@@ -284,21 +284,12 @@ fun AppTheme(
     val baseline = Typography()
 
     val appTypography = Typography(
-        displayLarge = baseline.displayLarge.copy(fontFamily = displayFontFamily, lineBreak = LineBreak.Heading),
-        displayMedium = baseline.displayMedium.copy(fontFamily = displayFontFamily, lineBreak = LineBreak.Heading),
-        displaySmall = baseline.displaySmall.copy(fontFamily = displayFontFamily, lineBreak = LineBreak.Heading),
         headlineLarge = baseline.headlineLarge.copy(fontFamily = displayFontFamily, lineBreak = LineBreak.Heading),
         headlineMedium = baseline.headlineMedium.copy(fontFamily = displayFontFamily, lineBreak = LineBreak.Heading),
         headlineSmall = baseline.headlineSmall.copy(fontFamily = displayFontFamily, lineBreak = LineBreak.Heading),
         titleLarge = baseline.titleLarge.copy(fontFamily = displayFontFamily, lineBreak = LineBreak.Heading),
         titleMedium = baseline.titleMedium.copy(fontFamily = displayFontFamily, lineBreak = LineBreak.Heading),
         titleSmall = baseline.titleSmall.copy(fontFamily = displayFontFamily, lineBreak = LineBreak.Heading),
-        bodyLarge = baseline.bodyLarge.copy(fontFamily = bodyFontFamily, lineBreak = LineBreak.Heading),
-        bodyMedium = baseline.bodyMedium.copy(fontFamily = bodyFontFamily, lineBreak = LineBreak.Heading),
-        bodySmall = baseline.bodySmall.copy(fontFamily = bodyFontFamily, lineBreak = LineBreak.Heading),
-        labelLarge = baseline.labelLarge.copy(fontFamily = bodyFontFamily, lineBreak = LineBreak.Heading),
-        labelMedium = baseline.labelMedium.copy(fontFamily = bodyFontFamily, lineBreak = LineBreak.Heading),
-        labelSmall = baseline.labelSmall.copy(fontFamily = bodyFontFamily, lineBreak = LineBreak.Heading),
     )
 
   MaterialTheme(

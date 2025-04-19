@@ -48,6 +48,6 @@ fun EcranSplashScreen() {
             }
         }
     } else {
-        EcranPrincipal(onChangeMode)
+        EcranPrincipal(isModeUser, onChangeMode)
     }
 }

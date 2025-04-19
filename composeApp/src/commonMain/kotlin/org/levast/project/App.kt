@@ -17,11 +17,12 @@ import lamortetses7ccweb.composeapp.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.levast.project.Greeting
+import org.levast.project.theme.AppTheme
 
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
+    AppTheme {
         AppMobile()
     }
 }

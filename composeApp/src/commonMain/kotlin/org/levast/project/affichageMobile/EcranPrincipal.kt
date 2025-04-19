@@ -6,13 +6,17 @@ import org.levast.project.affichage.AlertDialogChangeIp
 import org.levast.project.affichage.LayoutDrawerMenu
 import org.levast.project.affichage.buttonDarkStyled
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -44,12 +48,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import kotlinx.coroutines.CoroutineScope
 import org.levast.project.configuration.getApiApp
 import org.levast.project.configuration.getConfiguration
 import kotlinx.coroutines.Dispatchers
@@ -57,14 +64,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import lamortetses7ccweb.composeapp.generated.resources.Res
 import lamortetses7ccweb.composeapp.generated.resources.UnknownImage
+import lamortetses7ccweb.composeapp.generated.resources.mjbandeau
 import model.HeadBodyShowable
 import org.jetbrains.compose.resources.painterResource
+import org.levast.project.configuration.IConfiguration
 import org.levast.project.viewModel.FilterViewModel
 import org.levast.project.viewModel.stateviewmodel.FilterModelState
 import org.levast.project.viewModel.stateviewmodel.FilterUser
 
 @Composable
-fun EcranPrincipal(onChangeMode: (Boolean?) -> Unit) {
+fun EcranPrincipal(isUserMode : Boolean?, onChangeMode: (Boolean?) -> Unit) {
     val apiApp = getApiApp()
     val config = getConfiguration()
 
@@ -141,7 +150,11 @@ fun EcranPrincipal(onChangeMode: (Boolean?) -> Unit) {
         /**
          * MENU
          */
-        Column(Modifier.width(IntrinsicSize.Max)) {
+        Column() {
+
+            if(isUserMode == false){
+                bandeauMj()
+            }
 
             selectedJoueur?.let {
                 Row {
@@ -169,118 +182,26 @@ fun EcranPrincipal(onChangeMode: (Boolean?) -> Unit) {
 
             }
 
-            //Le profil utilisateur
-            ItemSimpleMenuButton(
-                "Statistiques",
-                FilterUser.STATISTIQUES,
-                filterViewModel,
-                drawerState,
-                filterUiState,
-            )
-            HorizontalDivider()
-
-
-            //Les catégories d'items
-            ItemSimpleMenuButton(
-                "Équipés",
-                FilterUser.EQUIPES,
-
-                filterViewModel,
-                drawerState,
-                filterUiState
-            )
-            ItemSimpleMenuButton(
-                "Armes",
-                FilterUser.ARMES,
-                filterViewModel,
-                drawerState,
-                filterUiState
-            )
-            ItemSimpleMenuButton(
-                "Sorts",
-                FilterUser.SORTS,
-                filterViewModel,
-                drawerState,
-                filterUiState
-            )
-            ItemSimpleMenuButton(
-                "Armures",
-                FilterUser.ARMURES,
-                filterViewModel,
-                drawerState,
-                filterUiState
-            )
-            ItemSimpleMenuButton(
-                "Spéciaux",
-                FilterUser.SPECIAL,
-                filterViewModel,
-                drawerState,
-                filterUiState
-            )
-            ItemSimpleMenuButton(
-                "Boucliers",
-                FilterUser.BOUCLIERS,
-                filterViewModel,
-                drawerState,
-                filterUiState
-            )
-            ItemSimpleMenuButton(
-                "Tous les items",
-                FilterUser.TOUT_EQUIPEMENT,
-                filterViewModel,
-                drawerState,
-                filterUiState
-            )
-            ItemSimpleMenuButton(
-                "Découvertes",
-                FilterUser.DECOUVERTES,
-                filterViewModel,
-                drawerState,
-                filterUiState
-            )
-            HorizontalDivider()
-
-            //Les options
-            TextButton({
-                config.setUserName("")
-                nameSavedUser = ""
-                setTriggerEquipe(triggerEquipe.not())
-                setSelectEquipe(null)
-                selectedJoueur = null
-                coroutineScope.launch {
-                    drawerState.close()
+            LazyColumn (){
+                item {
+                    optionsNavigationDrawer(
+                        filterViewModel,
+                        drawerState,
+                        filterUiState,
+                        config,
+                        nameSavedUser,
+                        setTriggerEquipe,
+                        triggerEquipe,
+                        setSelectEquipe,
+                        selectedJoueur,
+                        coroutineScope,
+                        onChangeMode,
+                        openChangeIpDialog
+                    )
                 }
-            }) {
-                Icon(Icons.Default.Refresh, contentDescription = "Reset joueur")
-                Text("Changer d'équipe")
+
             }
-            TextButton({
-                selectedJoueur = null
-                coroutineScope.launch {
-                    drawerState.close()
-                }
-            }) {
-                Icon(Icons.Default.Refresh, contentDescription = "Reset joueur")
-                Text("Changer de joueur")
-            }
-            TextButton({
-                onChangeMode(null)
-                coroutineScope.launch {
-                    drawerState.close()
-                }
-            }) {
-                Icon(Icons.Default.AccountBox, contentDescription = "Changer de mode")
-                Text("Reset Mode")
-            }
-            TextButton({
-                openChangeIpDialog = true
-                coroutineScope.launch {
-                    drawerState.close()
-                }
-            }) {
-                Icon(Icons.Default.Warning, contentDescription = "Adresse Ip")
-                Text("Maintenance")
-            }
+
         }
     }, drawerState)
 
@@ -289,6 +210,153 @@ fun EcranPrincipal(onChangeMode: (Boolean?) -> Unit) {
     }
 
 
+}
+
+@Composable
+private fun bandeauMj() {
+
+    Box(Modifier.height(IntrinsicSize.Min)) {
+        Image(
+            painterResource(Res.drawable.mjbandeau),
+            null,
+            Modifier.fillMaxWidth(),
+            contentScale = ContentScale.FillWidth
+        )
+        Text("Maître du jeu", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center, color = Color.Yellow, style = MaterialTheme.typography.titleMedium,)
+    }
+
+}
+
+@Composable
+private fun optionsNavigationDrawer(
+    filterViewModel: FilterViewModel,
+    drawerState: DrawerState,
+    filterUiState: FilterModelState,
+    config: IConfiguration,
+    nameSavedUser: String?,
+    setTriggerEquipe: (Boolean) -> Unit,
+    triggerEquipe: Boolean,
+    setSelectEquipe: (Equipe?) -> Unit,
+    selectedJoueur: Joueur?,
+    coroutineScope: CoroutineScope,
+    onChangeMode: (Boolean?) -> Unit,
+    openChangeIpDialog: Boolean
+) {
+    //Le profil utilisateur
+    var nameSavedUser1 = nameSavedUser
+    var selectedJoueur1 = selectedJoueur
+    var openChangeIpDialog1 = openChangeIpDialog
+    ItemSimpleMenuButton(
+        "Statistiques",
+        FilterUser.STATISTIQUES,
+        filterViewModel,
+        drawerState,
+        filterUiState,
+    )
+    HorizontalDivider()
+
+
+    //Les catégories d'items
+    ItemSimpleMenuButton(
+        "Équipés",
+        FilterUser.EQUIPES,
+
+        filterViewModel,
+        drawerState,
+        filterUiState
+    )
+    ItemSimpleMenuButton(
+        "Armes",
+        FilterUser.ARMES,
+        filterViewModel,
+        drawerState,
+        filterUiState
+    )
+    ItemSimpleMenuButton(
+        "Sorts",
+        FilterUser.SORTS,
+        filterViewModel,
+        drawerState,
+        filterUiState
+    )
+    ItemSimpleMenuButton(
+        "Armures",
+        FilterUser.ARMURES,
+        filterViewModel,
+        drawerState,
+        filterUiState
+    )
+    ItemSimpleMenuButton(
+        "Spéciaux",
+        FilterUser.SPECIAL,
+        filterViewModel,
+        drawerState,
+        filterUiState
+    )
+    ItemSimpleMenuButton(
+        "Boucliers",
+        FilterUser.BOUCLIERS,
+        filterViewModel,
+        drawerState,
+        filterUiState
+    )
+    ItemSimpleMenuButton(
+        "Tous les items",
+        FilterUser.TOUT_EQUIPEMENT,
+        filterViewModel,
+        drawerState,
+        filterUiState
+    )
+    ItemSimpleMenuButton(
+        "Découvertes",
+        FilterUser.DECOUVERTES,
+        filterViewModel,
+        drawerState,
+        filterUiState
+    )
+    HorizontalDivider()
+
+    //Les options
+    TextButton({
+        config.setUserName("")
+        nameSavedUser1 = ""
+        setTriggerEquipe(triggerEquipe.not())
+        setSelectEquipe(null)
+        selectedJoueur1 = null
+        coroutineScope.launch {
+            drawerState.close()
+        }
+    }) {
+        Icon(Icons.Default.Refresh, contentDescription = "Reset joueur")
+        Text("Changer d'équipe")
+    }
+    TextButton({
+        selectedJoueur1 = null
+        coroutineScope.launch {
+            drawerState.close()
+        }
+    }) {
+        Icon(Icons.Default.Refresh, contentDescription = "Reset joueur")
+        Text("Changer de joueur")
+    }
+    TextButton({
+        onChangeMode(null)
+        coroutineScope.launch {
+            drawerState.close()
+        }
+    }) {
+        Icon(Icons.Default.AccountBox, contentDescription = "Changer de mode")
+        Text("Reset Mode")
+    }
+    TextButton({
+        openChangeIpDialog1 = true
+        coroutineScope.launch {
+            drawerState.close()
+        }
+    }) {
+        Icon(Icons.Default.Warning, contentDescription = "Adresse Ip")
+        Text("Maintenance")
+    }
 }
 
 @Composable
