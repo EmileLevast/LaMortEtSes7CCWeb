@@ -64,12 +64,11 @@ import org.levast.project.viewModel.stateviewmodel.FilterModelState
 import org.levast.project.viewModel.stateviewmodel.FilterUser
 
 @Composable
-fun EcranPrincipal(
-    filterViewModel: FilterViewModel = viewModel { FilterViewModel() }
-) {
+fun EcranPrincipal(onChangeMode: (Boolean?) -> Unit) {
     val apiApp = getApiApp()
     val config = getConfiguration()
 
+    val filterViewModel: FilterViewModel = viewModel { FilterViewModel() }
     val coroutineScope = rememberCoroutineScope()
     val (equipes, setEquipes) = remember { mutableStateOf<List<Equipe>>(emptyList()) }
     val (triggerEquipe, setTriggerEquipe) = remember { mutableStateOf(false) }
@@ -265,7 +264,7 @@ fun EcranPrincipal(
                 Text("Changer de joueur")
             }
             TextButton({
-                config.setMode(null)
+                onChangeMode(null)
                 coroutineScope.launch {
                     drawerState.close()
                 }

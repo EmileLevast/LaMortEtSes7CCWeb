@@ -17,30 +17,39 @@ import org.levast.project.affichageAdmin.EcranAccueilAdmin
 import org.levast.project.configuration.getConfiguration
 
 @Composable
-fun EcranSplashScreen(){
+fun EcranSplashScreen() {
 
     val configuration = getConfiguration()
 
-    var isModeUser:Boolean? by remember { mutableStateOf(configuration.getMode()) }
+    var isModeUser: Boolean? by remember { mutableStateOf(configuration.getMode()) }
 
-    if(isModeUser == null){
-        Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceEvenly, horizontalAlignment = Alignment.CenterHorizontally){
+    val onChangeMode: (Boolean?) -> Unit = { updatedMode ->
+        isModeUser = updatedMode
+        configuration.setMode(updatedMode)
+    }
+
+    if (isModeUser == null) {
+        Column(
+            Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Button({
                 isModeUser = false
                 configuration.setMode(isModeUser!!)
-            }){
+            }) {
                 Text("MJ")
             }
             Button({
                 isModeUser = true
                 configuration.setMode(isModeUser!!)
-            }){
+            }) {
                 Text("Joueur")
             }
         }
-    }else if(isModeUser!!){
-        EcranPrincipal()
-    }else{
-        EcranAccueilAdmin()
+    } else if (isModeUser!!) {
+        EcranPrincipal(onChangeMode)
+    } else {
+        EcranAccueilAdmin(onChangeMode)
     }
 }
