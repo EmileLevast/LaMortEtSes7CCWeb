@@ -42,23 +42,31 @@ class ConfigurationImpl() : IConfiguration {
     override fun setIpAdressTargetServer(adresseIp: String) {
         properties.ipAdressServer=adresseIp
 
-        runBlocking {
-            context?.dataStore?.edit { settings ->
-                settings[KEY_IP_ADDRESS] = adresseIp
-            }
-        }
+        saveToDatastore(adresseIp, KEY_IP_ADDRESS)
     }
 
     override fun setUserName(nomUser: String) {
         properties.userName=nomUser
 
-        runBlocking {
-            context?.dataStore?.edit { settings ->
-                settings[KEY_USER_NAME] = nomUser
-            }
-        }
+        saveToDatastore(nomUser, KEY_USER_NAME)
     }
 
     override fun getUserName(): String = properties.userName
 
+    override fun setMode(isUserMode: Boolean) {
+        properties.isUserMode=isUserMode
+
+        saveToDatastore(isUserMode, KEY_MODE)
+    }
+
+    override fun getMode(): Boolean = properties.isUserMode ?: true
+
+
+    private fun <T> saveToDatastore(adresseIp: T, keyToUse: Preferences.Key<T>) {
+        runBlocking {
+            context?.dataStore?.edit { settings ->
+                settings[keyToUse] = adresseIp
+            }
+        }
+    }
 }
