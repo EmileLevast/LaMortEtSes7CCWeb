@@ -1,7 +1,6 @@
 package org.levast.project.affichageMobile
 
 import Equipe
-import IMAGENAME_CARD_BACKGROUND
 import Joueur
 import org.levast.project.affichage.AlertDialogChangeIp
 import org.levast.project.affichage.LayoutDrawerMenu
@@ -43,7 +42,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
@@ -75,7 +73,6 @@ fun EcranPrincipal(
     val (triggerEquipe, setTriggerEquipe) = remember { mutableStateOf(false) }
     val (selectEquipe, setSelectEquipe) = remember { mutableStateOf<Equipe?>(null) }
 
-    val (bitmapBackground, updateBitmapBackground) = remember { mutableStateOf<ImageBitmap?>(null) }
 
     //Variables de sélection du Joueur actuel
     var selectedJoueur: Joueur? by remember { mutableStateOf(null) }
@@ -103,13 +100,6 @@ fun EcranPrincipal(
                 )
             }
 
-            updateBitmapBackground(withContext(Dispatchers.Default) {//dans un thread à part on recherche l'image background
-                apiApp.downloadBackgroundImage(
-                    apiApp.getUrlImageWithFileName(
-                        IMAGENAME_CARD_BACKGROUND
-                    )
-                )
-            })
         }
     }
 

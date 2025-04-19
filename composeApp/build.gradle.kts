@@ -61,6 +61,9 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.cio)
 
+            implementation(libs.androidx.datastore.preferences)
+            implementation(libs.androidx.datastore.preferences.core)
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)

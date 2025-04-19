@@ -15,11 +15,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 actual fun LayoutDrawerMenu(
-    content: @Composable (innerPadding: PaddingValues) -> Unit,
-    contentOption: @Composable () -> Unit,
+    content: @Composable() (innerPadding: PaddingValues) -> Unit,
+    contentOption: @Composable() () -> Unit,
     drawerState: DrawerState
 ) {
-
     val scope = rememberCoroutineScope()
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -43,8 +42,8 @@ actual fun LayoutDrawerMenu(
                     }
                 )
             }
-        ) {
-            content()
+        ) { contentPadding ->
+            content(contentPadding)
         }
     }
 }

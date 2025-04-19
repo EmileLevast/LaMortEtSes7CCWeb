@@ -40,7 +40,7 @@ import org.levast.project.ERROR_NETWORK_MESSAGE
 import unmutableListApiItemDefinition
 
 
-class ApiApp(val config: IConfiguration, val imageDownloader: IImageDownloader) {
+class ApiApp(val config: IConfiguration) {
 
     val endpoint get() = config.getEndpointServer()
 
@@ -53,10 +53,6 @@ class ApiApp(val config: IConfiguration, val imageDownloader: IImageDownloader) 
             level = LogLevel.INFO
         }
 
-    }
-
-    suspend fun searchAnything(nomSearched: String, strict: Boolean = false): List<IListItem> {
-        return deserializeAnythingItemDTO(searchAnythingStringEncoded(nomSearched, strict))
     }
 
     private suspend fun searchAnythingStringEncoded(
@@ -238,19 +234,6 @@ class ApiApp(val config: IConfiguration, val imageDownloader: IImageDownloader) 
             }.let {
                 it.status == HttpStatusCode.OK
             }
-        }
-    }
-
-    fun downloadImageWithName(imageName: String): ImageBitmap? {
-        return catchNetworkErrorUnsuspendly(defaultReturnValue = null) {
-            imageDownloader.downloadImageWithName(imageName)
-        }
-    }
-
-    fun getUrlImageWithFileName(fileName: String) = "$endpoint/images/$fileName"
-    fun downloadBackgroundImage(urlImageWithFileName: String): ImageBitmap? {
-        return catchNetworkErrorUnsuspendly(defaultReturnValue = null) {
-            imageDownloader.downloadBackgroundImage(urlImageWithFileName)
         }
     }
 
