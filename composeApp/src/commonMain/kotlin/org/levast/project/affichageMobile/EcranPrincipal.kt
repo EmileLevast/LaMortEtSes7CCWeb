@@ -16,9 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -49,9 +47,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -64,7 +61,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import lamortetses7ccweb.composeapp.generated.resources.Res
 import lamortetses7ccweb.composeapp.generated.resources.UnknownImage
+import lamortetses7ccweb.composeapp.generated.resources.joueurbandeau
+import lamortetses7ccweb.composeapp.generated.resources.joueurmenu
 import lamortetses7ccweb.composeapp.generated.resources.mjbandeau
+import lamortetses7ccweb.composeapp.generated.resources.mjmenu
 import model.HeadBodyShowable
 import org.jetbrains.compose.resources.painterResource
 import org.levast.project.configuration.IConfiguration
@@ -73,7 +73,7 @@ import org.levast.project.viewModel.stateviewmodel.FilterModelState
 import org.levast.project.viewModel.stateviewmodel.FilterUser
 
 @Composable
-fun EcranPrincipal(isUserMode : Boolean?, onChangeMode: (Boolean?) -> Unit) {
+fun EcranPrincipal(isUserMode: Boolean?, onChangeMode: (Boolean?) -> Unit, iSWideScreen: Boolean) {
     val apiApp = getApiApp()
     val config = getConfiguration()
 
@@ -94,12 +94,16 @@ fun EcranPrincipal(isUserMode : Boolean?, onChangeMode: (Boolean?) -> Unit) {
     val onCloseChangeIpDialog: () -> Unit = { openChangeIpDialog = false }
     val filterUiState by filterViewModel.uiState.collectAsState()
 
-    //pour sizer l'image selon la taille du titre
-    var iSWideScreen by remember {
-        mutableStateOf(false)
+
+    val onResetSelectJoueur: ()->Unit ={
+        nameSavedUser = ""
+        selectedJoueur = null
     }
-    // Get local density from composable
-    val localDensity = LocalDensity.current
+
+    val onLaunchingDialogIp :(Boolean)->Unit={ isOpeningIpDialog ->
+        openChangeIpDialog = isOpeningIpDialog
+    }
+
 
     LaunchedEffect(triggerEquipe) {
 
@@ -125,23 +129,37 @@ fun EcranPrincipal(isUserMode : Boolean?, onChangeMode: (Boolean?) -> Unit) {
     }
 
     LayoutDrawerMenu({ innerpadding ->
-        if (selectEquipe == null) {
-            Column(Modifier.padding(innerpadding).fillMaxWidth().onGloballyPositioned { coordinates ->
-                iSWideScreen = with(localDensity) { coordinates.size.width.toDp() >500.dp }
-            }, horizontalAlignment = Alignment.CenterHorizontally) {
-                buttonDarkStyled("Rafraîchissez vous") { setTriggerEquipe(triggerEquipe.not()) }
-                LayoutListSelectableItem(equipes) { setSelectEquipe(it) }
-            }
-        } else {
-            Column(Modifier.padding(innerpadding).fillMaxSize()) {
-                EcranChoixJoueur(selectEquipe, selectedJoueur, {
-                    selectedJoueur = it
-                    config.setUserName(it.nom)
-                    nameSavedUser = it.nom
-                },iSWideScreen)
-            }
+        Box(Modifier.fillMaxSize()) {
+            Image(
+                painterResource(
+                    drawBackgroundBandeau(isUserMode, iSWideScreen)
+                ), "bandeau du mj",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+                    .graphicsLayer {
+                        this.alpha = 0.3f
+                    })
 
+            if (selectEquipe == null) {
+                Column(
+                    Modifier.padding(innerpadding).fillMaxWidth()
+                        , horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    buttonDarkStyled("Rafraîchissez vous") { setTriggerEquipe(triggerEquipe.not()) }
+                    LayoutListSelectableItem(equipes) { setSelectEquipe(it) }
+                }
+            } else {
+                Column(Modifier.padding(innerpadding).fillMaxSize()) {
+                    EcranChoixJoueur(selectEquipe, selectedJoueur, {
+                        selectedJoueur = it
+                        config.setUserName(it.nom)
+                        nameSavedUser = it.nom
+                    }, iSWideScreen)
+                }
+
+            }
         }
+
     }, {
 
         /**
@@ -152,12 +170,12 @@ fun EcranPrincipal(isUserMode : Boolean?, onChangeMode: (Boolean?) -> Unit) {
          */
         Column() {
 
-            if(isUserMode == false){
+            if (isUserMode == false) {
                 bandeauMj()
             }
 
             selectedJoueur?.let {
-                Row (verticalAlignment = Alignment.CenterVertically){
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     AsyncImage(
                         model = apiApp.createUrlImageFromItem(it),
                         modifier = Modifier.padding(4.dp).clip(CircleShape)
@@ -183,21 +201,20 @@ fun EcranPrincipal(isUserMode : Boolean?, onChangeMode: (Boolean?) -> Unit) {
 
             }
 
-            LazyColumn (){
+            LazyColumn() {
                 item {
                     optionsNavigationDrawer(
                         filterViewModel,
                         drawerState,
                         filterUiState,
                         config,
-                        nameSavedUser,
                         setTriggerEquipe,
                         triggerEquipe,
                         setSelectEquipe,
-                        selectedJoueur,
                         coroutineScope,
                         onChangeMode,
-                        openChangeIpDialog
+                        onLaunchingDialogIp,
+                        onResetSelectJoueur
                     )
                 }
 
@@ -213,6 +230,17 @@ fun EcranPrincipal(isUserMode : Boolean?, onChangeMode: (Boolean?) -> Unit) {
 
 }
 
+fun drawBackgroundBandeau(
+    isUserMode: Boolean?,
+    iSWideScreen: Boolean
+) = if (isUserMode == true && iSWideScreen)
+    Res.drawable.joueurbandeau
+else if (isUserMode == true && !iSWideScreen)
+    Res.drawable.joueurmenu
+else if (isUserMode == false && iSWideScreen)
+    Res.drawable.mjbandeau
+else Res.drawable.mjmenu
+
 @Composable
 private fun bandeauMj() {
 
@@ -223,7 +251,13 @@ private fun bandeauMj() {
             Modifier.fillMaxWidth(),
             contentScale = ContentScale.FillWidth
         )
-        Text("Maître du jeu", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center, color = Color.Yellow, style = MaterialTheme.typography.titleMedium,)
+        Text(
+            "Maître du jeu",
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            color = Color.Yellow,
+            style = MaterialTheme.typography.titleMedium,
+        )
     }
 
 }
@@ -234,19 +268,15 @@ private fun optionsNavigationDrawer(
     drawerState: DrawerState,
     filterUiState: FilterModelState,
     config: IConfiguration,
-    nameSavedUser: String?,
     setTriggerEquipe: (Boolean) -> Unit,
     triggerEquipe: Boolean,
     setSelectEquipe: (Equipe?) -> Unit,
-    selectedJoueur: Joueur?,
     coroutineScope: CoroutineScope,
     onChangeMode: (Boolean?) -> Unit,
-    openChangeIpDialog: Boolean
+    onLaunchingDialogIp: (Boolean) -> Unit,
+    onResetSelectJoueur: () -> Unit,
 ) {
     //Le profil utilisateur
-    var nameSavedUser1 = nameSavedUser
-    var selectedJoueur1 = selectedJoueur
-    var openChangeIpDialog1 = openChangeIpDialog
     ItemSimpleMenuButton(
         "Statistiques",
         FilterUser.STATISTIQUES,
@@ -320,10 +350,9 @@ private fun optionsNavigationDrawer(
     //Les options
     TextButton({
         config.setUserName("")
-        nameSavedUser1 = ""
         setTriggerEquipe(triggerEquipe.not())
         setSelectEquipe(null)
-        selectedJoueur1 = null
+        onResetSelectJoueur()
         coroutineScope.launch {
             drawerState.close()
         }
@@ -332,7 +361,7 @@ private fun optionsNavigationDrawer(
         Text("Changer d'équipe")
     }
     TextButton({
-        selectedJoueur1 = null
+        onResetSelectJoueur()
         coroutineScope.launch {
             drawerState.close()
         }
@@ -350,7 +379,7 @@ private fun optionsNavigationDrawer(
         Text("Reset Mode")
     }
     TextButton({
-        openChangeIpDialog1 = true
+        onLaunchingDialogIp(true)
         coroutineScope.launch {
             drawerState.close()
         }
