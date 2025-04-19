@@ -9,6 +9,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -31,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
@@ -112,36 +114,39 @@ fun EcranJoueur(
         }
     }
 
-    /**
-     * Selection des différents écrans
-     */
-    //si la selection c'est tout les equipements
-    when (filterUiState.filterUser) {
-        FilterUser.DECOUVERTES -> {
-            EcranDecouverteEquipe(selectedEquipe, isRefreshedJoueur, selectedJoueur, onSave)
-        }//si la selection c'est l'affichage des statistiques
-        FilterUser.STATISTIQUES -> {
-            EcranStatistiques(selectedJoueur, isWideScreen) {
-                onSave()
+    Box(Modifier.fillMaxSize()) {
+
+        /**
+         * Selection des différents écrans
+         */
+        //si la selection c'est tout les equipements
+        when (filterUiState.filterUser) {
+            FilterUser.DECOUVERTES -> {
+                EcranDecouverteEquipe(selectedEquipe, isRefreshedJoueur, selectedJoueur, onSave)
+            }//si la selection c'est l'affichage des statistiques
+            FilterUser.STATISTIQUES -> {
+                EcranStatistiques(selectedJoueur, isWideScreen) {
+                    onSave()
+                }
+            }
+            //sinon on considere que c'est l'affichage de tout l'equipement
+            else -> {
+                FilterListItem(
+                    equipements,
+                    scrollListState,
+                    listPinnedItems,
+                    filterUser = filterUiState.filterUser,
+                    togglePinItem = togglePinnedItem,
+                    itemsUtilisations = mapUtilisationItems,
+                    onUtilisationItem = useItem,
+                    isWideScreen = isWideScreen,
+                    onSave
+                )
             }
         }
-        //sinon on considere que c'est l'affichage de tout l'equipement
-        else -> {
-            FilterListItem(
-                equipements,
-                scrollListState,
-                listPinnedItems,
-                filterUser = filterUiState.filterUser,
-                togglePinItem = togglePinnedItem,
-                itemsUtilisations = mapUtilisationItems,
-                onUtilisationItem = useItem,
-                isWideScreen = isWideScreen,
-                onSave
-            )
-        }
-    }
 
-    ProfileImage(selectedJoueur, isLoadingJoueur, refreshJoueur, isWideScreen)
+        ProfileImage(selectedJoueur, isLoadingJoueur, refreshJoueur, isWideScreen)
+    }
 
 }
 
