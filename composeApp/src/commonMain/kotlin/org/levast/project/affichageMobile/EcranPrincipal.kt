@@ -157,7 +157,7 @@ fun EcranPrincipal(isUserMode : Boolean?, onChangeMode: (Boolean?) -> Unit) {
             }
 
             selectedJoueur?.let {
-                Row {
+                Row (verticalAlignment = Alignment.CenterVertically){
                     AsyncImage(
                         model = apiApp.createUrlImageFromItem(it),
                         modifier = Modifier.padding(4.dp).clip(CircleShape)
@@ -173,6 +173,7 @@ fun EcranPrincipal(isUserMode : Boolean?, onChangeMode: (Boolean?) -> Unit) {
 
                     Text(
                         it.nomComplet.ifBlank { it.nom },
+                        modifier = Modifier.weight(1f),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.tertiary

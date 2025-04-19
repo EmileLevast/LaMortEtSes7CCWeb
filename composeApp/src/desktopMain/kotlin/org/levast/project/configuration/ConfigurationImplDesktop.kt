@@ -46,10 +46,10 @@ class ConfigurationImplDesktop() : IConfiguration {
         File(PROPERTY_FILE_PATH).writeText(Json.encodeToString(properties))
     }
 
-    /*
-    Sur Desktop y'a pas d'utilisateur associé à l'application donc on laisse vide ces fonctions
-     */
+
     override fun setUserName(nomUser: String) {
+        properties.userName=nomUser
+        saveToFile()
     }
 
     override fun getUserName(): String = properties.userName
