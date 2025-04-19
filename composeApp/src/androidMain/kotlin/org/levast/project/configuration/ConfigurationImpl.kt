@@ -14,8 +14,6 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "se
 
 class ConfigurationImpl() : IConfiguration {
 
-
-
     private lateinit var properties:AppProperties
     private var context:Context?=null
 

@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import org.levast.project.network.ApiApp
 import org.levast.project.network.IImageDownloader
 
-val apiApp = ApiApp(getConfiguration())
-val graphicsConstants = GraphicConstantsFullGrid()
+private val apiApp = ApiApp(getConfiguration())
+private val graphicsConstants = GraphicConstantsFullGrid()
 
 fun getApiApp() = apiApp
 
