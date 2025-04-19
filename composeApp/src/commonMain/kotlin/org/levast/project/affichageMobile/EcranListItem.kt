@@ -29,16 +29,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import org.levast.project.configuration.getApiApp
 import getNbrUtilisationAccordingItem
+import lamortetses7ccweb.composeapp.generated.resources.Aniron_7BaP
 import lamortetses7ccweb.composeapp.generated.resources.Res
 import lamortetses7ccweb.composeapp.generated.resources.UnknownImage
 import lamortetses7ccweb.composeapp.generated.resources.mainFermee
 import lamortetses7ccweb.composeapp.generated.resources.mainOuverte
+import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 
 
@@ -104,7 +107,7 @@ fun EcranListItem(
                                 modifier = Modifier.fillMaxWidth(),
                                 text = equipement.nomComplet.ifBlank { equipement.nom },
                                 textAlign = TextAlign.Center,
-                                style = if(isWideScreen) TextStyle.Default.copy(fontSize = 20.sp) else MaterialTheme.typography.titleMedium,
+                                style = if(isWideScreen) TextStyle.Default.copy(fontSize = 15.sp, fontFamily = FontFamily(Font(Res.font.Aniron_7BaP))) else MaterialTheme.typography.titleMedium,
                                 color = if (isItemPinned == true) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.scrim
                             )
 
