@@ -54,7 +54,7 @@ class ConfigurationImplDesktop() : IConfiguration {
 
     override fun getUserName(): String = properties.userName
 
-    override fun setMode(isUserMode: Boolean) {
+    override fun setMode(isUserMode: Boolean?) {
         properties.isUserMode=isUserMode
         saveToFile()
     }

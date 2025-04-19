@@ -6,7 +6,6 @@ import org.levast.project.affichage.AlertDialogChangeIp
 import org.levast.project.affichage.LayoutDrawerMenu
 import org.levast.project.affichage.buttonDarkStyled
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -21,8 +20,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material3.Card
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -44,7 +44,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
@@ -184,7 +183,7 @@ fun EcranPrincipal(
 
             //Les catégories d'items
             ItemSimpleMenuButton(
-                "Equipés",
+                "Équipés",
                 FilterUser.EQUIPES,
 
                 filterViewModel,
@@ -227,14 +226,14 @@ fun EcranPrincipal(
                 filterUiState
             )
             ItemSimpleMenuButton(
-                "Equipements",
+                "Tous les items",
                 FilterUser.TOUT_EQUIPEMENT,
                 filterViewModel,
                 drawerState,
                 filterUiState
             )
             ItemSimpleMenuButton(
-                "Decouvertes",
+                "Découvertes",
                 FilterUser.DECOUVERTES,
                 filterViewModel,
                 drawerState,
@@ -254,7 +253,25 @@ fun EcranPrincipal(
                 }
             }) {
                 Icon(Icons.Default.Refresh, contentDescription = "Reset joueur")
-                Text("Reset sélection")
+                Text("Changer d'équipe")
+            }
+            TextButton({
+                selectedJoueur = null
+                coroutineScope.launch {
+                    drawerState.close()
+                }
+            }) {
+                Icon(Icons.Default.Refresh, contentDescription = "Reset joueur")
+                Text("Changer de joueur")
+            }
+            TextButton({
+                config.setMode(null)
+                coroutineScope.launch {
+                    drawerState.close()
+                }
+            }) {
+                Icon(Icons.Default.AccountBox, contentDescription = "Changer de mode")
+                Text("Reset Mode")
             }
             TextButton({
                 openChangeIpDialog = true

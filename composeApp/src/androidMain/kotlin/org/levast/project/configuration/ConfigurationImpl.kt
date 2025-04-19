@@ -53,19 +53,27 @@ class ConfigurationImpl() : IConfiguration {
 
     override fun getUserName(): String = properties.userName
 
-    override fun setMode(isUserMode: Boolean) {
+    override fun setMode(isUserMode: Boolean?) {
         properties.isUserMode=isUserMode
 
-        saveToDatastore(isUserMode, KEY_MODE)
+        if(isUserMode != null){
+            saveToDatastore(isUserMode, KEY_MODE)
+        }else{
+            runBlocking {
+                context?.dataStore?.edit { settings ->
+                    settings.remove(KEY_MODE)
+                }
+            }
+        }
     }
 
     override fun getMode(): Boolean? = properties.isUserMode
 
 
-    private fun <T> saveToDatastore(adresseIp: T, keyToUse: Preferences.Key<T>) {
+    private fun <T> saveToDatastore(updatedValue: T, keyToUse: Preferences.Key<T>) {
         runBlocking {
             context?.dataStore?.edit { settings ->
-                settings[keyToUse] = adresseIp
+                settings[keyToUse] = updatedValue
             }
         }
     }

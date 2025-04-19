@@ -19,21 +19,20 @@ import org.levast.project.configuration.getConfiguration
 @Composable
 fun EcranSplashScreen(){
 
-    val configuration by remember { mutableStateOf(getConfiguration()) }
+    val configuration = getConfiguration()
 
     var isModeUser:Boolean? by remember { mutableStateOf(configuration.getMode()) }
-
 
     if(isModeUser == null){
         Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceEvenly, horizontalAlignment = Alignment.CenterHorizontally){
             Button({
-                isModeUser = true
+                isModeUser = false
                 configuration.setMode(isModeUser!!)
             }){
                 Text("MJ")
             }
             Button({
-                isModeUser = false
+                isModeUser = true
                 configuration.setMode(isModeUser!!)
             }){
                 Text("Joueur")
