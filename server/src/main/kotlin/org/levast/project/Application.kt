@@ -11,7 +11,6 @@ import Equipe
 import Joueur
 import Monster
 import QUERY_PARAMETER_NOM
-import SERVER_PORT
 import Sort
 import Special
 import ch.qos.logback.classic.Level
@@ -33,7 +32,7 @@ import io.ktor.server.engine.*
 import io.ktor.server.http.content.resources
 import io.ktor.server.http.content.static
 import io.ktor.server.netty.*
-import io.ktor.server.plugins.callloging.CallLogging
+import io.ktor.server.plugins.calllogging.CallLogging
 import io.ktor.server.plugins.compression.Compression
 import io.ktor.server.plugins.compression.gzip
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
@@ -42,7 +41,7 @@ import io.ktor.server.request.receive
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.logging.KtorSimpleLogger
-import network.AnythingItemDTO
+import org.levast.project.network.AnythingItemDTO
 import org.litote.kmongo.eq
 import org.litote.kmongo.setValue
 import org.slf4j.LoggerFactory
