@@ -13,12 +13,22 @@
                     "compose"
                 ]
             },
+            "desktop": {
+                "ui": [
+                    "compose"
+                ]
+            },
             "web": {
                 "ui": [
                     "compose"
                 ]
+            },
+            "server": {
+                "engine": [
+                    "ktor"
+                ]
             }
         }
     },
-    "timestamp": "2025-03-25T22:35:06.164239670Z"
+    "timestamp": "2025-04-19T13:24:54.206284634Z"
 }
