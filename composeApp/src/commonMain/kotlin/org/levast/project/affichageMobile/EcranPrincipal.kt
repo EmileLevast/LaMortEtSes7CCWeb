@@ -141,7 +141,7 @@ fun EcranPrincipal(onChangeMode: (Boolean?) -> Unit) {
         /**
          * MENU
          */
-        Column(Modifier.width(IntrinsicSize.Min)) {
+        Column() {
 
             selectedJoueur?.let {
                 Row {

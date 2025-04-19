@@ -47,9 +47,7 @@ fun EcranSplashScreen() {
                 Text("Joueur")
             }
         }
-    } else if (isModeUser!!) {
-        EcranPrincipal(onChangeMode)
     } else {
-        EcranAccueilAdmin(onChangeMode)
+        EcranPrincipal(onChangeMode)
     }
 }
