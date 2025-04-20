@@ -5,7 +5,8 @@ import IListItem
 data class AdminModelState(
     var listitems: List<IListItem> = listOf(),
     var listPinneditems: List<String> = listOf(),
-    var filterAdminScreen: FilterAdminScreen = FilterAdminScreen.NONE
+    var filterAdminScreen: FilterAdminScreen = FilterAdminScreen.NONE,
+    var isAdminModeOn : Boolean? = null
 ) {
 
 }

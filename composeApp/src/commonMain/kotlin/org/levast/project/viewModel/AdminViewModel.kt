@@ -44,4 +44,8 @@ class AdminViewModel : ViewModel(){
         _uiState.update { currentState -> currentState.copy(filterAdminScreen = filterAdminScreen) }
     }
 
+    fun changeMode(isAdminModeOn : Boolean?){
+        _uiState.update { currentState -> currentState.copy(isAdminModeOn = isAdminModeOn) }
+    }
+
 }

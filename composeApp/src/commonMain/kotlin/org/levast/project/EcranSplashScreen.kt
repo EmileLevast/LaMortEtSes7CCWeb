@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -21,6 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import lamortetses7ccweb.composeapp.generated.resources.Res
 import lamortetses7ccweb.composeapp.generated.resources.joueurbandeau
 import lamortetses7ccweb.composeapp.generated.resources.joueurmenu
@@ -29,11 +31,15 @@ import lamortetses7ccweb.composeapp.generated.resources.mjmenu
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.levast.project.configuration.getConfiguration
+import org.levast.project.viewModel.AdminViewModel
 
 @Composable
-fun EcranSplashScreen() {
+fun EcranSplashScreen(
+    adminViewModel: AdminViewModel = viewModel { AdminViewModel() }
+) {
 
     val configuration = getConfiguration()
+    val adminUiState by adminViewModel.uiState.collectAsState()
 
     //pour sizer l'image selon la taille du titre
     var iSWideScreen by remember {
@@ -42,11 +48,9 @@ fun EcranSplashScreen() {
     // Get local density from composable
     val localDensity = LocalDensity.current
 
-    var isModeUser: Boolean? by remember { mutableStateOf(configuration.getMode()) }
 
-    val onChangeMode: (Boolean?) -> Unit = { updatedMode ->
-        isModeUser = updatedMode
-        configuration.setMode(updatedMode)
+    val onChangeMode: (Boolean?) -> Unit = { isAdminModeOn ->
+        adminViewModel.changeMode(isAdminModeOn)
     }
     Column(
         Modifier.fillMaxSize().onGloballyPositioned { coordinates ->
@@ -54,15 +58,14 @@ fun EcranSplashScreen() {
                 with(localDensity) { coordinates.size.width.toDp() > 500.dp }
         }
     ) {
-        if (isModeUser == null) {
+        if (adminUiState.isAdminModeOn == null) {
             Box(Modifier.weight(1f).fillMaxHeight(0.5f), contentAlignment = Alignment.Center) {
                 imageBandeau(
                     if (iSWideScreen) Res.drawable.joueurbandeau else Res.drawable.joueurmenu,
                     Modifier
                 )
                 Button({
-                    isModeUser = true
-                    configuration.setMode(isModeUser!!)
+                    adminViewModel.changeMode(false)
                 }) {
                     Text("Joueur")
                 }
@@ -73,15 +76,14 @@ fun EcranSplashScreen() {
                     Modifier.rotate(180f)
                 )
                 Button({
-                    isModeUser = false
-                    configuration.setMode(isModeUser!!)
+                    adminViewModel.changeMode(true)
                 }) {
                     Text("MJ")
                 }
             }
 
         } else {
-            EcranPrincipal(isModeUser, onChangeMode, iSWideScreen)
+            EcranPrincipal(onChangeMode, iSWideScreen)
         }
     }
 }

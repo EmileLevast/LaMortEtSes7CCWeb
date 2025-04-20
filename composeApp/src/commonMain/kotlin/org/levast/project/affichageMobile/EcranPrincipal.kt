@@ -4,7 +4,6 @@ import Equipe
 import Joueur
 import org.levast.project.affichage.AlertDialogChangeIp
 import org.levast.project.affichage.LayoutDrawerMenu
-import org.levast.project.affichage.buttonDarkStyled
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -29,7 +28,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -79,8 +77,6 @@ import org.levast.project.viewModel.stateviewmodel.FilterUser
 
 @Composable
 fun EcranPrincipal(
-    isUserMode: Boolean?,
-    onChangeMode: (Boolean?) -> Unit,
     iSWideScreen: Boolean,
     adminViewModel: AdminViewModel = viewModel { AdminViewModel() }
 ) {
@@ -144,7 +140,7 @@ fun EcranPrincipal(
         Box(Modifier.fillMaxSize().padding(innerpadding)) {
             Image(
                 painterResource(
-                    drawBackgroundBandeau(isUserMode, iSWideScreen)
+                    drawBackgroundBandeau(adminUiState.isAdminModeOn, iSWideScreen)
                 ), "bandeau du mj",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
@@ -186,7 +182,7 @@ fun EcranPrincipal(
          */
         Column {
 
-            if (isUserMode == false) {
+            if (adminUiState.isAdminModeOn == true) {
                 bandeauMj()
             }
 
@@ -228,7 +224,6 @@ fun EcranPrincipal(
                         triggerEquipe,
                         setSelectEquipe,
                         coroutineScope,
-                        onChangeMode,
                         onLaunchingDialogIp,
                         onResetSelectJoueur,
                         selectedJoueur,
@@ -249,13 +244,13 @@ fun EcranPrincipal(
 }
 
 fun drawBackgroundBandeau(
-    isUserMode: Boolean?,
+    isAdminMode: Boolean?,
     iSWideScreen: Boolean
-) = if (isUserMode == true && iSWideScreen)
+) = if (isAdminMode == false && iSWideScreen)
     Res.drawable.joueurbandeau
-else if (isUserMode == true && !iSWideScreen)
+else if (isAdminMode == false && !iSWideScreen)
     Res.drawable.joueurmenu
-else if (isUserMode == false && iSWideScreen)
+else if (isAdminMode == true && iSWideScreen)
     Res.drawable.mjbandeau
 else Res.drawable.mjmenu
 
@@ -290,7 +285,6 @@ private fun optionsNavigationDrawer(
     triggerEquipe: Boolean,
     setSelectEquipe: (Equipe?) -> Unit,
     coroutineScope: CoroutineScope,
-    onChangeMode: (Boolean?) -> Unit,
     onLaunchingDialogIp: (Boolean) -> Unit,
     onResetSelectJoueur: () -> Unit,
     selectedJoueur: Joueur?,
@@ -428,7 +422,7 @@ private fun optionsNavigationDrawer(
     }
 
     TextButton({
-        onChangeMode(null)
+        adminViewModel.changeMode(null)
         coroutineScope.launch {
             drawerState.close()
         }
