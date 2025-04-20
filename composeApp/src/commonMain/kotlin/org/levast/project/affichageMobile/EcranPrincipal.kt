@@ -148,7 +148,7 @@ fun EcranPrincipal(
                         this.alpha = 0.3f
                     })
 
-            if (adminUiState.filterAdminScreen != FilterAdminScreen.NONE) {
+            if (adminUiState.filterAdminScreen != FilterAdminScreen.NONE && adminUiState.isAdminModeOn == true) {
                 EcranAdmin()
             } else if (selectEquipe == null) {
                 Column(
@@ -291,27 +291,8 @@ private fun optionsNavigationDrawer(
     selectedEquipe: Equipe?,
     adminViewModel: AdminViewModel = viewModel { AdminViewModel() }
 ) {
-    val adminUiState by adminViewModel.uiState.collectAsState()
-    val onClickResearchOption: () -> Unit = {
-        if(adminUiState.filterAdminScreen != FilterAdminScreen.RESEARCH){
-            adminViewModel.changeAdminScreen(FilterAdminScreen.RESEARCH)
-        }else{
-            adminViewModel.changeAdminScreen(FilterAdminScreen.NONE)
-        }
-        coroutineScope.launch {
-            drawerState.close()
-        }
-    }
 
-    if(adminUiState.filterAdminScreen == FilterAdminScreen.RESEARCH){
-        OutlinedButton(onClickResearchOption) {
-            ContentOptionButtonResearch()
-        }
-    }else{
-        TextButton(onClickResearchOption) {
-            ContentOptionButtonResearch()
-        }
-    }
+    AdminOptions(coroutineScope, drawerState)
 
 
     if (selectedJoueur != null) {
@@ -439,6 +420,40 @@ private fun optionsNavigationDrawer(
         Icon(Icons.Default.Warning, contentDescription = "Adresse Ip")
         Text("Maintenance")
     }
+}
+
+@Composable
+private fun AdminOptions(
+    coroutineScope: CoroutineScope,
+    drawerState: DrawerState,
+    adminViewModel: AdminViewModel = viewModel { AdminViewModel() }
+) {
+    val adminUiState by adminViewModel.uiState.collectAsState()
+
+    if(adminUiState.isAdminModeOn == true){
+        val onClickResearchOption: () -> Unit = {
+            if (adminUiState.filterAdminScreen != FilterAdminScreen.RESEARCH) {
+                adminViewModel.changeAdminScreen(FilterAdminScreen.RESEARCH)
+            } else {
+                adminViewModel.changeAdminScreen(FilterAdminScreen.NONE)
+            }
+            coroutineScope.launch {
+                drawerState.close()
+            }
+        }
+
+        if (adminUiState.filterAdminScreen == FilterAdminScreen.RESEARCH) {
+            OutlinedButton(onClickResearchOption) {
+                ContentOptionButtonResearch()
+            }
+        } else {
+            TextButton(onClickResearchOption) {
+                ContentOptionButtonResearch()
+            }
+        }
+    }
+
+
 }
 
 @Composable
