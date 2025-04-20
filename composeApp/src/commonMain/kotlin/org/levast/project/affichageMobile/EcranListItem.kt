@@ -56,7 +56,7 @@ fun EcranListItem(
     itemsUtilisations: Map<String, Int>? = null,
     onUtilisationItem: ((IListItem, Int) -> Unit)? = null,
     joueur: Joueur? = null,
-    isWideScreen:Boolean = false,
+    isWideScreen: Boolean = false,
     onSave: () -> Unit
 ) {
     val colorBackground =
@@ -68,7 +68,7 @@ fun EcranListItem(
 
 
     LazyVerticalGrid(
-        columns = if(isWideScreen) GridCells.FixedSize(350.dp) else GridCells.Fixed(2),
+        columns = if (isWideScreen) GridCells.FixedSize(350.dp) else GridCells.Fixed(2),
         state = scrollListState,
     ) {
         items(equipementsAfficher) { equipement ->
@@ -76,8 +76,8 @@ fun EcranListItem(
             val isItemPinned = listPinnedItems?.contains(equipement.nom)
 
             Card(
-                modifier = Modifier.fillMaxWidth().clickable { equipementToShow = equipement }
-                    .padding(5.dp),
+                modifier = Modifier.fillMaxWidth().padding(5.dp)
+                    .clickable { equipementToShow = equipement },
                 border = if (isItemPinned == true) BorderStroke(
                     4.dp,
                     MaterialTheme.colorScheme.primary
@@ -107,7 +107,10 @@ fun EcranListItem(
                                 modifier = Modifier.fillMaxWidth(),
                                 text = equipement.nomComplet.ifBlank { equipement.nom },
                                 textAlign = TextAlign.Center,
-                                style = if(isWideScreen) TextStyle.Default.copy(fontSize = 15.sp, fontFamily = FontFamily(Font(Res.font.Aniron_7BaP))) else MaterialTheme.typography.titleMedium,
+                                style = if (isWideScreen) TextStyle.Default.copy(
+                                    fontSize = 15.sp,
+                                    fontFamily = FontFamily(Font(Res.font.Aniron_7BaP))
+                                ) else MaterialTheme.typography.titleMedium,
                                 color = if (isItemPinned == true) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.scrim
                             )
 

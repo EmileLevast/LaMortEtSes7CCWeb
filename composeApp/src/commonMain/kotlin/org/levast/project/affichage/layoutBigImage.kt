@@ -76,9 +76,9 @@ fun layoutBigImage(
             Column(modifier = Modifier.fillMaxWidth()) {
 
                 LazyColumn(
-                    modifier = Modifier.fillMaxWidth().clickable {
+                    modifier = Modifier.fillMaxWidth().padding(10.dp).weight(1f,false).clickable {
                         onClick(equipement,nbrUtilisationItem)
-                    }.padding(10.dp).weight(1f,false),
+                    },
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
