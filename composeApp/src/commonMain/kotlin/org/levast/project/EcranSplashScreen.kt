@@ -48,17 +48,18 @@ fun EcranSplashScreen() {
         isModeUser = updatedMode
         configuration.setMode(updatedMode)
     }
-
-    if (isModeUser == null) {
-        Column(
-            Modifier.fillMaxSize().onGloballyPositioned { coordinates ->
-                iSWideScreen =
-                    with(localDensity) { coordinates.size.width.toDp() > 500.dp }
-            },
-        ) {
-
+    Column(
+        Modifier.fillMaxSize().onGloballyPositioned { coordinates ->
+            iSWideScreen =
+                with(localDensity) { coordinates.size.width.toDp() > 500.dp }
+        }
+    ) {
+        if (isModeUser == null) {
             Box(Modifier.weight(1f).fillMaxHeight(0.5f), contentAlignment = Alignment.Center) {
-                imageBandeau(if(iSWideScreen) Res.drawable.joueurbandeau else Res.drawable.joueurmenu, Modifier)
+                imageBandeau(
+                    if (iSWideScreen) Res.drawable.joueurbandeau else Res.drawable.joueurmenu,
+                    Modifier
+                )
                 Button({
                     isModeUser = true
                     configuration.setMode(isModeUser!!)
@@ -67,7 +68,10 @@ fun EcranSplashScreen() {
                 }
             }
             Box(Modifier.weight(1f).fillMaxHeight(0.5f), contentAlignment = Alignment.Center) {
-                imageBandeau(if(iSWideScreen) Res.drawable.mjbandeau else Res.drawable.mjmenu, Modifier.rotate(180f))
+                imageBandeau(
+                    if (iSWideScreen) Res.drawable.mjbandeau else Res.drawable.mjmenu,
+                    Modifier.rotate(180f)
+                )
                 Button({
                     isModeUser = false
                     configuration.setMode(isModeUser!!)
@@ -75,16 +79,17 @@ fun EcranSplashScreen() {
                     Text("MJ")
                 }
             }
-        }
-    } else {
-        EcranPrincipal(isModeUser, onChangeMode, iSWideScreen)
 
+        } else {
+            EcranPrincipal(isModeUser, onChangeMode, iSWideScreen)
+        }
     }
 }
 
 @Composable
-fun imageBandeau(image : DrawableResource, modifier: Modifier){
-    Image(painterResource(image),"bandeau",
+fun imageBandeau(image: DrawableResource, modifier: Modifier) {
+    Image(
+        painterResource(image), "bandeau",
         contentScale = ContentScale.FillBounds,
         modifier = modifier.fillMaxSize()
             .graphicsLayer {
