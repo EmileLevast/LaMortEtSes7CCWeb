@@ -236,7 +236,8 @@ fun layoutEdition(
                             }
                         }
                     },
-                    graphicsConsts.brushEquipe
+                    MaterialTheme.colorScheme.secondary,
+                    MaterialTheme.colorScheme.onSecondary
                 )
                 layoutListeSelectables(
                     Modifier,
@@ -261,7 +262,8 @@ fun layoutEdition(
                             }
                         }
                     },
-                    graphicsConsts.brushJoueursCard
+                    MaterialTheme.colorScheme.tertiary,
+                    MaterialTheme.colorScheme.onSecondary
                 )
             }
         }
@@ -324,7 +326,8 @@ fun layoutListeSelectables(
     listSelectables: List<IListItem>,
     isDefaultChecked: (IListItem) -> Boolean,
     onSelect: (Boolean, IListItem) -> Unit,
-    brushToUse: Brush
+    colorCard : Color,
+    colorCardEnd : Color,
 ) {
     val graphicsConsts = getGraphicConstants()
 
@@ -341,12 +344,12 @@ fun layoutListeSelectables(
             ) {
                 var checked by remember { mutableStateOf(isDefaultChecked(it)) }
                 Column(
-                    Modifier.fillMaxSize().background(brushToUse),
+                    Modifier.fillMaxSize().background(graphicsConsts.colorToBrush(colorCard, colorCardEnd)),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = it.nomComplet.ifBlank { it.nom }, color = Color.White,
+                        text = it.nomComplet.ifBlank { it.nom },
                         style = MaterialTheme.typography.bodySmall,
                     )
                     Checkbox(
