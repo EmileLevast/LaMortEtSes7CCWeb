@@ -48,11 +48,6 @@ class ApiApp(val config: IConfiguration) {
         install(ContentNegotiation) {
             json()
         }
-        install(Logging) {
-            logger = Logger.SIMPLE
-            level = LogLevel.INFO
-        }
-
     }
 
     private suspend fun searchAnythingStringEncoded(
