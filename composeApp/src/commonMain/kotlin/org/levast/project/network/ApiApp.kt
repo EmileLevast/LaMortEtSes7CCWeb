@@ -77,6 +77,10 @@ class ApiApp(val config: IConfiguration) {
         return deserializeAnythingItemDTO(searchEverythingStringEncoded(searchedNames))
     }
 
+    suspend fun searchAnything(nomSearched: String, strict: Boolean = false): List<IListItem> {
+        return deserializeAnythingItemDTO(searchAnythingStringEncoded(nomSearched, strict))
+    }
+
     private fun deserializeAnythingItemDTO(listAnythingItem: List<AnythingItemDTO>): List<IListItem> {
         val listItemsFound = mutableListOf<IListItem>()
         for (anythingItem in listAnythingItem) {
