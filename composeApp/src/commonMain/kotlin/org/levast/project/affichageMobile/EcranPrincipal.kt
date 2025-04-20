@@ -297,18 +297,28 @@ private fun optionsNavigationDrawer(
     selectedEquipe: Equipe?,
     adminViewModel: AdminViewModel = viewModel { AdminViewModel() }
 ) {
+    val adminUiState by adminViewModel.uiState.collectAsState()
+    val onClickResearchOption: () -> Unit = {
+        adminViewModel.changeAdminScreen(FilterAdminScreen.RESEARCH)
+        coroutineScope.launch {
+            drawerState.close()
+        }
+    }
+
+    if(adminUiState.filterAdminScreen == FilterAdminScreen.RESEARCH){
+        OutlinedButton(onClickResearchOption) {
+            ContentOptionButtonResearch()
+        }
+    }else{
+        TextButton(onClickResearchOption) {
+            ContentOptionButtonResearch()
+        }
+    }
+
 
     if (selectedJoueur != null) {
 
-        TextButton({
-            adminViewModel.changeAdminScreen(FilterAdminScreen.RESEARCH)
-            coroutineScope.launch {
-                drawerState.close()
-            }
-        }) {
-            Icon(Icons.Default.Search, contentDescription = "Rechercher item")
-            Text("Rechercher")
-        }
+
 
         HorizontalDivider()
 
@@ -434,6 +444,12 @@ private fun optionsNavigationDrawer(
 }
 
 @Composable
+private fun ContentOptionButtonResearch() {
+    Icon(Icons.Default.Search, contentDescription = "Rechercher item")
+    Text("Rechercher")
+}
+
+@Composable
 fun <T : HeadBodyShowable> LayoutListSelectableItem(
     elementsAfficher: List<T>,
     onSelectElement: (T) -> Unit
@@ -471,11 +487,13 @@ fun ItemSimpleMenuButton(
     filter: FilterUser,
     filterViewModel: FilterViewModel,
     drawerState: DrawerState,
-    filterUiState: FilterModelState
+    filterUiState: FilterModelState,
+    adminViewModel: AdminViewModel = viewModel { AdminViewModel() }
 ) {
     val scope = rememberCoroutineScope()
+    val adminUiState by adminViewModel.uiState.collectAsState()
 
-    if (filterUiState.filterUser == filter) {
+    if (filterUiState.filterUser == filter && adminUiState.filterAdminScreen == FilterAdminScreen.PLAYER) {
         OutlinedButton({
             filterViewModel.changeFilterUser(filter)
             scope.launch {
@@ -487,6 +505,7 @@ fun ItemSimpleMenuButton(
     } else {
         TextButton({
             filterViewModel.changeFilterUser(filter)
+            adminViewModel.changeAdminScreen(FilterAdminScreen.PLAYER)
             scope.launch {
                 drawerState.close()
             }
