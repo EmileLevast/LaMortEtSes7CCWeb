@@ -36,7 +36,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -91,6 +93,17 @@ fun layoutEdition(
         }
     }
 
+    fun deparseStringToCreateItem(listAttributsToDeparse : List<String>): ApiableItem? {
+        try {
+            val itemParsed = (itemToEdit as ApiableItem).parseFromString(listAttributsToDeparse)
+            return itemParsed
+        }catch (e : Exception){
+            message = "${itemToEdit.nom} - erreur formatage"
+            return null
+        }
+
+    }
+
     Box {
 
         Row(Modifier.fillMaxSize()) {
@@ -128,32 +141,40 @@ fun layoutEdition(
 
                     Row(Modifier.align(Alignment.Center),horizontalArrangement = Arrangement.spacedBy(graphicsConsts.cellSpace)) {
                         Button( {
-                            val itemParsed = (itemToEdit as ApiableItem).parseFromString(listAttributs)
-                            coroutineScope.launch(Dispatchers.Default) {
-                                val res = apiApp.updateItem(itemParsed)
-                                withContext(Dispatchers.Default) {
-                                    message = if (res) {
-                                        "${itemParsed.nom} majed"
-                                    } else {
-                                        "${itemParsed.nom} - erreur mise à jour"
+                            val itemParsed = deparseStringToCreateItem(listAttributs)
+
+                            if(itemParsed != null){
+                                coroutineScope.launch(Dispatchers.Default) {
+                                    val res = apiApp.updateItem(itemParsed)
+                                    withContext(Dispatchers.Default) {
+                                        message = if (res) {
+                                            "${itemParsed.nom} majed"
+                                        } else {
+                                            "${itemParsed.nom} - erreur mise à jour"
+                                        }
                                     }
                                 }
                             }
+
                         }){
                             Text("Mise à jour")
                         }
                         Button( {
-                            val itemParsed = (itemToEdit as ApiableItem).parseFromString(listAttributs)
-                            coroutineScope.launch(Dispatchers.Default) {
-                                val res = apiApp.insertItem(itemParsed)
-                                withContext(Dispatchers.Default) {
-                                    message = if (res) {
-                                        "${itemParsed.nom} créé"
-                                    } else {
-                                        "${itemParsed.nom} - erreur création"
+                            val itemParsed = deparseStringToCreateItem(listAttributs)
+
+                            if(itemParsed!= null){
+                                coroutineScope.launch(Dispatchers.Default) {
+                                    val res = apiApp.insertItem(itemParsed)
+                                    withContext(Dispatchers.Default) {
+                                        message = if (res) {
+                                            "${itemParsed.nom} créé"
+                                        } else {
+                                            "${itemParsed.nom} - erreur création"
+                                        }
                                     }
                                 }
                             }
+
                         }){
                             Text("Créer")
                         }
@@ -246,50 +267,53 @@ fun layoutEdition(
         }
         if (show && message != null) {
             Card(
-                modifier = Modifier.align(Alignment.CenterStart),
+                modifier = Modifier.align(Alignment.Center),
                 colors = CardDefaults.elevatedCardColors( if(message!!.contains("erreur")) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.primaryContainer),
             ) {
                 Text(
                     text = message!!, color = if(message!!.contains("erreur")) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer,
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = 40.sp),
                 )
             }
         }
         if (openAlertDialogDeletion) {
-            val itemParsed = (itemToEdit as ApiableItem).parseFromString(listAttributs)
+            val itemParsed = deparseStringToCreateItem(listAttributs)
 
-            AlertDialog(
-                title = { Text("Supprimer ${itemParsed.nom}") },
-                onDismissRequest = { openAlertDialogDeletion = false },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            openAlertDialogDeletion = false
-                            coroutineScope.launch(Dispatchers.Default) {
-                                val res = apiApp.deleteItem(itemParsed)
-                                withContext(Dispatchers.Default) {
-                                    message = if (res) {
-                                        "${itemParsed.nom} suppression"
-                                    } else {
-                                        "${itemParsed.nom} - erreur suppression"
+            if(itemParsed!=null){
+                AlertDialog(
+                    title = { Text("Supprimer ${itemParsed.nom}") },
+                    onDismissRequest = { openAlertDialogDeletion = false },
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                openAlertDialogDeletion = false
+                                coroutineScope.launch(Dispatchers.Default) {
+                                    val res = apiApp.deleteItem(itemParsed)
+                                    withContext(Dispatchers.Default) {
+                                        message = if (res) {
+                                            "${itemParsed.nom} suppression"
+                                        } else {
+                                            "${itemParsed.nom} - erreur suppression"
+                                        }
                                     }
                                 }
                             }
+                        ) {
+                            Text("Supprimer")
                         }
-                    ) {
-                        Text("Supprimer")
-                    }
-                },
-                dismissButton = {
-                    TextButton(
-                        onClick = {
-                            openAlertDialogDeletion = false
+                    },
+                    dismissButton = {
+                        TextButton(
+                            onClick = {
+                                openAlertDialogDeletion = false
+                            }
+                        ) {
+                            Text("Annuler")
                         }
-                    ) {
-                        Text("Annuler")
                     }
-                }
-            )
+                )
+
+            }
         }
     }
 }
