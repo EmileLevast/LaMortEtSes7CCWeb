@@ -48,4 +48,8 @@ class AdminViewModel : ViewModel(){
         _uiState.update { currentState -> currentState.copy(isAdminModeOn = isAdminModeOn) }
     }
 
+    fun changeIsWideScreen(isWideScreen : Boolean){
+        _uiState.update { currentState -> currentState.copy(isWideScreen = isWideScreen) }
+    }
+
 }

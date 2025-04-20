@@ -123,7 +123,8 @@ fun EcranRecherche(
             togglePinnedItem,
             null,
             onClickItem,
-            onSave = {} //on a rien a sauvegarder en tant qu'admin sur l'ecran de recherche
+            onSave = {}, //on a rien a sauvegarder en tant qu'admin sur l'ecran de recherche
+            isWideScreen = adminUiState.isWideScreen
         )
     }
 }

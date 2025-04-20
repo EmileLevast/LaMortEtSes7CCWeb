@@ -41,10 +41,7 @@ fun EcranSplashScreen(
     val configuration = getConfiguration()
     val adminUiState by adminViewModel.uiState.collectAsState()
 
-    //pour sizer l'image selon la taille du titre
-    var iSWideScreen by remember {
-        mutableStateOf(false)
-    }
+
     // Get local density from composable
     val localDensity = LocalDensity.current
 
@@ -54,14 +51,14 @@ fun EcranSplashScreen(
     }
     Column(
         Modifier.fillMaxSize().onGloballyPositioned { coordinates ->
-            iSWideScreen =
-                with(localDensity) { coordinates.size.width.toDp() > 500.dp }
+            adminViewModel.changeIsWideScreen(
+                with(localDensity) { coordinates.size.width.toDp() > 500.dp })
         }
     ) {
         if (adminUiState.isAdminModeOn == null) {
             Box(Modifier.weight(1f).fillMaxHeight(0.5f), contentAlignment = Alignment.Center) {
                 imageBandeau(
-                    if (iSWideScreen) Res.drawable.joueurbandeau else Res.drawable.joueurmenu,
+                    if (adminUiState.isWideScreen) Res.drawable.joueurbandeau else Res.drawable.joueurmenu,
                     Modifier
                 )
                 Button({
@@ -72,7 +69,7 @@ fun EcranSplashScreen(
             }
             Box(Modifier.weight(1f).fillMaxHeight(0.5f), contentAlignment = Alignment.Center) {
                 imageBandeau(
-                    if (iSWideScreen) Res.drawable.mjbandeau else Res.drawable.mjmenu,
+                    if (adminUiState.isWideScreen) Res.drawable.mjbandeau else Res.drawable.mjmenu,
                     Modifier.rotate(180f)
                 )
                 Button({
@@ -83,7 +80,7 @@ fun EcranSplashScreen(
             }
 
         } else {
-            EcranPrincipal(iSWideScreen)
+            EcranPrincipal()
         }
     }
 }

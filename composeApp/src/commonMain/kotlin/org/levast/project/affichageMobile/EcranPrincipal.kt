@@ -77,7 +77,6 @@ import org.levast.project.viewModel.stateviewmodel.FilterUser
 
 @Composable
 fun EcranPrincipal(
-    iSWideScreen: Boolean,
     adminViewModel: AdminViewModel = viewModel { AdminViewModel() }
 ) {
     val apiApp = getApiApp()
@@ -140,7 +139,7 @@ fun EcranPrincipal(
         Box(Modifier.fillMaxSize().padding(innerpadding)) {
             Image(
                 painterResource(
-                    drawBackgroundBandeau(adminUiState.isAdminModeOn, iSWideScreen)
+                    drawBackgroundBandeau(adminUiState.isAdminModeOn, adminUiState.isWideScreen)
                 ), "bandeau du mj",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
@@ -166,7 +165,7 @@ fun EcranPrincipal(
                         selectedJoueur = it
                         config.setUserName(it.nom)
                         nameSavedUser = it.nom
-                    }, iSWideScreen)
+                    }, adminUiState.isWideScreen)
                 }
 
             }
