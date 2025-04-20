@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import org.levast.project.viewModel.stateviewmodel.AdminModelState
+import org.levast.project.viewModel.stateviewmodel.FilterAdminScreen
+import org.levast.project.viewModel.stateviewmodel.FilterModelState
+import org.levast.project.viewModel.stateviewmodel.FilterUser
 
 class AdminViewModel : ViewModel(){
     // Game UI state
@@ -35,6 +38,10 @@ class AdminViewModel : ViewModel(){
 
     private fun updateListPinnedItems(items: List<String>){
         _uiState.update { currentState -> currentState.copy(listPinneditems = items) }
+    }
+
+    fun changeAdminScreen(filterAdminScreen : FilterAdminScreen){
+        _uiState.update { currentState -> currentState.copy(filterAdminScreen = filterAdminScreen) }
     }
 
 }

@@ -2,16 +2,12 @@ package org.levast.project.affichageAdmin
 
 import IListItem
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.Button
 import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -24,8 +20,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
@@ -34,38 +28,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.levast.project.affichage.buttonDarkStyled
 import org.levast.project.affichageMobile.EcranListItem
 import org.levast.project.configuration.getApiApp
 import org.levast.project.configuration.getGraphicConstants
 import org.levast.project.viewModel.AdminViewModel
 
 
-@Composable
-fun layoutAdmin(
-) {
 
-    var selectedItemToEdit by remember { mutableStateOf<IListItem?>(null) }
-    val scrollStateRecherche = rememberLazyGridState()
-
-
-    val onClickItem = { itemClicked: IListItem, _:Int ->
-        selectedItemToEdit = itemClicked
-    }
-
-    val onClickBackFromEdition = { clicked: Boolean ->
-        selectedItemToEdit = null
-    }
-
-    if (selectedItemToEdit != null) {
-        layoutEdition(selectedItemToEdit!!, onClickBackFromEdition)
-    } else {
-        layoutRecherche(onClickItem, scrollStateRecherche)
-    }
-}
 
 @Composable
-fun layoutRecherche(
+fun EcranRecherche(
     onClickItem: (IListItem,Int) -> Unit,
     scrollStateRecherche : LazyGridState,
     adminViewModel: AdminViewModel = viewModel{ AdminViewModel() }

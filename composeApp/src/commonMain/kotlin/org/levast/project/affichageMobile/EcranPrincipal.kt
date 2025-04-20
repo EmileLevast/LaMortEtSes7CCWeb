@@ -25,9 +25,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -67,13 +69,19 @@ import lamortetses7ccweb.composeapp.generated.resources.mjbandeau
 import lamortetses7ccweb.composeapp.generated.resources.mjmenu
 import model.HeadBodyShowable
 import org.jetbrains.compose.resources.painterResource
+import org.levast.project.affichageAdmin.EcranAdmin
 import org.levast.project.configuration.IConfiguration
+import org.levast.project.viewModel.AdminViewModel
 import org.levast.project.viewModel.FilterViewModel
+import org.levast.project.viewModel.stateviewmodel.FilterAdminScreen
 import org.levast.project.viewModel.stateviewmodel.FilterModelState
 import org.levast.project.viewModel.stateviewmodel.FilterUser
 
 @Composable
-fun EcranPrincipal(isUserMode: Boolean?, onChangeMode: (Boolean?) -> Unit, iSWideScreen: Boolean) {
+fun EcranPrincipal(isUserMode: Boolean?,
+                   onChangeMode: (Boolean?) -> Unit,
+                   iSWideScreen: Boolean,
+                   adminViewModel: AdminViewModel = viewModel{ AdminViewModel() }) {
     val apiApp = getApiApp()
     val config = getConfiguration()
 
@@ -94,13 +102,15 @@ fun EcranPrincipal(isUserMode: Boolean?, onChangeMode: (Boolean?) -> Unit, iSWid
     val onCloseChangeIpDialog: () -> Unit = { openChangeIpDialog = false }
     val filterUiState by filterViewModel.uiState.collectAsState()
 
+    //Admin
+    val adminUiState by adminViewModel.uiState.collectAsState()
 
-    val onResetSelectJoueur: ()->Unit ={
+    val onResetSelectJoueur: () -> Unit = {
         nameSavedUser = ""
         selectedJoueur = null
     }
 
-    val onLaunchingDialogIp :(Boolean)->Unit={ isOpeningIpDialog ->
+    val onLaunchingDialogIp: (Boolean) -> Unit = { isOpeningIpDialog ->
         openChangeIpDialog = isOpeningIpDialog
     }
 
@@ -129,7 +139,7 @@ fun EcranPrincipal(isUserMode: Boolean?, onChangeMode: (Boolean?) -> Unit, iSWid
     }
 
     LayoutDrawerMenu({ innerpadding ->
-        Box(Modifier.fillMaxSize()) {
+        Box(Modifier.fillMaxSize().padding(innerpadding)) {
             Image(
                 painterResource(
                     drawBackgroundBandeau(isUserMode, iSWideScreen)
@@ -140,16 +150,21 @@ fun EcranPrincipal(isUserMode: Boolean?, onChangeMode: (Boolean?) -> Unit, iSWid
                         this.alpha = 0.3f
                     })
 
-            if (selectEquipe == null) {
+            if(adminUiState.filterAdminScreen != FilterAdminScreen.PLAYER){
+                EcranAdmin()
+            }
+            else if (selectEquipe == null) {
                 Column(
-                    Modifier.padding(innerpadding).fillMaxWidth()
-                        , horizontalAlignment = Alignment.CenterHorizontally
+                    Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    buttonDarkStyled("Rafraîchissez vous") { setTriggerEquipe(triggerEquipe.not()) }
+                    OutlinedButton({ setTriggerEquipe(triggerEquipe.not()) }) {
+                        Text("Rafraîchissez-vous")
+                    }
                     LayoutListSelectableItem(equipes) { setSelectEquipe(it) }
                 }
             } else {
-                Column(Modifier.padding(innerpadding).fillMaxSize()) {
+                Column(Modifier.fillMaxSize()) {
                     EcranChoixJoueur(selectEquipe, selectedJoueur, {
                         selectedJoueur = it
                         config.setUserName(it.nom)
@@ -275,7 +290,21 @@ private fun optionsNavigationDrawer(
     onChangeMode: (Boolean?) -> Unit,
     onLaunchingDialogIp: (Boolean) -> Unit,
     onResetSelectJoueur: () -> Unit,
+    adminViewModel: AdminViewModel = viewModel { AdminViewModel() }
 ) {
+
+    TextButton({
+        adminViewModel.changeAdminScreen(FilterAdminScreen.RESEARCH)
+        coroutineScope.launch {
+            drawerState.close()
+        }
+    }) {
+        Icon(Icons.Default.Search, contentDescription = "Rechercher item")
+        Text("Rechercher")
+    }
+
+    HorizontalDivider()
+
     //Le profil utilisateur
     ItemSimpleMenuButton(
         "Statistiques",
@@ -394,7 +423,10 @@ fun <T : HeadBodyShowable> LayoutListSelectableItem(
     elementsAfficher: List<T>,
     onSelectElement: (T) -> Unit
 ) {
-    LazyColumn(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+    LazyColumn(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
+    ) {
         items(elementsAfficher) {
             Card(Modifier.padding(15.dp).clickable { onSelectElement(it) }) {
                 Column(
