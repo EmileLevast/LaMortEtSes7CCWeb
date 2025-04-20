@@ -83,7 +83,7 @@ fun EcranSplashScreen(
             }
 
         } else {
-            EcranPrincipal(onChangeMode, iSWideScreen)
+            EcranPrincipal(iSWideScreen)
         }
     }
 }
