@@ -25,9 +25,11 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -144,7 +146,7 @@ fun EcranPrincipal(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
                     .graphicsLayer {
-                        this.alpha = 0.3f
+                        this.alpha = 0.6f
                     })
 
             if (adminUiState.filterAdminScreen != FilterAdminScreen.NONE && adminUiState.isAdminModeOn == true) {
@@ -154,7 +156,7 @@ fun EcranPrincipal(
                     Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    OutlinedButton({ setTriggerEquipe(triggerEquipe.not()) }) {
+                    Button({ setTriggerEquipe(triggerEquipe.not()) }) {
                         Text("Rafraîchissez-vous")
                     }
                     LayoutListSelectableItem(equipes) { setSelectEquipe(it) }

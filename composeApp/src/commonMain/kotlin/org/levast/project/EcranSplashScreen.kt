@@ -45,10 +45,11 @@ fun EcranSplashScreen(
     // Get local density from composable
     val localDensity = LocalDensity.current
 
-
-    val onChangeMode: (Boolean?) -> Unit = { isAdminModeOn ->
-        adminViewModel.changeMode(isAdminModeOn)
+    //a l'ouverture on recupere le mode enregistre
+    remember {
+        adminViewModel.changeMode(configuration.getMode())
     }
+
     Column(
         Modifier.fillMaxSize().onGloballyPositioned { coordinates ->
             adminViewModel.changeIsWideScreen(

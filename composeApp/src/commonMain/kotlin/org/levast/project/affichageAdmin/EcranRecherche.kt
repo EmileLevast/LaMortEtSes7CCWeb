@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.material3.Button
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -96,12 +98,12 @@ fun EcranRecherche(
                     }
                 },
             )
-            TextButton({
+            Button({
                 rechercheItems()
             }){
                 Text("Valider")
             }
-            TextButton({
+            Button({
                 adminViewModel.keepPinnedItemsOnly()
             }){
                 Text("Vider")

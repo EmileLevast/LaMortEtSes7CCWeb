@@ -15,6 +15,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
@@ -128,7 +130,7 @@ fun layoutEdition(
                     }
 
                     Row(Modifier.align(Alignment.Center),horizontalArrangement = Arrangement.spacedBy(graphicsConsts.cellSpace)) {
-                        FilledTonalButton( {
+                        Button( {
                             val itemParsed = (itemToEdit as ApiableItem).parseFromString(listAttributs)
                             coroutineScope.launch(Dispatchers.Default) {
                                 val res = apiApp.updateItem(itemParsed)
@@ -143,7 +145,7 @@ fun layoutEdition(
                         }){
                             Text("Mise à jour")
                         }
-                        FilledTonalButton( {
+                        Button( {
                             val itemParsed = (itemToEdit as ApiableItem).parseFromString(listAttributs)
                             coroutineScope.launch(Dispatchers.Default) {
                                 val res = apiApp.insertItem(itemParsed)
@@ -158,9 +160,9 @@ fun layoutEdition(
                         }){
                             Text("Créer")
                         }
-                        FilledTonalButton( {
+                        Button( {
                             openAlertDialogDeletion = true
-                        }){
+                        }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.errorContainer)){
                             Text("Supprimer")
                         }
                     }
