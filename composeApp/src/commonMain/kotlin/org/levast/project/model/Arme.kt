@@ -83,6 +83,8 @@ class Arme(
         seuils.forEach {
             textSeuils += "|$it\n"
         }
+        textSeuils = textSeuils.trim('\n')
+
 
         return listOf<String>(
             nom,

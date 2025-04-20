@@ -21,19 +21,7 @@ data class Monster(
         get() = Color(0xFFBB0B0B)
 
     private fun constructForceSeuils():String{
-        val textFinalForce =StringBuilder()
-        val textForceSeuilsTemp = StringBuilder()
-
-        force.forEach {
-            for(i in 0 until it.key){
-                textForceSeuilsTemp.append("\uD83C\uDFB2")
-            }
-            textForceSeuilsTemp.append(":${it.value} ")
-
-            textFinalForce.append(textForceSeuilsTemp)
-            textForceSeuilsTemp.clear()
-        }
-        return textFinalForce.toString()
+        return force.values.last().toString()
     }
 
     private fun constructListDropsString():String{
@@ -90,7 +78,7 @@ data class Monster(
         return listOf(
             "Nom: Chaine de caractères",
             "Vie: Entier",
-            "Force : Format = Int:Int|Int:Int... ",
+            "Force : Format = Int",
             "Defense : Format = EffectType:Int|EffectType:Int... (EffectType = Po/Ph/F/Ma)",
             "Intelligence : Int",
             "Energie : Int",
@@ -105,7 +93,7 @@ data class Monster(
         return listOf(
             nom,
             vie.toString(),
-            deparseForce(force),
+            force.values.last().toString(),
             deparseDefense(defense),
             intelligence.toString(),
             energie.toString(),

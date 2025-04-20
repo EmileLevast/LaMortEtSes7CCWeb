@@ -64,17 +64,21 @@ sealed class ApiableItem() : IListItem {
         return listApiableItem
     }
 
-
-
     fun parseSeuilsForce(inputElement: String): MutableMap<Int, Int> {
         val mapSeuilsForce = mutableMapOf<Int, Int>()
 
         if (inputElement.isNotEmpty()) {
-            inputElement.split("|").forEach { currentForceElement ->
-                currentForceElement.split(":").let { currentSeuilForce ->
-                    //on check si le type correspond bien a un vrai type
-                    mapSeuilsForce[currentSeuilForce.first().toInt()] = currentSeuilForce.last().toInt()
+            //Dans les anciennes versions on enregistre une force differente pour le nombre de des utilisés TODO j'avais la flemme de changer la structure en base de données
+            if(inputElement.contains("|") || inputElement.contains(":")){
+                inputElement.split("|").forEach { currentForceElement ->
+                    currentForceElement.split(":").let { currentSeuilForce ->
+                        //on check si le type correspond bien a un vrai type
+                        mapSeuilsForce[currentSeuilForce.first().toInt()] = currentSeuilForce.last().toInt()
+                    }
                 }
+            }else{
+                //Dans les versions plus recentes on enregistre une force unique pour le monstre
+                mapSeuilsForce[1] = inputElement.toInt()
             }
         }
 
@@ -150,29 +154,6 @@ sealed class ApiableItem() : IListItem {
 
     fun parseSpecialItemType(inputElement: String): SpecialItemType {
         return SpecialItemType.entries.find { it.name == inputElement } ?: SpecialItemType.OUTIL
-    }
-
-    fun deparseSeuils(seuils: Map<String, List<Int>>): String {
-        var res = ""
-        seuils.forEach { seuil ->
-            seuil.value.forEach {
-                res += "$it/"
-            }
-            res = res.removeSuffix("/")
-            res += "=" + seuil.key + "|"
-        }
-
-        return res.removeSuffix("|")
-    }
-
-
-
-    fun deparseForce(defense: Map<Int, Int>): String {
-        var res = ""
-        defense.forEach {
-            res += it.key.toString() + ":" + it.value + "|"
-        }
-        return res.removeSuffix("|")
     }
 
     fun deparseListDrops(drops: Map<String, Int>): String {
