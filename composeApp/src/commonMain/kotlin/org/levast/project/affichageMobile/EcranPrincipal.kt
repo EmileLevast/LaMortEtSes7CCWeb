@@ -78,10 +78,12 @@ import org.levast.project.viewModel.stateviewmodel.FilterModelState
 import org.levast.project.viewModel.stateviewmodel.FilterUser
 
 @Composable
-fun EcranPrincipal(isUserMode: Boolean?,
-                   onChangeMode: (Boolean?) -> Unit,
-                   iSWideScreen: Boolean,
-                   adminViewModel: AdminViewModel = viewModel{ AdminViewModel() }) {
+fun EcranPrincipal(
+    isUserMode: Boolean?,
+    onChangeMode: (Boolean?) -> Unit,
+    iSWideScreen: Boolean,
+    adminViewModel: AdminViewModel = viewModel { AdminViewModel() }
+) {
     val apiApp = getApiApp()
     val config = getConfiguration()
 
@@ -150,10 +152,9 @@ fun EcranPrincipal(isUserMode: Boolean?,
                         this.alpha = 0.3f
                     })
 
-            if(adminUiState.filterAdminScreen != FilterAdminScreen.PLAYER){
+            if (adminUiState.filterAdminScreen != FilterAdminScreen.PLAYER) {
                 EcranAdmin()
-            }
-            else if (selectEquipe == null) {
+            } else if (selectEquipe == null) {
                 Column(
                     Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -183,7 +184,7 @@ fun EcranPrincipal(isUserMode: Boolean?,
         /**
          * MENU
          */
-        Column() {
+        Column {
 
             if (isUserMode == false) {
                 bandeauMj()
@@ -216,7 +217,7 @@ fun EcranPrincipal(isUserMode: Boolean?,
 
             }
 
-            LazyColumn() {
+            LazyColumn {
                 item {
                     optionsNavigationDrawer(
                         filterViewModel,
@@ -229,7 +230,9 @@ fun EcranPrincipal(isUserMode: Boolean?,
                         coroutineScope,
                         onChangeMode,
                         onLaunchingDialogIp,
-                        onResetSelectJoueur
+                        onResetSelectJoueur,
+                        selectedJoueur,
+                        selectEquipe
                     )
                 }
 
@@ -290,114 +293,126 @@ private fun optionsNavigationDrawer(
     onChangeMode: (Boolean?) -> Unit,
     onLaunchingDialogIp: (Boolean) -> Unit,
     onResetSelectJoueur: () -> Unit,
+    selectedJoueur: Joueur?,
+    selectedEquipe: Equipe?,
     adminViewModel: AdminViewModel = viewModel { AdminViewModel() }
 ) {
 
-    TextButton({
-        adminViewModel.changeAdminScreen(FilterAdminScreen.RESEARCH)
-        coroutineScope.launch {
-            drawerState.close()
+    if (selectedJoueur != null) {
+
+        TextButton({
+            adminViewModel.changeAdminScreen(FilterAdminScreen.RESEARCH)
+            coroutineScope.launch {
+                drawerState.close()
+            }
+        }) {
+            Icon(Icons.Default.Search, contentDescription = "Rechercher item")
+            Text("Rechercher")
         }
-    }) {
-        Icon(Icons.Default.Search, contentDescription = "Rechercher item")
-        Text("Rechercher")
+
+        HorizontalDivider()
+
+        //Le profil utilisateur
+        ItemSimpleMenuButton(
+            "Statistiques",
+            FilterUser.STATISTIQUES,
+            filterViewModel,
+            drawerState,
+            filterUiState,
+        )
+        HorizontalDivider()
+
+
+        //Les catégories d'items
+        ItemSimpleMenuButton(
+            "Équipés",
+            FilterUser.EQUIPES,
+
+            filterViewModel,
+            drawerState,
+            filterUiState
+        )
+        ItemSimpleMenuButton(
+            "Armes",
+            FilterUser.ARMES,
+            filterViewModel,
+            drawerState,
+            filterUiState
+        )
+        ItemSimpleMenuButton(
+            "Sorts",
+            FilterUser.SORTS,
+            filterViewModel,
+            drawerState,
+            filterUiState
+        )
+        ItemSimpleMenuButton(
+            "Armures",
+            FilterUser.ARMURES,
+            filterViewModel,
+            drawerState,
+            filterUiState
+        )
+        ItemSimpleMenuButton(
+            "Spéciaux",
+            FilterUser.SPECIAL,
+            filterViewModel,
+            drawerState,
+            filterUiState
+        )
+        ItemSimpleMenuButton(
+            "Boucliers",
+            FilterUser.BOUCLIERS,
+            filterViewModel,
+            drawerState,
+            filterUiState
+        )
+        ItemSimpleMenuButton(
+            "Tous les items",
+            FilterUser.TOUT_EQUIPEMENT,
+            filterViewModel,
+            drawerState,
+            filterUiState
+        )
+        ItemSimpleMenuButton(
+            "Découvertes",
+            FilterUser.DECOUVERTES,
+            filterViewModel,
+            drawerState,
+            filterUiState
+        )
+
     }
 
     HorizontalDivider()
 
-    //Le profil utilisateur
-    ItemSimpleMenuButton(
-        "Statistiques",
-        FilterUser.STATISTIQUES,
-        filterViewModel,
-        drawerState,
-        filterUiState,
-    )
-    HorizontalDivider()
-
-
-    //Les catégories d'items
-    ItemSimpleMenuButton(
-        "Équipés",
-        FilterUser.EQUIPES,
-
-        filterViewModel,
-        drawerState,
-        filterUiState
-    )
-    ItemSimpleMenuButton(
-        "Armes",
-        FilterUser.ARMES,
-        filterViewModel,
-        drawerState,
-        filterUiState
-    )
-    ItemSimpleMenuButton(
-        "Sorts",
-        FilterUser.SORTS,
-        filterViewModel,
-        drawerState,
-        filterUiState
-    )
-    ItemSimpleMenuButton(
-        "Armures",
-        FilterUser.ARMURES,
-        filterViewModel,
-        drawerState,
-        filterUiState
-    )
-    ItemSimpleMenuButton(
-        "Spéciaux",
-        FilterUser.SPECIAL,
-        filterViewModel,
-        drawerState,
-        filterUiState
-    )
-    ItemSimpleMenuButton(
-        "Boucliers",
-        FilterUser.BOUCLIERS,
-        filterViewModel,
-        drawerState,
-        filterUiState
-    )
-    ItemSimpleMenuButton(
-        "Tous les items",
-        FilterUser.TOUT_EQUIPEMENT,
-        filterViewModel,
-        drawerState,
-        filterUiState
-    )
-    ItemSimpleMenuButton(
-        "Découvertes",
-        FilterUser.DECOUVERTES,
-        filterViewModel,
-        drawerState,
-        filterUiState
-    )
-    HorizontalDivider()
-
-    //Les options
-    TextButton({
-        config.setUserName("")
-        setTriggerEquipe(triggerEquipe.not())
-        setSelectEquipe(null)
-        onResetSelectJoueur()
-        coroutineScope.launch {
-            drawerState.close()
+    if (selectedEquipe != null) {
+        TextButton({
+            config.setUserName("")
+            setTriggerEquipe(triggerEquipe.not())
+            setSelectEquipe(null)
+            onResetSelectJoueur()
+            coroutineScope.launch {
+                drawerState.close()
+            }
+        }) {
+            Icon(Icons.Default.Refresh, contentDescription = "Reset equipe")
+            Text("Changer d'équipe")
         }
-    }) {
-        Icon(Icons.Default.Refresh, contentDescription = "Reset joueur")
-        Text("Changer d'équipe")
     }
-    TextButton({
-        onResetSelectJoueur()
-        coroutineScope.launch {
-            drawerState.close()
+
+    if (selectedJoueur != null) {
+        TextButton({
+            onResetSelectJoueur()
+            coroutineScope.launch {
+                drawerState.close()
+            }
+        }) {
+            Icon(Icons.Default.Refresh, contentDescription = "Reset joueur")
+            Text("Changer de joueur")
         }
-    }) {
-        Icon(Icons.Default.Refresh, contentDescription = "Reset joueur")
-        Text("Changer de joueur")
     }
+
     TextButton({
         onChangeMode(null)
         coroutineScope.launch {
