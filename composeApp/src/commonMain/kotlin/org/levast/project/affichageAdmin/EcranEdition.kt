@@ -91,9 +91,6 @@ fun layoutEdition(
         }
     }
 
-
-
-
     Box {
 
         Row(Modifier.fillMaxSize()) {
@@ -163,7 +160,7 @@ fun layoutEdition(
                         Button( {
                             openAlertDialogDeletion = true
                         }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.errorContainer)){
-                            Text("Supprimer")
+                            Text("Supprimer", color = MaterialTheme.colorScheme.onErrorContainer)
                         }
                     }
                 }
