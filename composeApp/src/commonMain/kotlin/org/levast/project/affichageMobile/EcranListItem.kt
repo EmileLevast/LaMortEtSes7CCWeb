@@ -57,7 +57,9 @@ fun EcranListItem(
     onUtilisationItem: ((IListItem, Int) -> Unit)? = null,
     joueur: Joueur? = null,
     isWideScreen: Boolean = false,
-    onSave: () -> Unit
+    onSave: () -> Unit,
+    isEditModeOn: Boolean = false,
+    onEditModeClick: (IListItem) -> Unit = {},
 ) {
     val colorBackground =
         MaterialTheme.colorScheme.tertiaryContainer //necessaire pour l utiliser dans la fonction de drawBehind
@@ -77,7 +79,16 @@ fun EcranListItem(
 
             Card(
                 modifier = Modifier.fillMaxWidth().padding(5.dp)
-                    .clickable { equipementToShow = equipement },
+                    .clickable {
+                        //si on est en mode edition lorsqu'on clique sur l'item
+                        if (isEditModeOn) {
+                            //ça declenche cette action
+                            onEditModeClick(equipement)
+                        } else {
+                            //sinon ça affiche le big layout
+                            equipementToShow = equipement
+                        }
+                    },
                 border = if (isItemPinned == true) BorderStroke(
                     4.dp,
                     MaterialTheme.colorScheme.primary

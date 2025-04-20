@@ -38,7 +38,7 @@ import org.levast.project.viewModel.AdminViewModel
 
 @Composable
 fun EcranRecherche(
-    onClickItem: (IListItem,Int) -> Unit,
+    onClickItem: (IListItem) -> Unit,
     scrollStateRecherche : LazyGridState,
     adminViewModel: AdminViewModel = viewModel{ AdminViewModel() }
 ) {
@@ -122,9 +122,10 @@ fun EcranRecherche(
             adminUiState.listPinneditems,
             togglePinnedItem,
             null,
-            onClickItem,
             onSave = {}, //on a rien a sauvegarder en tant qu'admin sur l'ecran de recherche
-            isWideScreen = adminUiState.isWideScreen
+            isWideScreen = adminUiState.isWideScreen,
+            isEditModeOn = true,
+            onEditModeClick = onClickItem
         )
     }
 }

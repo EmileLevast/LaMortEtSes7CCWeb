@@ -15,7 +15,7 @@ fun EcranAdmin(
     val scrollStateRecherche = rememberLazyGridState()
 
 
-    val onClickItem = { itemClicked: IListItem, _:Int ->
+    val onClickItem = { itemClicked: IListItem ->
         selectedItemToEdit = itemClicked
     }
 
