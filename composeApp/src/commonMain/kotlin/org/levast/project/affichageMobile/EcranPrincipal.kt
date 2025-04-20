@@ -152,7 +152,7 @@ fun EcranPrincipal(
                         this.alpha = 0.3f
                     })
 
-            if (adminUiState.filterAdminScreen != FilterAdminScreen.PLAYER) {
+            if (adminUiState.filterAdminScreen != FilterAdminScreen.NONE) {
                 EcranAdmin()
             } else if (selectEquipe == null) {
                 Column(
@@ -299,7 +299,11 @@ private fun optionsNavigationDrawer(
 ) {
     val adminUiState by adminViewModel.uiState.collectAsState()
     val onClickResearchOption: () -> Unit = {
-        adminViewModel.changeAdminScreen(FilterAdminScreen.RESEARCH)
+        if(adminUiState.filterAdminScreen != FilterAdminScreen.RESEARCH){
+            adminViewModel.changeAdminScreen(FilterAdminScreen.RESEARCH)
+        }else{
+            adminViewModel.changeAdminScreen(FilterAdminScreen.NONE)
+        }
         coroutineScope.launch {
             drawerState.close()
         }
@@ -493,7 +497,7 @@ fun ItemSimpleMenuButton(
     val scope = rememberCoroutineScope()
     val adminUiState by adminViewModel.uiState.collectAsState()
 
-    if (filterUiState.filterUser == filter && adminUiState.filterAdminScreen == FilterAdminScreen.PLAYER) {
+    if (filterUiState.filterUser == filter && adminUiState.filterAdminScreen == FilterAdminScreen.NONE) {
         OutlinedButton({
             filterViewModel.changeFilterUser(filter)
             scope.launch {
@@ -505,7 +509,7 @@ fun ItemSimpleMenuButton(
     } else {
         TextButton({
             filterViewModel.changeFilterUser(filter)
-            adminViewModel.changeAdminScreen(FilterAdminScreen.PLAYER)
+            adminViewModel.changeAdminScreen(FilterAdminScreen.NONE)
             scope.launch {
                 drawerState.close()
             }

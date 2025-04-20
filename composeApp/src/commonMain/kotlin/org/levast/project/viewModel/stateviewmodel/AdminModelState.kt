@@ -5,7 +5,7 @@ import IListItem
 data class AdminModelState(
     var listitems: List<IListItem> = listOf(),
     var listPinneditems: List<String> = listOf(),
-    var filterAdminScreen: FilterAdminScreen = FilterAdminScreen.PLAYER
+    var filterAdminScreen: FilterAdminScreen = FilterAdminScreen.NONE
 ) {
 
 }
@@ -13,5 +13,5 @@ data class AdminModelState(
 enum class FilterAdminScreen{
     RESEARCH,
     EDIT,
-    PLAYER
+    NONE
 }
