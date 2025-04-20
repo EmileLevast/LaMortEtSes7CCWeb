@@ -63,7 +63,7 @@ fun String.getIntOrZero(): Int {
 
 fun String.getIntOrZeroOrNull(): Int? {
     return try {
-        if (isNotBlank()) toInt() else { 0 }
+        if (isNotBlank()) toInt() else { null }
     } catch (e: Exception) {
         println(" conversion impossible en entier : renvoi null :\n " +
                 e.stackTraceToString()

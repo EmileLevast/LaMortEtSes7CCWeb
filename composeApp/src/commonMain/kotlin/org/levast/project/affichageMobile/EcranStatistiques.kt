@@ -124,27 +124,25 @@ fun LayoutCaracSpecificProp(
     concernedCarac: KMutableProperty1<Carac, Int>,
     onSave: () -> Unit,
 ) {
-    var caracToChange by mutableStateOf(concernedCarac.get(concernedJoueur.caracActuel))
+    var caracToChange : String by remember {  mutableStateOf(concernedCarac.get(concernedJoueur.caracActuel).toString())}
 
     LayoutUneCarac(
         nomCarac,
         concernedCarac.get(concernedJoueur.caracOrigin).toString(),
-        caracToChange.toString()
-    ) { oldValue, newValue ->
+        caracToChange
+    ) { _, newValue ->
 
         //on change sur l'écran la caractéristique
-        caracToChange =
-            if (oldValue == "0" && newValue.isNotBlank() && newValue.last() == '0' && newValue.length == 1) {
-                newValue.first().toString().getIntOrZeroOrNull() ?: oldValue.toInt()
-            } else {
-                newValue.getIntOrZeroOrNull() ?: oldValue.toInt()
-            }
+        caracToChange = newValue
 
-        //on met à jour notre objet joueur
-        concernedCarac.set(concernedJoueur.caracActuel, caracToChange)
+        //on met à jour notre objet joueur seulement s'il y'a bien une valeur dans l'objet
+        if(caracToChange.isNotBlank()){
+            concernedCarac.set(concernedJoueur.caracActuel, caracToChange.toInt())
 
-        //puis on enregistre le changement sur le serveur
-        onSave()
+            //puis on enregistre le changement sur le serveur
+            onSave()
+        }
+
     }
 }
 
