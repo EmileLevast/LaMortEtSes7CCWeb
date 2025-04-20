@@ -5,7 +5,6 @@ import CHAR_SEP_EQUIPEMENT
 import Equipe
 import IListItem
 import Joueur
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,13 +12,10 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
@@ -71,7 +67,7 @@ fun layoutEdition(
     var openAlertDialogDeletion by remember { mutableStateOf(false) }
 
     //pour sizer l'image selon la taille du titre
-    var RowHeightDp by remember {
+    var rowHeightDp by remember {
         mutableStateOf(0.dp)
     }
     // Get local density from composable
@@ -110,7 +106,7 @@ fun layoutEdition(
                     Text(
                         modifier = Modifier.onGloballyPositioned { coordinates ->
                             // Set column height using the LayoutCoordinates
-                            RowHeightDp = with(localDensity) { coordinates.size.height.toDp() }
+                            rowHeightDp = with(localDensity) { coordinates.size.height.toDp() }
                         },
                         text = itemToEdit.nomComplet.ifBlank { itemToEdit.nom },
                         textAlign = TextAlign.Center,
@@ -201,7 +197,6 @@ fun layoutEdition(
             ) {
                 layoutListeSelectables(
                     Modifier,
-
                     listeEquipes,
                     { equipe -> (equipe as Equipe).getDecouvertes().contains(itemToEdit.nom) },
                     { isSelect, equipe ->
@@ -323,7 +318,7 @@ fun layoutListeSelectables(
             ) {
                 var checked by remember { mutableStateOf(isDefaultChecked(it)) }
                 Column(
-                    Modifier.width(IntrinsicSize.Min).background(brushToUse),
+                    Modifier.fillMaxSize().background(brushToUse),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
