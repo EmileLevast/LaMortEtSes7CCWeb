@@ -1,5 +1,8 @@
 import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable
+import lamortetses7ccweb.composeapp.generated.resources.Res
+import lamortetses7ccweb.composeapp.generated.resources.logospecial
+import org.jetbrains.compose.resources.DrawableResource
 
 @Serializable
 class Special(
@@ -52,6 +55,7 @@ class Special(
     override fun getBackgroundBorder(): String = "border${itemType.name.lowercase()}.svg"
 
 
-
-
+    override fun getImageDrawable(): DrawableResource {
+        return Res.drawable.logospecial
+    }
 }

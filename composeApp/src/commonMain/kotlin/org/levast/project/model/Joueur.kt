@@ -1,5 +1,10 @@
 import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable
+import lamortetses7ccweb.composeapp.generated.resources.Res
+import lamortetses7ccweb.composeapp.generated.resources.logoarme
+import lamortetses7ccweb.composeapp.generated.resources.logoequipe
+import lamortetses7ccweb.composeapp.generated.resources.logojoueur
+import org.jetbrains.compose.resources.DrawableResource
 
 @Serializable
 class Joueur(
@@ -120,6 +125,10 @@ class Joueur(
         }
 
         return hasBeenUpdated
+    }
+
+    override fun getImageDrawable(): DrawableResource {
+        return Res.drawable.logojoueur
     }
 
 }

@@ -1,5 +1,9 @@
 import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable
+import lamortetses7ccweb.composeapp.generated.resources.Res
+import lamortetses7ccweb.composeapp.generated.resources.logoarme
+import lamortetses7ccweb.composeapp.generated.resources.logoarmure
+import org.jetbrains.compose.resources.DrawableResource
 
 @Serializable
 class Bouclier(
@@ -64,7 +68,9 @@ class Bouclier(
         )
     }
 
-
+    override fun getImageDrawable(): DrawableResource {
+        return Res.drawable.logoarmure
+    }
 
 }
 

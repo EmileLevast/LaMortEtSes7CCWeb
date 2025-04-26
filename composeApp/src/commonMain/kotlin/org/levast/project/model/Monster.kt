@@ -1,5 +1,9 @@
 import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable
+import lamortetses7ccweb.composeapp.generated.resources.Res
+import lamortetses7ccweb.composeapp.generated.resources.logoarme
+import lamortetses7ccweb.composeapp.generated.resources.logomonstre
+import org.jetbrains.compose.resources.DrawableResource
 
 @Serializable
 data class Monster(
@@ -102,5 +106,9 @@ data class Monster(
             capaciteSpeciale,
             nomComplet
         )
+    }
+
+    override fun getImageDrawable(): DrawableResource {
+        return Res.drawable.logomonstre
     }
 }

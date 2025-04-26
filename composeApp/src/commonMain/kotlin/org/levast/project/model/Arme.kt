@@ -1,5 +1,8 @@
 import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable
+import lamortetses7ccweb.composeapp.generated.resources.Res
+import lamortetses7ccweb.composeapp.generated.resources.logoarme
+import org.jetbrains.compose.resources.DrawableResource
 
 @Serializable
 class Arme(
@@ -99,4 +102,7 @@ class Arme(
         )
     }
 
+    override fun getImageDrawable(): DrawableResource {
+        return Res.drawable.logoarme
+    }
 }

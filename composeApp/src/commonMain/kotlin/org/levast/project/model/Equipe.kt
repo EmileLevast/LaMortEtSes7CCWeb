@@ -2,6 +2,10 @@
 
 import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable
+import lamortetses7ccweb.composeapp.generated.resources.Res
+import lamortetses7ccweb.composeapp.generated.resources.logoarme
+import lamortetses7ccweb.composeapp.generated.resources.logoequipe
+import org.jetbrains.compose.resources.DrawableResource
 
 @Serializable
 class Equipe(
@@ -62,5 +66,9 @@ class Equipe(
 
 
     override fun getBody()= getMembreEquipe().joinToString("\n")
+
+    override fun getImageDrawable(): DrawableResource {
+        return Res.drawable.logoequipe
+    }
 
 }

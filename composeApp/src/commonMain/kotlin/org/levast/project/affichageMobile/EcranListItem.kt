@@ -39,6 +39,8 @@ import getNbrUtilisationAccordingItem
 import lamortetses7ccweb.composeapp.generated.resources.Aniron_7BaP
 import lamortetses7ccweb.composeapp.generated.resources.Res
 import lamortetses7ccweb.composeapp.generated.resources.UnknownImage
+import lamortetses7ccweb.composeapp.generated.resources.logoliche
+import lamortetses7ccweb.composeapp.generated.resources.logomonstre
 import lamortetses7ccweb.composeapp.generated.resources.mainFermee
 import lamortetses7ccweb.composeapp.generated.resources.mainOuverte
 import org.jetbrains.compose.resources.Font
@@ -160,6 +162,14 @@ fun EcranListItem(
                             contentDescription = null,
                         )
                     }
+
+                    //icone du type de l'equipement
+                    Image(
+                        modifier = Modifier.fillMaxWidth(0.2f).align(Alignment.TopEnd),
+                        painter = painterResource(equipement.getImageDrawable()),
+                        contentScale = ContentScale.Fit,
+                        contentDescription = null,
+                        )
 
                     val nbrUtilisationsRestantes = getNbrUtilisationAccordingItem(
                         equipement,

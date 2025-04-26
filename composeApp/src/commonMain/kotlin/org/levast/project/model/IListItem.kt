@@ -1,6 +1,9 @@
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import lamortetses7ccweb.composeapp.generated.resources.Res
+import lamortetses7ccweb.composeapp.generated.resources.logospecial
 import model.HeadBodyShowable
+import org.jetbrains.compose.resources.DrawableResource
 import org.levast.project.network.ApiApp
 import org.levast.project.viewModel.stateviewmodel.FilterUser
 
@@ -10,9 +13,8 @@ interface IListItem : HeadBodyShowable {
     val nomComplet:String
     val color: Color
     var isAttached:Boolean
-    val imageName:String
-        get() = "${nom.cleanupForDB().replace(" ","")}.jpg"
 
+    fun getImageDrawable() : DrawableResource
     fun getStatsAsStrings():String
     fun getStatsSimplifiedAsStrings():String
     fun getParsingRulesAttributesAsList():List<String>
@@ -23,6 +25,7 @@ interface IListItem : HeadBodyShowable {
     override fun getHead(): String = nomComplet.ifBlank { nom }
 
     override fun getBody(): String = getStatsSimplifiedAsStrings()
+
 }
 
 fun getListItemFiltered(itemsToFilter :List<IListItem>,filterUser: FilterUser, itemsPinned : List<String>?):List<IListItem>{
