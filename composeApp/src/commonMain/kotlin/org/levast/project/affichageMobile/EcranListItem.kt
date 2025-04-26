@@ -165,7 +165,7 @@ fun EcranListItem(
 
                     //icone du type de l'equipement
                     Image(
-                        modifier = Modifier.fillMaxWidth(0.2f).align(Alignment.TopEnd),
+                        modifier = Modifier.fillMaxWidth(0.2f).align(Alignment.TopEnd).padding(5.dp),
                         painter = painterResource(equipement.getImageDrawable()),
                         contentScale = ContentScale.Fit,
                         contentDescription = null,
