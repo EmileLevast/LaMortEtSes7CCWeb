@@ -171,31 +171,33 @@ fun EcranListItem(
                         contentDescription = null,
                         )
 
-                    val nbrUtilisationsRestantes = getNbrUtilisationAccordingItem(
-                        equipement,
-                        itemsUtilisations?.get(equipement.nom)
-                    )
-                    Text(
-                        modifier = Modifier.align(Alignment.BottomStart).padding(bottom = 15.dp)
-                            .fillMaxWidth(0.3f)
-                            .clickable {
-                                if (onUtilisationItem != null) {
-                                    onUtilisationItem(
-                                        equipement,
-                                        (nbrUtilisationsRestantes.toInt() - 1)
-                                    )
+                    if (isShowingStats) { // si on est pas en mode decouverte
+                        val nbrUtilisationsRestantes = getNbrUtilisationAccordingItem(
+                            equipement,
+                            itemsUtilisations?.get(equipement.nom)
+                        )
+                        Text(
+                            modifier = Modifier.align(Alignment.BottomStart).padding(bottom = 15.dp)
+                                .fillMaxWidth(0.3f)
+                                .clickable {
+                                    if (onUtilisationItem != null) {
+                                        onUtilisationItem(
+                                            equipement,
+                                            (nbrUtilisationsRestantes.toInt() - 1)
+                                        )
+                                    }
                                 }
-                            }
-                            .drawBehind {
-                                drawCircle(
-                                    color = colorBackground,
-                                    radius = this.size.height / 2
-                                )
-                            },
-                        text = nbrUtilisationsRestantes,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.tertiary,
-                    )
+                                .drawBehind {
+                                    drawCircle(
+                                        color = colorBackground,
+                                        radius = this.size.height / 2
+                                    )
+                                },
+                            text = nbrUtilisationsRestantes,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.tertiary,
+                        )
+                    }
                 }
             }
         }
@@ -208,7 +210,7 @@ fun EcranListItem(
                 if (!isShowingStats) { // si on est sur les decouvertes
                     onSave()
                 }
-                if (onUtilisationItem != null) {
+                else if (onUtilisationItem != null) {
                     onUtilisationItem(itemUsed, nbrUtilisationRestantes)
                 }
                 equipementToShow = null

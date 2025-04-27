@@ -3,6 +3,7 @@ import kotlinx.serialization.Serializable
 import lamortetses7ccweb.composeapp.generated.resources.Res
 import lamortetses7ccweb.composeapp.generated.resources.logoarme
 import lamortetses7ccweb.composeapp.generated.resources.logoarmure
+import lamortetses7ccweb.composeapp.generated.resources.logobouclier
 import org.jetbrains.compose.resources.DrawableResource
 
 @Serializable
@@ -69,7 +70,7 @@ class Bouclier(
     }
 
     override fun getImageDrawable(): DrawableResource {
-        return Res.drawable.logoarmure
+        return Res.drawable.logobouclier
     }
 
 }

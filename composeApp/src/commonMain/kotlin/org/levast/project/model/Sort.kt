@@ -1,9 +1,12 @@
 import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable
 import lamortetses7ccweb.composeapp.generated.resources.Res
+import lamortetses7ccweb.composeapp.generated.resources.logoarachnomancie
 import lamortetses7ccweb.composeapp.generated.resources.logoarme
 import lamortetses7ccweb.composeapp.generated.resources.logomagie
 import lamortetses7ccweb.composeapp.generated.resources.logomiracle
+import lamortetses7ccweb.composeapp.generated.resources.logonecromancie
+import lamortetses7ccweb.composeapp.generated.resources.logopsionique
 import lamortetses7ccweb.composeapp.generated.resources.logopyromancie
 import org.jetbrains.compose.resources.DrawableResource
 
@@ -118,10 +121,10 @@ class Sort(
         return when(sortType){
             SpellType.AME -> Res.drawable.logomagie
             SpellType.PYROMANCIE -> Res.drawable.logopyromancie
-            SpellType.PSIONIQUE -> Res.drawable.logomagie
+            SpellType.PSIONIQUE -> Res.drawable.logopsionique
             SpellType.MIRACLE -> Res.drawable.logomiracle
-            SpellType.NECROMANCIE -> Res.drawable.logomagie
-            SpellType.ARACHNOMANCIE -> Res.drawable.logomagie
+            SpellType.NECROMANCIE -> Res.drawable.logonecromancie
+            SpellType.ARACHNOMANCIE -> Res.drawable.logoarachnomancie
         }
     }
 

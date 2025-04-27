@@ -87,7 +87,7 @@ fun layoutBigImage(
                         Text(
                             text = equipement.nomComplet.ifBlank { equipement.nom },
                             textAlign = TextAlign.Center,
-                            style = if(isWideScreen) TextStyle.Default.copy(fontSize = 50.sp) else MaterialTheme.typography.titleMedium,
+                            style = if(isWideScreen) MaterialTheme.typography.titleLarge else MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.tertiary
                         )
                     }

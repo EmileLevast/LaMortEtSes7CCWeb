@@ -9,15 +9,12 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +29,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
@@ -122,7 +118,7 @@ fun EcranJoueur(
         //si la selection c'est tout les equipements
         when (filterUiState.filterUser) {
             FilterUser.DECOUVERTES -> {
-                EcranDecouverteEquipe(selectedEquipe, isRefreshedJoueur, selectedJoueur, onSave)
+                EcranDecouverteEquipe(selectedEquipe, isRefreshedJoueur, selectedJoueur, onSave, isWideScreen)
             }//si la selection c'est l'affichage des statistiques
             FilterUser.STATISTIQUES -> {
                 EcranStatistiques(selectedJoueur, isWideScreen) {
