@@ -43,8 +43,8 @@ actual fun LayoutDrawerMenu(
                     }
                 )
             }
-        ) {
-            content()
+        ) {contentPadding ->
+            content(contentPadding)
         }
     }
 }
