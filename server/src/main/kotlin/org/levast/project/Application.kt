@@ -55,7 +55,7 @@ val logger = KtorSimpleLogger("logger")
 fun main() {
 
 
-    (LoggerFactory.getILoggerFactory() as LoggerContext).getLogger("org.mongodb.driver").level = Level.WARN
+    (LoggerFactory.getILoggerFactory() as LoggerContext).getLogger("org.mongodb.driver").level = Level.ERROR
 
     createCollectionTables()
 
@@ -69,7 +69,7 @@ fun Application.module() {
         json()
     }
     install(CallLogging) {
-        level = org.slf4j.event.Level.WARN
+        level = org.slf4j.event.Level.ERROR
 
     }
     install(CORS) {
