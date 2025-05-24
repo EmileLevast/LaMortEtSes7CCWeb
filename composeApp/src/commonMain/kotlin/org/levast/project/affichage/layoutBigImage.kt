@@ -18,9 +18,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +34,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import getNbrUtilisationAccordingItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import lamortetses7ccweb.composeapp.generated.resources.Res
 import lamortetses7ccweb.composeapp.generated.resources.UnknownImage
 import org.jetbrains.compose.resources.painterResource
@@ -51,6 +56,8 @@ fun layoutBigImage(
     val graphicsConsts = getGraphicConstants()
     var notesJoueur by remember { mutableStateOf("") }
     val apiApp = getApiApp()
+    val coroutineScope = rememberCoroutineScope()
+
 
 
     var nbrUtilisationItem by remember {
@@ -60,6 +67,16 @@ fun layoutBigImage(
                 itemUtilisation
             ).toInt()
         )
+    }
+
+    LaunchedEffect(notesJoueur) {
+
+        coroutineScope.launch {
+            withContext(Dispatchers.Default) {
+                joueur?.let{apiApp.updateNotesPnjJoueur(it)}
+            }
+
+        }
     }
 
     Column(

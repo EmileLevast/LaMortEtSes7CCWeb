@@ -118,7 +118,7 @@ fun EcranJoueur(
         //si la selection c'est tout les equipements
         when (filterUiState.filterUser) {
             FilterUser.DECOUVERTES -> {
-                EcranDecouverteEquipe(selectedEquipe, isRefreshedJoueur, selectedJoueur, onSave, isWideScreen)
+                EcranDecouverteEquipe(selectedEquipe, isRefreshedJoueur, selectedJoueur, isWideScreen)
             }//si la selection c'est l'affichage des statistiques
             FilterUser.STATISTIQUES -> {
                 EcranStatistiques(selectedJoueur, isWideScreen) {
@@ -136,7 +136,6 @@ fun EcranJoueur(
                     itemsUtilisations = mapUtilisationItems,
                     onUtilisationItem = useItem,
                     isWideScreen = isWideScreen,
-                    onSave
                 )
             }
         }
@@ -156,7 +155,6 @@ fun FilterListItem(
     itemsUtilisations: Map<String, Int>? = null,
     onUtilisationItem: (IListItem, Int) -> Unit,
     isWideScreen:Boolean,
-    onSave: () -> Unit
 ) {
 
     EcranListItem(
@@ -168,7 +166,6 @@ fun FilterListItem(
         itemsUtilisations = itemsUtilisations,
         onUtilisationItem = onUtilisationItem,
         isWideScreen = isWideScreen,
-        onSave = onSave
     )
 }
 

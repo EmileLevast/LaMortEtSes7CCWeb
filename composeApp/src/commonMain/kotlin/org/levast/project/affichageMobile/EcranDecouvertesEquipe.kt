@@ -19,7 +19,6 @@ fun EcranDecouverteEquipe(
     selectedEquipe: Equipe,
     refreshDecouvertes: Boolean,
     joueur: Joueur,
-    onSave: () -> Unit,
     isWideScreen: Boolean
 ) {
     val (decouvertesEquipe, setDecouvertesEquipe) = remember {
@@ -51,7 +50,6 @@ fun EcranDecouverteEquipe(
         false,
         isWideScreen = isWideScreen,
         joueur = joueur,
-        onSave = onSave
     )
 
 }

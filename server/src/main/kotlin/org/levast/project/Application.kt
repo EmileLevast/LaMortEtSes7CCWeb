@@ -225,12 +225,11 @@ fun Application.module() {
                         val resInsertDetails = collectionsApiableItem[itapiable.nameForApi]!!.updateOne(filter = Joueur::_id eq joueurToUpdateCaracs._id, update = setValue(Joueur::details, joueurToUpdateCaracs.details))
                         val resInsertEquipped = collectionsApiableItem[itapiable.nameForApi]!!.updateOne(filter = Joueur::_id eq joueurToUpdateCaracs._id, update = setValue(Joueur::chaineEquipementSelectionneSerialisee, joueurToUpdateCaracs.chaineEquipementSelectionneSerialisee))
                         val resInsertUtilisations = collectionsApiableItem[itapiable.nameForApi]!!.updateOne(filter = Joueur::_id eq joueurToUpdateCaracs._id, update = setValue(Joueur::utilisationsRestantesItem, joueurToUpdateCaracs.utilisationsRestantesItem))
-                        val resUpdateNotesPnj = collectionsApiableItem[itapiable.nameForApi]!!.updateOne(filter = Joueur::_id eq joueurToUpdateCaracs._id, update = setValue(Joueur::notesPnj, joueurToUpdateCaracs.notesPnj))
 
 
-                        if(resUpdateNotesPnj.wasAcknowledged() && resInsertCaracs.wasAcknowledged() && resInsertDetails.wasAcknowledged() && resInsertEquipped.wasAcknowledged() && resInsertUtilisations.wasAcknowledged()){
+                        if(resInsertCaracs.wasAcknowledged() && resInsertDetails.wasAcknowledged() && resInsertEquipped.wasAcknowledged() && resInsertUtilisations.wasAcknowledged()){
                             call.respond(HttpStatusCode.OK)
-                        }else if (resUpdateNotesPnj.wasAcknowledged() || resInsertCaracs.wasAcknowledged() || resInsertDetails.wasAcknowledged() || resInsertEquipped.wasAcknowledged() || resInsertUtilisations.wasAcknowledged()){
+                        }else if ( resInsertCaracs.wasAcknowledged() || resInsertDetails.wasAcknowledged() || resInsertEquipped.wasAcknowledged() || resInsertUtilisations.wasAcknowledged()){
                             //dans le cas où seulement une des deux données a correctement etait mise à jour
                             call.respond(HttpStatusCode.PartialContent)
                         }

@@ -59,7 +59,6 @@ fun EcranListItem(
     onUtilisationItem: ((IListItem, Int) -> Unit)? = null,
     joueur: Joueur? = null,
     isWideScreen: Boolean = false,
-    onSave: () -> Unit,
     isEditModeOn: Boolean = false,
     onEditModeClick: (IListItem) -> Unit = {},
 ) {
@@ -207,14 +206,11 @@ fun EcranListItem(
         layoutBigImage(
             equipementToShow!!,
             { itemUsed, nbrUtilisationRestantes ->
-                if (!isShowingStats) { // si on est sur les decouvertes
-                    onSave()
-                }
-                else if (onUtilisationItem != null) {
+                if (isShowingStats && onUtilisationItem != null) {
                     onUtilisationItem(itemUsed, nbrUtilisationRestantes)
                 }
                 equipementToShow = null
-            },//TODO appeler sauvegarde des utilsiations
+            },
             isShowingStats,
             itemsUtilisations?.get(equipementToShow?.nom),
             joueur,
