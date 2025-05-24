@@ -1,17 +1,17 @@
 [versions]
-agp = "8.9.1"
+agp = "8.10.0"
 android-compileSdk = "35"
 android-minSdk = "24"
 android-targetSdk = "35"
 androidx-activityCompose = "1.10.1"
 androidx-appcompat = "1.7.0"
 androidx-constraintlayout = "2.2.1"
-androidx-core-ktx = "1.15.0"
+androidx-core-ktx = "1.16.0"
 androidx-espresso-core = "3.6.1"
 androidx-lifecycle = "2.8.4"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
-compose-multiplatform = "1.7.3"
+compose-multiplatform = "1.8.1"
 junit = "4.13.2"
 kotlin = "2.1.10"
 kotlinxSerializationJson = "1.8.0"
@@ -21,13 +21,14 @@ logback = "1.5.17"
 lifecycleViewmodelCompose = "2.8.0"
 lifecycleViewmodelComposeVersion = "2.8.0"
 coilCompose = "3.1.0"
-material = "1.7.8"
-material3AdaptiveNavigationSuite = "1.4.0-alpha10"
-material3Android = "1.3.1"
+material = "1.8.2"
+material3AdaptiveNavigationSuite = "1.4.0-alpha15"
+material3Android = "1.3.2"
 datastorePreferences = "1.1.1"
 datastorePreferencesRxjava2 = "1.1.1"
 datastorePreferencesRxjava3 = "1.1.1"
 kmongoCoroutine = "5.1.0"
+materialIconsCore = "1.7.3"
 
 
 
@@ -77,6 +78,7 @@ coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.r
 androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
 material = { module = "androidx.compose.material:material", version.ref = "material" }
 kmongo-coroutine = { module = "org.litote.kmongo:kmongo-coroutine", version.ref = "kmongoCoroutine" }
+material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "materialIconsCore" }
 
 
 [plugins]

@@ -89,7 +89,7 @@ kotlin {
 
             implementation(libs.lifecycle.viewmodel.compose)
 
-
+            implementation(libs.material.icons.core)
 
             //Coil pour les images
             implementation(libs.coil.compose)
