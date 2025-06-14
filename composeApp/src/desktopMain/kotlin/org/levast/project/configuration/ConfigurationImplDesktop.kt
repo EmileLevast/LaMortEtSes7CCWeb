@@ -12,7 +12,7 @@ class ConfigurationImplDesktop() : IConfiguration {
 
     private var properties:AppProperties = AppProperties()
 
-    override fun getEndpointServer() = "http://${properties.ipAdressServer}:${properties.portServer}"
+    override fun getEndpointServer() = "https://${properties.ipAdressServer}:${properties.portServer}"
 
     init {
         loadFileProperties()
