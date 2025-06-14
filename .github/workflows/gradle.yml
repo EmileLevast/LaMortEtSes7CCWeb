@@ -17,10 +17,9 @@ on:
 
 jobs:
   build:
-
+    name: Create Release
     runs-on: windows-latest
-    permissions:
-      contents: read
+
 
     steps:
     - uses: actions/checkout@v4
@@ -49,10 +48,6 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
-        body: |
-          Changes in this Release
-          - First Change
-          - Second Change
         draft: true
         prerelease: false
     - name: Upload release asset
