@@ -63,7 +63,7 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./composeApp/build/compose/binaries/main/msi/org.levast.project-1.0.0.msi
         asset_name: org.levast.project-1.0.0.msi
-        asset_content_type: application/msi
+        asset_content_type: application/octet-stream
     - name: Publish release
       uses: StuYarrow/publish-release@v1.1.2
       env:
