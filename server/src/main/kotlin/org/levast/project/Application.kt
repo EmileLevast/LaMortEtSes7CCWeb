@@ -26,6 +26,8 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
+import io.ktor.network.tls.certificates.buildKeyStore
+import io.ktor.network.tls.certificates.saveToFile
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -60,8 +62,33 @@ fun main() {
     createCollectionTables()
 
 
-    embeddedServer(Netty, port = SERVER_KTOR_PORT, host = "0.0.0.0", module = Application::module)
-        .start(wait = true)
+    embeddedServer(Netty, configure =  {
+        envConfig()
+    }, module = Application::module).start(wait = true)
+}
+
+private fun ApplicationEngine.Configuration.envConfig() {
+
+    val keyStoreFile = File("build/keystore.jks")
+    val keyStore = buildKeyStore {
+        certificate("sampleAlias") {
+            password = "foobar"
+            domains = listOf("127.0.0.1", "0.0.0.0", "localhost")
+        }
+    }
+    keyStore.saveToFile(keyStoreFile, "123456")
+
+    connector {
+        port = SERVER_KTOR_PORT
+    }
+    sslConnector(
+        keyStore = keyStore,
+        keyAlias = "sampleAlias",
+        keyStorePassword = { "123456".toCharArray() },
+        privateKeyPassword = { "foobar".toCharArray() }) {
+        port = SERVER_KTOR_PORT_SSL
+        keyStorePath = keyStoreFile
+    }
 }
 
 fun Application.module() {
