@@ -148,6 +148,11 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "org.levast.project"
             packageVersion = "1.0.0"
+
+            windows{
+                iconFile.set(project.file("src\\commonMain\\composeResources\\drawable\\iconchapeau.png"))
+            }
+
         }
     }
 }
