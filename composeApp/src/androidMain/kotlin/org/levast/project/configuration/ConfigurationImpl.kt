@@ -27,8 +27,8 @@ class ConfigurationImpl() : IConfiguration {
     private fun loadAppProperties(){
         properties = AppProperties(runBlocking {
             context?.dataStore?.data?.map { preferences ->
-                preferences[KEY_IP_ADDRESS] ?: "10.0.2.2"
-            }?.first()?:"10.0.2.2"
+                preferences[KEY_IP_ADDRESS] ?: ""
+            }?.first()?:""
         },
             runBlocking {
                 context?.dataStore?.data?.map { preferences ->
