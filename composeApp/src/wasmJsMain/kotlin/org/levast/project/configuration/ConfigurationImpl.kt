@@ -5,6 +5,7 @@ package org.levast.project.configuration
 
 class ConfigurationImpl() : IConfiguration {
 
+    // TODO: Vérifier si cette adresse IP par défaut est toujours pertinente pour les environnements de test
     private var properties: AppProperties = AppProperties("192.168.138.178","",)
 
     override fun getEndpointServer() = "http://${properties.ipAdressServer}:${properties.portServer}"
