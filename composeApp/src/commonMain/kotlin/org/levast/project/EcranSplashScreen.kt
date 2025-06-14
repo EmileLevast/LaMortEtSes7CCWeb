@@ -30,6 +30,7 @@ import lamortetses7ccweb.composeapp.generated.resources.mjbandeau
 import lamortetses7ccweb.composeapp.generated.resources.mjmenu
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.levast.project.affichage.AlertDialogChangeIp
 import org.levast.project.configuration.getConfiguration
 import org.levast.project.viewModel.AdminViewModel
 
@@ -40,6 +41,9 @@ fun EcranSplashScreen(
 
     val configuration = getConfiguration()
     val adminUiState by adminViewModel.uiState.collectAsState()
+
+    //on ouvre la fenetre de l'ip si jamais il n'y en a pas d'enregistree
+    var openChangeIpDialog by remember { mutableStateOf(configuration.getIpAdressTargetServer().isEmpty()) }
 
 
     // Get local density from composable
@@ -82,6 +86,13 @@ fun EcranSplashScreen(
 
         } else {
             EcranPrincipal()
+        }
+
+        //Si jamais il n'y a pas d'ip renseignée
+        if (openChangeIpDialog) {
+            AlertDialogChangeIp {
+                openChangeIpDialog = false
+            }
         }
     }
 }

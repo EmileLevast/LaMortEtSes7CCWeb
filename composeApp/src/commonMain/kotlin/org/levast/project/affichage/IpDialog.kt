@@ -22,7 +22,7 @@ fun AlertDialogChangeIp(
 
     AlertDialog(
         title = {
-            Text(text = "ChangeIp")
+            Text(text = "Demander au MJ : \" ip du server stp ?\"")
         },
         text = {
             TextField(
