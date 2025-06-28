@@ -1,16 +1,36 @@
+import com.mongodb.ConnectionString
+import com.mongodb.MongoClientSettings
+import com.mongodb.ServerApi
+import com.mongodb.ServerApiVersion
+import com.mongodb.reactivestreams.client.MongoClient
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import org.bson.Document
+import org.litote.kmongo.coroutine.CoroutineClient
 import org.litote.kmongo.coroutine.CoroutineCollection
+import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
 import org.litote.kmongo.reactivestreams.KMongo
 import org.litote.kmongo.regex
 
-val client = KMongo.createClient().coroutine
-val database = client.getDatabase("JDRProd")
+lateinit var database: CoroutineDatabase
 
 val collectionsApiableItem:MutableMap<String,CoroutineCollection<out ApiableItem>> = mutableMapOf()
 
-fun createCollectionTables(){
+fun initDatabase(){
+
+    val connectionString = "mongodb+srv://emilelevast3441:GjCmIlTPVCdNoX6S@clustermortetses7cc.wyc210d.mongodb.net/?retryWrites=true&w=majority&appName=ClusterMortEtSes7CC"
+    val serverApi = ServerApi.builder()
+        .version(ServerApiVersion.V1)
+        .build()
+    val mongoClientSettings = MongoClientSettings.builder()
+        .applyConnectionString(ConnectionString(connectionString))
+        .serverApi(serverApi)
+        .build()
+    // Create a new client and connect to the server
+    database = KMongo.createClient(mongoClientSettings).coroutine.getDatabase("JDRProd")
+
     unmutableListApiItemDefinition.forEach {
         collectionsApiableItem[it.nameForApi!!] = database.getCollection(it.nameForApi!!)
     }

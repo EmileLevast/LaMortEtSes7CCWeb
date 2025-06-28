@@ -17,7 +17,7 @@ import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.LoggerContext
 import collectionsApiableItem
 import com.mongodb.MongoBulkWriteException
-import createCollectionTables
+import initDatabase
 import getCollectionElements
 import getCollectionElementsAsString
 import insertListElements
@@ -57,7 +57,7 @@ fun main() {
 
     (LoggerFactory.getILoggerFactory() as LoggerContext).getLogger("org.mongodb.driver").level = Level.ERROR
 
-    createCollectionTables()
+    initDatabase()
 
 
     embeddedServer(Netty, port = SERVER_KTOR_PORT, host = "0.0.0.0", module = Application::module)
@@ -69,7 +69,7 @@ fun Application.module() {
         json()
     }
     install(CallLogging) {
-        level = org.slf4j.event.Level.ERROR
+        level = org.slf4j.event.Level.WARN
 
     }
     install(CORS) {
