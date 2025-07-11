@@ -39,7 +39,7 @@ dependencies {
     implementation(libs.ktor.server.call.logging)
     implementation(libs.kmongo.coroutine)
 
-
+    implementation(libs.ktor.network.tls.certificates)
 }
 
 tasks.withType<Zip>() {
