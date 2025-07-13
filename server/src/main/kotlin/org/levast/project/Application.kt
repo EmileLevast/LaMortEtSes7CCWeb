@@ -26,6 +26,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
+import io.ktor.network.tls.certificates.KeyStoreBuilder
 import io.ktor.network.tls.certificates.buildKeyStore
 import io.ktor.network.tls.certificates.saveToFile
 import io.ktor.serialization.kotlinx.json.json
@@ -48,7 +49,9 @@ import org.litote.kmongo.eq
 import org.litote.kmongo.setValue
 import org.slf4j.LoggerFactory
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileNotFoundException
+import java.security.KeyStore
 
 val unmutableListApiItemDefinition = listOf(Arme(),Armure(),Monster(),Bouclier(),Sort(),Special(),Joueur(), Equipe())
 
@@ -70,14 +73,8 @@ fun main() {
 
 private fun ApplicationEngine.Configuration.envConfig() {
 
-    val keyStoreFile = File("build/keystore.jks")
-    val keyStore = buildKeyStore {
-        certificate("sampleAlias") {
-            password = "foobar"
-            domains = listOf("127.0.0.1", "0.0.0.0", "localhost")
-        }
-    }
-    keyStore.saveToFile(keyStoreFile, "123456")
+    val keyStoreFile = File(SERVER_PATH_KEYSTORE_FILE)
+    val keyStore: KeyStore = getKeyStore()
 
     connector {
         port = SERVER_KTOR_PORT
@@ -90,6 +87,14 @@ private fun ApplicationEngine.Configuration.envConfig() {
         port = SERVER_KTOR_PORT_SSL
         keyStorePath = keyStoreFile
     }
+}
+
+fun getKeyStore(): KeyStore {
+    val keyStoreFile = FileInputStream(SERVER_PATH_KEYSTORE_FILE)
+    val keyStorePassword = "foobar".toCharArray()
+    val keyStore: KeyStore = KeyStore.getInstance(KeyStore.getDefaultType())
+    keyStore.load(keyStoreFile, keyStorePassword)
+    return keyStore
 }
 
 fun Application.module() {
