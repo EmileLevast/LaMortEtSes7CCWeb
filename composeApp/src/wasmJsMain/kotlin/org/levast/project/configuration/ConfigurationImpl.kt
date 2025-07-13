@@ -8,7 +8,7 @@ class ConfigurationImpl() : IConfiguration {
     // TODO: Vérifier si cette adresse IP par défaut est toujours pertinente pour les environnements de test
     private var properties: AppProperties = AppProperties("192.168.138.178","",)
 
-    override fun getEndpointServer() = "http://lesfeusperegrins-env.eba-gmrjrq6d.eu-north-1.elasticbeanstalk.com/"
+    override fun getEndpointServer() = "https://lesfeusperegrins-env.eba-gmrjrq6d.eu-north-1.elasticbeanstalk.com/"
 
     override fun getIpAdressTargetServer() =  properties.ipAdressServer
 
