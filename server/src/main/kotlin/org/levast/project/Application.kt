@@ -26,9 +26,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
-import io.ktor.network.tls.certificates.KeyStoreBuilder
-import io.ktor.network.tls.certificates.buildKeyStore
-import io.ktor.network.tls.certificates.saveToFile
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -49,9 +46,7 @@ import org.litote.kmongo.eq
 import org.litote.kmongo.setValue
 import org.slf4j.LoggerFactory
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileNotFoundException
-import java.security.KeyStore
 
 val unmutableListApiItemDefinition = listOf(Arme(),Armure(),Monster(),Bouclier(),Sort(),Special(),Joueur(), Equipe())
 
@@ -65,36 +60,8 @@ fun main() {
     initDatabase()
 
 
-    embeddedServer(Netty, configure =  {
-        envConfig()
-    }, module = Application::module).start(wait = true)
-}
-
-
-private fun ApplicationEngine.Configuration.envConfig() {
-
-    val keyStoreFile = File(SERVER_PATH_KEYSTORE_FILE)
-    val keyStore: KeyStore = getKeyStore()
-
-    connector {
-        port = SERVER_KTOR_PORT
-    }
-    sslConnector(
-        keyStore = keyStore,
-        keyAlias = "sampleAlias",
-        keyStorePassword = { "123456".toCharArray() },
-        privateKeyPassword = { "foobar".toCharArray() }) {
-        port = SERVER_KTOR_PORT_SSL
-        keyStorePath = keyStoreFile
-    }
-}
-
-fun getKeyStore(): KeyStore {
-    val keyStoreFile = FileInputStream(SERVER_PATH_KEYSTORE_FILE)
-    val keyStorePassword = "123456".toCharArray()
-    val keyStore: KeyStore = KeyStore.getInstance(KeyStore.getDefaultType())
-    keyStore.load(keyStoreFile, keyStorePassword)
-    return keyStore
+    embeddedServer(Netty, port = SERVER_KTOR_PORT, host = "0.0.0.0", module = Application::module)
+        .start(wait = true)
 }
 
 fun Application.module() {
