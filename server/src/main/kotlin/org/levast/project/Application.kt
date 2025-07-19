@@ -91,7 +91,7 @@ private fun ApplicationEngine.Configuration.envConfig() {
 
 fun getKeyStore(): KeyStore {
     val keyStoreFile = FileInputStream(SERVER_PATH_KEYSTORE_FILE)
-    val keyStorePassword = "foobar".toCharArray()
+    val keyStorePassword = "123456".toCharArray()
     val keyStore: KeyStore = KeyStore.getInstance(KeyStore.getDefaultType())
     keyStore.load(keyStoreFile, keyStorePassword)
     return keyStore
