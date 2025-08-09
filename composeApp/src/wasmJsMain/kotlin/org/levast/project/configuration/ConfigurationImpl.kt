@@ -8,7 +8,7 @@ import org.levast.project.SERVER_KTOR_PORT_SSL
 class ConfigurationImpl() : IConfiguration {
 
     // TODO: Vérifier si cette adresse IP par défaut est toujours pertinente pour les environnements de test
-    private var properties: AppProperties = AppProperties("13.51.248.211", portServer = SERVER_KTOR_PORT_SSL)
+    private var properties: AppProperties = AppProperties("lesfeusperegrins.click", portServer = SERVER_KTOR_PORT_SSL)
 
     override fun getEndpointServer() = "https://${properties.ipAdressServer}:${properties.portServer}"
 
