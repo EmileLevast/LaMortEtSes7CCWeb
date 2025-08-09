@@ -13,7 +13,7 @@ class ConfigurationImplDesktop() : IConfiguration {
 
     private var properties:AppProperties = AppProperties()
 
-    override fun getEndpointServer() = "http://${properties.adressServer}:${properties.getPortServer()}"
+    override fun getEndpointServer() = "${properties.getProtocol()}://${properties.adressServer}:${properties.getPortServer()}"
 
     init {
         loadFileProperties()
@@ -62,10 +62,10 @@ class ConfigurationImplDesktop() : IConfiguration {
 
     override fun getMode(): Boolean? = properties.isUserMode
 
-    override fun setProtocol(isHttpsOn: Boolean) {
+    override fun setHttpsMode(isHttpsOn: Boolean) {
         properties.isHttpsOn=isHttpsOn
         saveToFile()
     }
 
-    override fun getProtocol() = properties.isHttpsOn
+    override fun getIsHttpsOn() = properties.isHttpsOn
 }

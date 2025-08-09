@@ -8,6 +8,6 @@ interface IConfiguration {
     fun getUserName():String
     fun setMode(isUserMode: Boolean?)
     fun getMode():Boolean?
-    fun setProtocol(isHttpsOn: Boolean)
-    fun getProtocol():Boolean?
+    fun setHttpsMode(isHttpsOn: Boolean)
+    fun getIsHttpsOn(): Boolean
 }

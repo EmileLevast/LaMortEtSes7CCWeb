@@ -8,4 +8,6 @@ import org.levast.project.SERVER_KTOR_PORT_SSL
 class AppProperties(var adressServer:String="", var userName:String = "", var isUserMode:Boolean?= null, var isHttpsOn : Boolean = true){
 
     fun getPortServer() = if(isHttpsOn) SERVER_KTOR_PORT_SSL else SERVER_KTOR_PORT
+
+    fun getProtocol() = if(isHttpsOn) "https" else "http"
 }

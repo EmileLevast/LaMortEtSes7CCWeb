@@ -17,7 +17,7 @@ class ConfigurationImpl() : IConfiguration {
     private lateinit var properties:AppProperties
     private var context:Context?=null
 
-    override fun getEndpointServer() = "http://${properties.adressServer}:${properties.portServer}"
+    override fun getEndpointServer() = "http://${properties.adressServer}:${properties.getPortServer()}"
 
     fun setupContextForPreferences(context: Context){
         this.context=context
