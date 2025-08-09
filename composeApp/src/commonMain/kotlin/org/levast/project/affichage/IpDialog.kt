@@ -18,7 +18,7 @@ fun AlertDialogChangeIp(
 ) {
     val config = getConfiguration()
 
-    var ipAdressInput by remember { mutableStateOf(config.getIpAdressTargetServer()) }
+    var ipAdressInput by remember { mutableStateOf(config.getAdressTargetServer()) }
 
     AlertDialog(
         title = {
@@ -37,7 +37,7 @@ fun AlertDialogChangeIp(
         confirmButton = {
             TextButton(
                 onClick = {
-                    config.setIpAdressTargetServer(ipAdressInput)
+                    config.setadressTargetServer(ipAdressInput)
                     onDismissRequest()
                 }
             ) {

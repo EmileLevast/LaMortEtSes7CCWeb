@@ -10,12 +10,12 @@ class ConfigurationImpl() : IConfiguration {
     // TODO: Vérifier si cette adresse IP par défaut est toujours pertinente pour les environnements de test
     private var properties: AppProperties = AppProperties("lesfeusperegrins.click", portServer = SERVER_KTOR_PORT_SSL)
 
-    override fun getEndpointServer() = "https://${properties.ipAdressServer}:${properties.portServer}"
+    override fun getEndpointServer() = "https://${properties.adressServer}:${properties.portServer}"
 
-    override fun getIpAdressTargetServer() =  properties.ipAdressServer
+    override fun getAdressTargetServer() =  properties.adressServer
 
-    override fun setIpAdressTargetServer(adresseIp: String) {
-        properties.ipAdressServer=adresseIp
+    override fun setadressTargetServer(adresseIp: String) {
+        properties.adressServer=adresseIp
     }
 
     override fun setUserName(nomUser: String) {

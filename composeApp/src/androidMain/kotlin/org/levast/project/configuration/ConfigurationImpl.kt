@@ -17,7 +17,7 @@ class ConfigurationImpl() : IConfiguration {
     private lateinit var properties:AppProperties
     private var context:Context?=null
 
-    override fun getEndpointServer() = "http://${properties.ipAdressServer}:${properties.portServer}"
+    override fun getEndpointServer() = "http://${properties.adressServer}:${properties.portServer}"
 
     fun setupContextForPreferences(context: Context){
         this.context=context
@@ -37,10 +37,10 @@ class ConfigurationImpl() : IConfiguration {
             })
     }
 
-    override fun getIpAdressTargetServer() =  properties.ipAdressServer
+    override fun getAdressTargetServer() =  properties.adressServer
 
-    override fun setIpAdressTargetServer(adresseIp: String) {
-        properties.ipAdressServer=adresseIp
+    override fun setadressTargetServer(adresseIp: String) {
+        properties.adressServer=adresseIp
 
         saveToDatastore(adresseIp, KEY_IP_ADDRESS)
     }

@@ -3,6 +3,7 @@ package org.levast.project.configuration
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import org.levast.project.DNS_ADRESS_SERVER
 import java.io.File
 
 
@@ -12,7 +13,7 @@ class ConfigurationImplDesktop() : IConfiguration {
 
     private var properties:AppProperties = AppProperties()
 
-    override fun getEndpointServer() = "http://${properties.ipAdressServer}:${properties.portServer}"
+    override fun getEndpointServer() = "http://${properties.adressServer}:${properties.getPortServer()}"
 
     init {
         loadFileProperties()
@@ -27,17 +28,17 @@ class ConfigurationImplDesktop() : IConfiguration {
                     } catch (e: Exception) {
                         println(e.stackTraceToString())
                         saveToFile()//on cree le fichier
-                        AppProperties("localhost")
+                        AppProperties(DNS_ADRESS_SERVER)
                     }
 
             }
         }
     }
 
-    override fun getIpAdressTargetServer() =  properties.ipAdressServer
+    override fun getAdressTargetServer() =  properties.adressServer
 
-    override fun setIpAdressTargetServer(adresseIp: String) {
-        properties.ipAdressServer=adresseIp
+    override fun setadressTargetServer(adresseServer: String) {
+        properties.adressServer=adresseServer
         saveToFile()
     }
 
@@ -60,4 +61,11 @@ class ConfigurationImplDesktop() : IConfiguration {
     }
 
     override fun getMode(): Boolean? = properties.isUserMode
+
+    override fun setProtocol(isHttpsOn: Boolean) {
+        properties.isHttpsOn=isHttpsOn
+        saveToFile()
+    }
+
+    override fun getProtocol() = properties.isHttpsOn
 }
