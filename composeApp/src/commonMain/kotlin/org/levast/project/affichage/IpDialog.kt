@@ -80,7 +80,11 @@ fun AlertDialogChangeIp(
         confirmButton = {
             TextButton(
                 onClick = {
+                    //on mets l'adresse du DNS si elle selectionnee sinon on mets celle indiquée par l'utilisateur
                     config.setadressTargetServer(if(isDNSOptionSelected) DNS_ADRESS_SERVER else ipAdressInput)
+                    //si l'utilisateur choisis de pointer vers le DNS alors on mets le protocole HTTPS sinon HTTP
+                    config.setHttpsMode(isDNSOptionSelected)
+
                     onDismissRequest()
                 }
             ) {
