@@ -26,7 +26,7 @@ class ConfigurationImplDesktop() : IConfiguration {
                     try {
                         Json.decodeFromString<AppProperties>(File(PROPERTY_FILE_PATH).readText())
                     } catch (e: Exception) {
-                        println(e.stackTraceToString())
+                        println(e.stackTraceToString() + "\n TOUT va bien faut se détendre c'est moi qui affiche l'erreur")
                         saveToFile()//on cree le fichier
                         AppProperties(DNS_ADRESS_SERVER)
                     }
