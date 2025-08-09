@@ -8,6 +8,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
+import org.levast.project.DNS_ADRESS_SERVER
 
 // At the top level of your kotlin file:
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -17,7 +18,7 @@ class ConfigurationImpl() : IConfiguration {
     private lateinit var properties:AppProperties
     private var context:Context?=null
 
-    override fun getEndpointServer() = "http://${properties.adressServer}:${properties.getPortServer()}"
+    override fun getEndpointServer() = "${properties.getProtocol()}://${properties.adressServer}:${properties.getPortServer()}"
 
     fun setupContextForPreferences(context: Context){
         this.context=context
@@ -25,10 +26,11 @@ class ConfigurationImpl() : IConfiguration {
     }
 
     private fun loadAppProperties(){
-        properties = AppProperties(runBlocking {
+        properties = AppProperties(
+            runBlocking {
             context?.dataStore?.data?.map { preferences ->
-                preferences[KEY_IP_ADDRESS] ?: "10.0.2.2"
-            }?.first()?:"10.0.2.2"
+                preferences[KEY_IP_ADDRESS] ?: DNS_ADRESS_SERVER
+            }?.first()?:DNS_ADRESS_SERVER
         },
             runBlocking {
                 context?.dataStore?.data?.map { preferences ->
@@ -77,4 +79,14 @@ class ConfigurationImpl() : IConfiguration {
             }
         }
     }
+
+
+    override fun setHttpsMode(isHttpsOn: Boolean) {
+        properties.isHttpsOn=isHttpsOn
+
+        saveToDatastore(isHttpsOn, KEY_HTTPS_MODE)
+
+    }
+
+    override fun getIsHttpsOn() = properties.isHttpsOn
 }
