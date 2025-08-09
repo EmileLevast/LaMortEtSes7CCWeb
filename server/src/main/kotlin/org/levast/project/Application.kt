@@ -62,34 +62,8 @@ fun main() {
     initDatabase()
 
 
-    embeddedServer(Netty, configure =  {
-        envConfig()
-    }, module = Application::module).start(wait = true)
-}
-
-
-private fun ApplicationEngine.Configuration.envConfig() {
-
-    val keyStoreFile = File("build/keystore.jks")
-    val keyStore = buildKeyStore {
-        certificate("sampleAlias") {
-            password = "foobar"
-            domains = listOf("127.0.0.1", "0.0.0.0", "localhost")
-        }
-    }
-    keyStore.saveToFile(keyStoreFile, "123456")
-
-    connector {
-        port = SERVER_KTOR_PORT
-    }
-    sslConnector(
-        keyStore = keyStore,
-        keyAlias = "sampleAlias",
-        keyStorePassword = { "123456".toCharArray() },
-        privateKeyPassword = { "foobar".toCharArray() }) {
-        port = SERVER_KTOR_PORT_SSL
-        keyStorePath = keyStoreFile
-    }
+    embeddedServer(Netty, port = SERVER_KTOR_PORT, host = "0.0.0.0", module = Application::module)
+        .start(wait = true)
 }
 
 fun Application.module() {
