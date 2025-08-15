@@ -40,6 +40,8 @@ dependencies {
     implementation(libs.kmongo.coroutine)
 
     implementation(libs.ktor.network.tls.certificates)
+    implementation(awssdk.services.secretsmanager)
+    implementation(libs.regions)
 }
 
 tasks.withType<Zip>() {

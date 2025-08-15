@@ -29,6 +29,7 @@ datastorePreferencesRxjava2 = "1.1.1"
 datastorePreferencesRxjava3 = "1.1.1"
 kmongoCoroutine = "5.1.0"
 materialIconsCore = "1.7.3"
+regions = "2.32.23"
 
 
 
@@ -80,6 +81,7 @@ androidx-material3-android = { group = "androidx.compose.material3", name = "mat
 material = { module = "androidx.compose.material:material", version.ref = "material" }
 kmongo-coroutine = { module = "org.litote.kmongo:kmongo-coroutine", version.ref = "kmongoCoroutine" }
 material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "materialIconsCore" }
+regions = { module = "software.amazon.awssdk:regions", version.ref = "regions" }
 
 
 [plugins]

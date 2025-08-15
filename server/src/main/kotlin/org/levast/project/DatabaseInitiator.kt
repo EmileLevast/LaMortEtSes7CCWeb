@@ -1,18 +1,20 @@
+import aws.sdk.kotlin.services.secretsmanager.SecretsManagerClient
+import aws.sdk.kotlin.services.secretsmanager.model.GetSecretValueRequest
+import aws.sdk.kotlin.services.secretsmanager.model.GetSecretValueResponse
 import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
 import com.mongodb.ServerApi
 import com.mongodb.ServerApiVersion
-import com.mongodb.reactivestreams.client.MongoClient
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
-import org.bson.Document
-import org.litote.kmongo.coroutine.CoroutineClient
+import org.levast.project.logger
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
 import org.litote.kmongo.reactivestreams.KMongo
 import org.litote.kmongo.regex
+ import software.amazon.awssdk.regions.Region;
 
 lateinit var database: CoroutineDatabase
 
@@ -20,20 +22,32 @@ val collectionsApiableItem:MutableMap<String,CoroutineCollection<out ApiableItem
 
 fun initDatabase(){
 
-    val connectionString = "mongodb+srv://emilelevast3441:GjCmIlTPVCdNoX6S@clustermortetses7cc.wyc210d.mongodb.net/?retryWrites=true&w=majority&appName=ClusterMortEtSes7CC"
-    val serverApi = ServerApi.builder()
-        .version(ServerApiVersion.V1)
-        .build()
-    val mongoClientSettings = MongoClientSettings.builder()
-        .applyConnectionString(ConnectionString(connectionString))
-        .serverApi(serverApi)
-        .build()
-    // Create a new client and connect to the server
-    database = KMongo.createClient(mongoClientSettings).coroutine.getDatabase("JDRProd")
-
-    unmutableListApiItemDefinition.forEach {
-        collectionsApiableItem[it.nameForApi!!] = database.getCollection(it.nameForApi!!)
+    val secretsDatabase:String?= runBlocking {
+          getSecret()
     }
+
+    if(secretsDatabase!=null && secretsDatabase.isNotBlank()){
+        logger.info( "infos DB recuperees")
+    }else {
+
+        logger.error("infos DB non trouves")
+
+        val connectionString = "mongodb+srv://emilelevast3441:${secretsDatabase}@clustermortetses7cc.wyc210d.mongodb.net/?retryWrites=true&w=majority&appName=ClusterMortEtSes7CC"
+        val serverApi = ServerApi.builder()
+            .version(ServerApiVersion.V1)
+            .build()
+        val mongoClientSettings = MongoClientSettings.builder()
+            .applyConnectionString(ConnectionString(connectionString))
+            .serverApi(serverApi)
+            .build()
+        // Create a new client and connect to the server
+        database = KMongo.createClient(mongoClientSettings).coroutine.getDatabase("JDRProd")
+
+        unmutableListApiItemDefinition.forEach {
+            collectionsApiableItem[it.nameForApi!!] = database.getCollection(it.nameForApi!!)
+        }
+    }
+
 }
 
 //TODO ajouter ici une ligne dans le when a chaque fois qu'eun nouvelle collection dans la bdd est cree
@@ -90,7 +104,11 @@ suspend fun getCollectionElementsAsString(instanceOfCollectionItemDefinition:Api
     }
 }
 
-suspend inline fun <reified T:ApiableItem> getElementAccordingToType(nameOfItemWanted:String, instanceOfCollectionItemDefinition:T, strict:Boolean,):List<T>{
+suspend inline fun <reified T:ApiableItem> getElementAccordingToType(
+    nameOfItemWanted: String,
+    instanceOfCollectionItemDefinition: T,
+    strict: Boolean
+):List<T>{
     return if(strict){
         database.getCollection<T>(T::class.simpleName!!).find(ApiableItem::nom eq nameOfItemWanted).toList()
     }else
@@ -100,7 +118,11 @@ suspend inline fun <reified T:ApiableItem> getElementAccordingToType(nameOfItemW
     }
 }
 
-suspend inline fun <reified T:ApiableItem> getElementAccordingToTypeAsString(nameOfItemWanted:String, instanceOfCollectionItemDefinition:T, strict:Boolean,):List<String>{
+suspend inline fun <reified T:ApiableItem> getElementAccordingToTypeAsString(
+    nameOfItemWanted: String,
+    instanceOfCollectionItemDefinition: T,
+    strict: Boolean
+):List<String>{
     return if(strict){
         database.getCollection<T>(T::class.simpleName!!).find(ApiableItem::nom eq nameOfItemWanted).toList().map { Json.encodeToString(it) }
     }else
@@ -108,4 +130,33 @@ suspend inline fun <reified T:ApiableItem> getElementAccordingToTypeAsString(nam
         val regexp = if(nameOfItemWanted.contains('*')) nameOfItemWanted else ".*$nameOfItemWanted.*"
         database.getCollection<T>(T::class.simpleName!!).find(ApiableItem::nom regex regexp).toList().map { Json.encodeToString(it) }
     }
+}
+
+
+
+suspend fun getSecret() :String?{
+    val secretName = "prod/jdrdb/access"
+
+    // Create a Secrets Manager client
+    val builderSecretsManager = SecretsManagerClient.builder()
+    builderSecretsManager.config.region = "eu-north-1"
+    val client: SecretsManagerClient = builderSecretsManager.build()
+
+
+    val getSecretValueRequest: GetSecretValueRequest = GetSecretValueRequest({
+        this.secretId = secretName
+    })
+
+    val getSecretValueResponse: GetSecretValueResponse
+
+    try {
+        getSecretValueResponse = client.getSecretValue(getSecretValueRequest)
+    } catch (e: Exception) {
+        // For a list of exceptions thrown, see
+        // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+        throw e
+    }
+
+    return getSecretValueResponse.secretString
+
 }
