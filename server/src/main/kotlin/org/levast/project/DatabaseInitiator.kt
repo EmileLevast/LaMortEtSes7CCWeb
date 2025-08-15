@@ -7,6 +7,8 @@ import com.mongodb.ServerApi
 import com.mongodb.ServerApiVersion
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import org.levast.project.logger
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.coroutine.CoroutineDatabase
@@ -22,15 +24,17 @@ val collectionsApiableItem:MutableMap<String,CoroutineCollection<out ApiableItem
 
 fun initDatabase(){
 
-    val secretsDatabase:String?= runBlocking {
-          getSecret()
+    val jsonString = runBlocking {
+        getSecret()
     }
+    val jsonObject = if(!jsonString.isNullOrBlank()) Json.parseToJsonElement(jsonString).jsonObject else null
+    val secretsDatabase = jsonObject?.get("jdrdbaccess")?.jsonPrimitive?.content
 
-    if(secretsDatabase!=null && secretsDatabase.isNotBlank()){
-        logger.info( "infos DB recuperees")
+    if(secretsDatabase.isNullOrBlank()){
+        logger.error( "infos DB non trouves")
     }else {
 
-        logger.error("infos DB non trouves")
+        logger.info("infos DB recuperees")
 
         val connectionString = "mongodb+srv://emilelevast3441:${secretsDatabase}@clustermortetses7cc.wyc210d.mongodb.net/?retryWrites=true&w=majority&appName=ClusterMortEtSes7CC"
         val serverApi = ServerApi.builder()
