@@ -9,6 +9,9 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import org.levast.project.DB_NAME
+import org.levast.project.ENV_DETECTION_CONFIG_DB
+import org.levast.project.KEY_SECRET_ACCESS_DB
 import org.levast.project.logger
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.coroutine.CoroutineDatabase
@@ -16,7 +19,6 @@ import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
 import org.litote.kmongo.reactivestreams.KMongo
 import org.litote.kmongo.regex
- import software.amazon.awssdk.regions.Region;
 
 lateinit var database: CoroutineDatabase
 
@@ -24,33 +26,47 @@ val collectionsApiableItem:MutableMap<String,CoroutineCollection<out ApiableItem
 
 fun initDatabase(){
 
-    val jsonString = runBlocking {
-        getSecret()
-    }
-    val jsonObject = if(!jsonString.isNullOrBlank()) Json.parseToJsonElement(jsonString).jsonObject else null
-    val secretsDatabase = jsonObject?.get("jdrdbaccess")?.jsonPrimitive?.content
+    //on cherche cette variable d'environnement
+    val isRunningMongoDBLocally = System.getenv(ENV_DETECTION_CONFIG_DB)
 
-    if(secretsDatabase.isNullOrBlank()){
-        logger.error( "infos DB non trouves")
-    }else {
+    logger.info("ELT variable d'environnement $ENV_DETECTION_CONFIG_DB = $isRunningMongoDBLocally")
 
-        logger.info("infos DB recuperees")
+    // si cette variable n'est pas null ou vide alors c'est qu'on est sur un environnement local ( test sur mon PC notamment)
+    if(!isRunningMongoDBLocally.isNullOrBlank()){
 
-        val connectionString = "mongodb+srv://emilelevast3441:${secretsDatabase}@clustermortetses7cc.wyc210d.mongodb.net/?retryWrites=true&w=majority&appName=ClusterMortEtSes7CC"
-        val serverApi = ServerApi.builder()
-            .version(ServerApiVersion.V1)
-            .build()
-        val mongoClientSettings = MongoClientSettings.builder()
-            .applyConnectionString(ConnectionString(connectionString))
-            .serverApi(serverApi)
-            .build()
-        // Create a new client and connect to the server
-        database = KMongo.createClient(mongoClientSettings).coroutine.getDatabase("JDRProd")
+        database = KMongo.createClient().coroutine.getDatabase(DB_NAME)
 
-        unmutableListApiItemDefinition.forEach {
-            collectionsApiableItem[it.nameForApi!!] = database.getCollection(it.nameForApi!!)
+    }else{
+        //Sinon on trouve pas la variable c'est qu'on est sur un environnement de production qui se connecte à notre bdd de prod sur atlas
+        val jsonString = runBlocking {
+            getSecret()
+        }
+        val jsonObject = if(!jsonString.isNullOrBlank()) Json.parseToJsonElement(jsonString).jsonObject else null
+        val secretsDatabase = jsonObject?.get(KEY_SECRET_ACCESS_DB)?.jsonPrimitive?.content
+
+        if(secretsDatabase.isNullOrBlank()){
+            logger.error( "ELT infos DB non trouves")
+        }else {
+
+            logger.info("ELT infos DB recuperees")
+
+            val connectionString = "mongodb+srv://emilelevast3441:${secretsDatabase}@clustermortetses7cc.wyc210d.mongodb.net/?retryWrites=true&w=majority&appName=ClusterMortEtSes7CC"
+            val serverApi = ServerApi.builder()
+                .version(ServerApiVersion.V1)
+                .build()
+            val mongoClientSettings = MongoClientSettings.builder()
+                .applyConnectionString(ConnectionString(connectionString))
+                .serverApi(serverApi)
+                .build()
+            // Create a new client and connect to the server
+            database = KMongo.createClient(mongoClientSettings).coroutine.getDatabase(DB_NAME)
+
+            unmutableListApiItemDefinition.forEach {
+                collectionsApiableItem[it.nameForApi!!] = database.getCollection(it.nameForApi!!)
+            }
         }
     }
+
 
 }
 
