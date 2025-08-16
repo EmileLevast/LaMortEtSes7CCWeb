@@ -68,4 +68,10 @@ class ConfigurationImplDesktop() : IConfiguration {
     }
 
     override fun getIsHttpsOn() = properties.isHttpsOn
+
+    override fun setUserAuthentication(userAuthentication: UserAuthentication){
+        properties.userAuthentication=userAuthentication
+        saveToFile()
+    }
+    override fun getUserAuthentication(): UserAuthentication? = properties.userAuthentication
 }

@@ -34,4 +34,10 @@ class ConfigurationImpl() : IConfiguration {
     }
 
     override fun getIsHttpsOn() = properties.isHttpsOn
+
+    override fun setUserAuthentication(userAuthentication: UserAuthentication) {
+        properties.userAuthentication = userAuthentication
+    }
+
+    override fun getUserAuthentication(): UserAuthentication? = properties.userAuthentication
 }

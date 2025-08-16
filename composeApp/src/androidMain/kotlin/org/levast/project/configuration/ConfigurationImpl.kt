@@ -8,6 +8,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import org.levast.project.DNS_ADRESS_SERVER
 
 // At the top level of your kotlin file:
@@ -26,6 +27,13 @@ class ConfigurationImpl() : IConfiguration {
     }
 
     private fun loadAppProperties(){
+        //on recupere l'objet qui definit nos elements de connexions, mais encodé en string
+        val userAuthenticationStringEncoded = runBlocking {
+            context?.dataStore?.data?.map { preferences ->
+                preferences[KEY_USER_AUTH]
+            }?.first()
+        }
+
         properties = AppProperties(
             runBlocking {
             context?.dataStore?.data?.map { preferences ->
@@ -36,7 +44,10 @@ class ConfigurationImpl() : IConfiguration {
                 context?.dataStore?.data?.map { preferences ->
                     preferences[KEY_USER_NAME] ?: ""
                 }?.first() ?: ""
-            })
+            },
+            userAuthentication = userAuthenticationStringEncoded?.let{Json.decodeFromString(it)}
+        )
+
     }
 
     override fun getAdressTargetServer() =  properties.adressServer
@@ -89,4 +100,12 @@ class ConfigurationImpl() : IConfiguration {
     }
 
     override fun getIsHttpsOn() = properties.isHttpsOn
+
+    override fun setUserAuthentication(userAuthentication: UserAuthentication) {
+        properties.userAuthentication = userAuthentication
+
+        saveToDatastore(Json.encodeToString(properties.userAuthentication), KEY_USER_AUTH)
+    }
+
+    override fun getUserAuthentication(): UserAuthentication? = properties.userAuthentication
 }

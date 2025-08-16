@@ -10,4 +10,6 @@ interface IConfiguration {
     fun getMode():Boolean?
     fun setHttpsMode(isHttpsOn: Boolean)
     fun getIsHttpsOn(): Boolean
+    fun setUserAuthentication(userAuthentication: UserAuthentication)
+    fun getUserAuthentication(): UserAuthentication?
 }
