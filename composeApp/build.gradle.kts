@@ -79,6 +79,8 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.logging)
+            //pour les authentification ktor
+            implementation(libs.ktor.client.auth)
 
 
             //Library to make call to the api DarkSoul
@@ -94,6 +96,7 @@ kotlin {
             //Coil pour les images
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor3)
+
         }
 
         wasmJsMain.dependencies {
