@@ -17,16 +17,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import org.levast.project.DNS_ADRESS_SERVER
+import org.levast.project.configuration.UserAuthentication
 import org.levast.project.configuration.getConfiguration
 
 
 @Composable
-fun AlertDialogChangeIp(
+fun AlertDialogChangeNetworkConfiguration(
     onDismissRequest: () -> Unit
 ) {
     val config = getConfiguration()
 
     var ipAdressInput by remember { mutableStateOf(config.getAdressTargetServer()) }
+
+    var username by remember { mutableStateOf(config.getUserAuthentication()?.userName ?: "") }
+    var password by remember { mutableStateOf(config.getUserAuthentication()?.password ?: "") }
 
     val (isDNSOptionSelected, setDNSOptionSelected) = remember { mutableStateOf(config.getAdressTargetServer() == DNS_ADRESS_SERVER) }
 
@@ -37,6 +41,16 @@ fun AlertDialogChangeIp(
         text = {
 
             Column(Modifier.selectableGroup()) {
+                Row{
+                    TextField(
+                        value = username,
+                        onValueChange = { username = it },
+                        label = { Text("Nom d'utilisateur") })
+                    TextField(
+                        value = password,
+                        onValueChange = { password = it },
+                        label = { Text("Mot de passe") })
+                }
                 Row(
                     Modifier.selectable(
                         selected = (isDNSOptionSelected),
@@ -84,6 +98,8 @@ fun AlertDialogChangeIp(
                     config.setadressTargetServer(if(isDNSOptionSelected) DNS_ADRESS_SERVER else ipAdressInput)
                     //si l'utilisateur choisis de pointer vers le DNS alors on mets le protocole HTTPS sinon HTTP
                     config.setHttpsMode(isDNSOptionSelected)
+
+                    config.setUserAuthentication(UserAuthentication(username, password))
 
                     onDismissRequest()
                 }

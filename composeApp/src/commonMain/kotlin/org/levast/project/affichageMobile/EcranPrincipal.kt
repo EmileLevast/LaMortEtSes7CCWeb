@@ -2,7 +2,7 @@ package org.levast.project.affichageMobile
 
 import Equipe
 import Joueur
-import org.levast.project.affichage.AlertDialogChangeIp
+import org.levast.project.affichage.AlertDialogChangeNetworkConfiguration
 import org.levast.project.affichage.LayoutDrawerMenu
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -29,7 +29,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -238,7 +237,7 @@ fun EcranPrincipal(
     }, drawerState)
 
     if (openChangeIpDialog) {
-        AlertDialogChangeIp(onCloseChangeIpDialog)
+        AlertDialogChangeNetworkConfiguration(onCloseChangeIpDialog)
     }
 
 
