@@ -42,6 +42,8 @@ dependencies {
     implementation(libs.ktor.network.tls.certificates)
     implementation(awssdk.services.secretsmanager)
     implementation(libs.regions)
+
+    implementation(libs.ktor.server.auth)
 }
 
 tasks.withType<Zip>() {
