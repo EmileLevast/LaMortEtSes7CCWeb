@@ -21,6 +21,7 @@ import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
 import org.litote.kmongo.contains
+import org.litote.kmongo.or
 import org.litote.kmongo.reactivestreams.KMongo
 import org.litote.kmongo.regex
 
@@ -77,13 +78,36 @@ suspend fun checkIfPasswordIsCorrectForUser(username:String, password:String):Bo
 
 }
 
-//Le joueur associe pour l'admin est ROLE_ADMIN
-suspend fun isUserAdmin(username: String):Boolean{
-    return database.getCollection<CompteUtilisateur>().findOne(and(CompteUtilisateur::nom eq username, CompteUtilisateur::roles contains ROLE_ADMIN)) != null
+//l'utilisateur doit posser le role ADMIN
+suspend fun isUserAdmin(username: String?):Boolean{
+    return username!=null && database.getCollection<CompteUtilisateur>().findOne(and(CompteUtilisateur::nom eq username, CompteUtilisateur::roles contains ROLE_ADMIN)) != null
 
 }
 
+//L'utilisateur doit posseder le nom du joueur qu'il essaye de modifier dans ses roles, ou alors il a le role admin
+suspend fun canUserModifyJoueur(username: String?, joueurName:String):Boolean{
+    return username!=null && database.getCollection<CompteUtilisateur>().findOne(or(and(CompteUtilisateur::nom eq username, CompteUtilisateur::roles contains ROLE_ADMIN),and(CompteUtilisateur::nom eq username, CompteUtilisateur::roles contains joueurName))) != null
+}
 
+//recupere tous les comptes utilisateurs
+suspend fun getAllComptesUtilisateurs():List<CompteUtilisateur>{
+    return database.getCollection<CompteUtilisateur>().find().toList()
+}
+
+//met à jour un compte utilisateur
+suspend fun updateCompteUtilisateur(compteUtilisateur: CompteUtilisateur?): Boolean{
+    return compteUtilisateur!= null && database.getCollection<CompteUtilisateur>().updateOneById(CompteUtilisateur::id eq compteUtilisateur.id, compteUtilisateur).wasAcknowledged()
+}
+
+//cree un compte utilisateur
+suspend fun insertCompteUtilisateur(compteUtilisateur: CompteUtilisateur?): Boolean{
+    return compteUtilisateur!= null && database.getCollection<CompteUtilisateur>().insertOne(compteUtilisateur).wasAcknowledged()
+}
+
+//cree un compte utilisateur
+suspend fun deleteCompteUtilisateur(idUtilisateur:Int?): Boolean{
+    return idUtilisateur!= null && database.getCollection<CompteUtilisateur>().deleteOneById(idUtilisateur).wasAcknowledged()
+}
 
 
 //TODO ajouter ici une ligne dans le when a chaque fois qu'eun nouvelle collection dans la bdd est cree

@@ -4,12 +4,21 @@ import androidx.compose.ui.graphics.ImageBitmap
 //TODO ajouter ici un element instancie dans cette liste a chaque creation d'une nouvelle classe
 val unmutableListApiItemDefinition = listOf(Arme(),Armure(),Monster(),Bouclier(),Sort(),Special(),Joueur(), Equipe())
 
-const val CHAR_SEP_EQUIPEMENT = "|"
+///Endpoints
 const val ENDPOINT_RECHERCHE_STRICTE = "precis"
 const val QUERY_PARAMETER_NOM = "nom"
+const val QUERY_PARAMETER_ID = "id"
 const val ENDPOINT_RECHERCHE_TOUT = "all"
 const val ENDPOINT_MAJ_CARACS_JOUEUR = "maj_caracs_joueur"
 const val ENDPOINT_MAJ_NOTES_JOUEUR = "maj_notes_joueur"
+//endpoints des comptes utilisateur
+const val ENDPOINT_COMPTE_UTILISATEUR_ROOT = "compte_utilisateur"
+const val ENDPOINT_COMPTE_UTILISATEUR_GET_ALL = "all"
+const val ENDPOINT_COMPTE_UTILISATEUR_INSERT = "insert"
+const val ENDPOINT_COMPTE_UTILISATEUR_UPDATE = "update"
+const val ENDPOINT_COMPTE_UTILISATEUR_DELETE = "delete"
+
+const val CHAR_SEP_EQUIPEMENT = "|"
 const val BALISE_SIMPLE_RULES = "[SIMPLE]"
 const val TYPE_LISTE_CHAINE = "${CHAR_SEP_EQUIPEMENT}String$CHAR_SEP_EQUIPEMENT${CHAR_SEP_EQUIPEMENT}String${CHAR_SEP_EQUIPEMENT}"
 
