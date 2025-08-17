@@ -9,3 +9,6 @@ const val ERROR_NETWORK_MESSAGE = "Le réseau semble inacessible : allume le ser
 const val ENV_DETECTION_CONFIG_DB = "FEUS_PEREGRINS_LOCAL"
 const val DB_NAME = "JDRProd"
 const val KEY_SECRET_ACCESS_DB = "jdrdbaccess"
+
+//ROLES en base de donnee
+const val ROLE_ADMIN:String = "admin"

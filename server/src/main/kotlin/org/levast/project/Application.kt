@@ -15,6 +15,7 @@ import Sort
 import Special
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.LoggerContext
+import checkIfPasswordIsCorrectForUser
 import collectionsApiableItem
 import com.mongodb.MongoBulkWriteException
 import initDatabase
@@ -30,6 +31,10 @@ import io.ktor.network.tls.certificates.buildKeyStore
 import io.ktor.network.tls.certificates.saveToFile
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.*
+import io.ktor.server.auth.Authentication
+import io.ktor.server.auth.UserIdPrincipal
+import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.basic
 import io.ktor.server.engine.*
 import io.ktor.server.http.content.resources
 import io.ktor.server.http.content.static
@@ -88,6 +93,18 @@ fun Application.module() {
     install(Compression) {
         gzip()
     }
+    install(Authentication) {
+        basic("auth-basic") {
+            realm = "Access to the '/' path"
+            validate { credentials ->
+                if (checkIfPasswordIsCorrectForUser(credentials.name, credentials.password)) {
+                    UserIdPrincipal(credentials.name)
+                } else {
+                    null
+                }
+            }
+        }
+    }
     routing {
         get("/") {
             call.respondText(
@@ -99,25 +116,27 @@ fun Application.module() {
             resources("")
         }
         route("/all") {
-            put {
-                val listNameElementsSearched = call.receive<List<String>>()
-                val listItemsFound = mutableListOf<AnythingItemDTO>()
+            authenticate("auth-basic") {
+                put {
+                    val listNameElementsSearched = call.receive<List<String>>()
+                    val listItemsFound = mutableListOf<AnythingItemDTO>()
 
-                for (nameElementSearched in listNameElementsSearched) {
-                    for (tableObject in unmutableListApiItemDefinition) {
-                        getCollectionElementsAsString(tableObject, nameElementSearched, true).map {
-                            AnythingItemDTO(
-                                tableObject.nameForApi,
-                                it
-                            )
-                        }.let {
-                            if (it.isNotEmpty()) {
-                                listItemsFound.addAll(it)
+                    for (nameElementSearched in listNameElementsSearched) {
+                        for (tableObject in unmutableListApiItemDefinition) {
+                            getCollectionElementsAsString(tableObject, nameElementSearched, true).map {
+                                AnythingItemDTO(
+                                    tableObject.nameForApi,
+                                    it
+                                )
+                            }.let {
+                                if (it.isNotEmpty()) {
+                                    listItemsFound.addAll(it)
+                                }
                             }
                         }
                     }
+                    call.respond(listItemsFound.ifEmpty { HttpStatusCode.NoContent })
                 }
-                call.respond(listItemsFound.ifEmpty { HttpStatusCode.NoContent })
             }
             get {
                 val nom = call.request.queryParameters[QUERY_PARAMETER_NOM] ?: ""

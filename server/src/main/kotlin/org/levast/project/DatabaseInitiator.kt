@@ -12,6 +12,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import org.levast.project.DB_NAME
 import org.levast.project.ENV_DETECTION_CONFIG_DB
 import org.levast.project.KEY_SECRET_ACCESS_DB
+import org.levast.project.ROLE_ADMIN
 import org.levast.project.logger
 import org.levast.project.model.CompteUtilisateur
 import org.litote.kmongo.and
@@ -19,6 +20,7 @@ import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
+import org.litote.kmongo.contains
 import org.litote.kmongo.reactivestreams.KMongo
 import org.litote.kmongo.regex
 
@@ -74,6 +76,14 @@ suspend fun checkIfPasswordIsCorrectForUser(username:String, password:String):Bo
     return database.getCollection<CompteUtilisateur>().findOne(and(CompteUtilisateur::nom eq username, CompteUtilisateur::motDePasse eq password)) != null
 
 }
+
+//Le joueur associe pour l'admin est ROLE_ADMIN
+suspend fun isUserAdmin(username: String):Boolean{
+    return database.getCollection<CompteUtilisateur>().findOne(and(CompteUtilisateur::nom eq username, CompteUtilisateur::roles contains ROLE_ADMIN)) != null
+
+}
+
+
 
 
 //TODO ajouter ici une ligne dans le when a chaque fois qu'eun nouvelle collection dans la bdd est cree

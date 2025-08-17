@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 class CompteUtilisateur(
     var nom: String,
     var motDePasse: String,
-    var nomJoueurAssocie: String,
+    var roles: List<String>,
 ) {
 
     @SerialName("_id") val id: Int = nom.hashCode();
