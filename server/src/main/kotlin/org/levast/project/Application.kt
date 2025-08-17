@@ -129,95 +129,90 @@ fun Application.module() {
         static("/") {
             resources("")
         }
-        authenticate("auth-basic") {
 
-            route("/all") {
-                put {
-                    if (isUserAdmin(call.principal<UserIdPrincipal>()?.name)) {
-                    } else {
-                        call.respond(
-                            HttpStatusCode.Forbidden,
-                            "Vous n'avez pas le role admin et il le faut pour faire ça"
-                        )
-                    }
-                    val listNameElementsSearched = call.receive<List<String>>()
-                    val listItemsFound = mutableListOf<AnythingItemDTO>()
+        route("/all") {
 
-                    for (nameElementSearched in listNameElementsSearched) {
-                        for (tableObject in unmutableListApiItemDefinition) {
-                            getCollectionElementsAsString(
-                                tableObject,
-                                nameElementSearched,
-                                true
-                            ).map {
-                                AnythingItemDTO(
-                                    tableObject.nameForApi,
-                                    it
-                                )
-                            }.let {
-                                if (it.isNotEmpty()) {
-                                    listItemsFound.addAll(it)
-                                }
-                            }
-                        }
-                    }
-                    call.respond(listItemsFound.ifEmpty { HttpStatusCode.NoContent })
+            put {
+                val listNameElementsSearched = call.receive<List<String>>()
+                val listItemsFound = mutableListOf<AnythingItemDTO>()
 
-
-                }
-                get {
-                    val nom = call.request.queryParameters[QUERY_PARAMETER_NOM] ?: ""
-                    val rechercheStricte: Boolean =
-                        call.request.queryParameters[ENDPOINT_RECHERCHE_STRICTE] == "true"
-                    val listItemsFound = mutableListOf<AnythingItemDTO>()
-                    //Pour chaque element on regarde s'il y'en a un qui matche le nom demandé
+                for (nameElementSearched in listNameElementsSearched) {
                     for (tableObject in unmutableListApiItemDefinition) {
                         getCollectionElementsAsString(
                             tableObject,
-                            nom,
-                            rechercheStricte
-                        ).map { AnythingItemDTO(tableObject.nameForApi, it) }.let {
+                            nameElementSearched,
+                            true
+                        ).map {
+                            AnythingItemDTO(
+                                tableObject.nameForApi,
+                                it
+                            )
+                        }.let {
                             if (it.isNotEmpty()) {
                                 listItemsFound.addAll(it)
                             }
                         }
                     }
-                    call.respond(listItemsFound.ifEmpty { HttpStatusCode.NoContent })
                 }
-            }
-            unmutableListApiItemDefinition.forEach { itapiable ->
-                route("/" + itapiable.nameForApi!!) {
-                    get {
-                        val nom = call.request.queryParameters[QUERY_PARAMETER_NOM] ?: ""
-                        val itemsFound = getCollectionElements(itapiable, nom)
-                        call.respond(itemsFound.ifEmpty { HttpStatusCode.NoContent })
-                    }
-                    get("/$ENDPOINT_RECHERCHE_STRICTE") {
-                        val nom = call.request.queryParameters[QUERY_PARAMETER_NOM] ?: ""
-                        val itemsFound = getCollectionElements(itapiable, nom, true)
-                        call.respond(itemsFound.ifEmpty { HttpStatusCode.NoContent })
-                    }
-                    get("/" + itapiable.uploadFileForApi) {
-                        //retrieve the data from csv file
+                call.respond(listItemsFound.ifEmpty { HttpStatusCode.NoContent })
 
-                        val parsedData: List<ApiableItem> = try {
-                            itapiable.decomposeCSV(
-                                File("${itapiable.nameForApi}.csv").readLines()
-                                    .asSequence()
-                            )
-                        } catch (e: FileNotFoundException) {
-                            //si le fichier existe pas on retourne une liste vide
-                            logger.error(e.stackTraceToString())
-                            listOf()
+
+            }
+            get {
+                val nom = call.request.queryParameters[QUERY_PARAMETER_NOM] ?: ""
+                val rechercheStricte: Boolean =
+                    call.request.queryParameters[ENDPOINT_RECHERCHE_STRICTE] == "true"
+                val listItemsFound = mutableListOf<AnythingItemDTO>()
+                //Pour chaque element on regarde s'il y'en a un qui matche le nom demandé
+                for (tableObject in unmutableListApiItemDefinition) {
+                    getCollectionElementsAsString(
+                        tableObject,
+                        nom,
+                        rechercheStricte
+                    ).map { AnythingItemDTO(tableObject.nameForApi, it) }.let {
+                        if (it.isNotEmpty()) {
+                            listItemsFound.addAll(it)
                         }
-                        //send data to database
-                        try {
-                            insertListElements(itapiable, parsedData)
-                        } catch (e: MongoBulkWriteException) {
-                            logger.error(e.stackTraceToString())
-                        }
-                        call.respond(parsedData)
                     }
+                }
+                call.respond(listItemsFound.ifEmpty { HttpStatusCode.NoContent })
+            }
+        }
+        unmutableListApiItemDefinition.forEach { itapiable ->
+            route("/" + itapiable.nameForApi!!) {
+                get {
+                    val nom = call.request.queryParameters[QUERY_PARAMETER_NOM] ?: ""
+                    val itemsFound = getCollectionElements(itapiable, nom)
+                    call.respond(itemsFound.ifEmpty { HttpStatusCode.NoContent })
+                }
+                get("/$ENDPOINT_RECHERCHE_STRICTE") {
+                    val nom = call.request.queryParameters[QUERY_PARAMETER_NOM] ?: ""
+                    val itemsFound = getCollectionElements(itapiable, nom, true)
+                    call.respond(itemsFound.ifEmpty { HttpStatusCode.NoContent })
+                }
+                get("/" + itapiable.uploadFileForApi) {
+                    //retrieve the data from csv file
+
+                    val parsedData: List<ApiableItem> = try {
+                        itapiable.decomposeCSV(
+                            File("${itapiable.nameForApi}.csv").readLines()
+                                .asSequence()
+                        )
+                    } catch (e: FileNotFoundException) {
+                        //si le fichier existe pas on retourne une liste vide
+                        logger.error(e.stackTraceToString())
+                        listOf()
+                    }
+                    //send data to database
+                    try {
+                        insertListElements(itapiable, parsedData)
+                    } catch (e: MongoBulkWriteException) {
+                        logger.error(e.stackTraceToString())
+                    }
+                    call.respond(parsedData)
+                }
+                authenticate("auth-basic") {
+
                     post("/" + itapiable.updateForApi) {
                         logger.debug("post en cours")
 
@@ -282,7 +277,9 @@ fun Application.module() {
                         if (isUserAdmin(call.principal<UserIdPrincipal>()?.name)) {
 
                             val nom = call.request.queryParameters[QUERY_PARAMETER_NOM] ?: ""
-                            if (collectionsApiableItem[itapiable.nameForApi]!!.deleteOne(ApiableItem::nom eq nom)
+                            if (collectionsApiableItem[itapiable.nameForApi]!!.deleteOne(
+                                    ApiableItem::nom eq nom
+                                )
                                     .wasAcknowledged()
                             ) {
                                 call.respond(HttpStatusCode.OK)
@@ -296,25 +293,28 @@ fun Application.module() {
                             )
                         }
                     }
-                    get("/" + itapiable.downloadForApi) {
-                        val itemsFound = getCollectionElements(itapiable, ".*")
-                        val stringFileCSV = itemsFound.first().getParsingRulesAttributesAsList()
-                            .joinToString(";") { it.split(":").first() } + "\n" +
-                                itemsFound.map { it.getDeparsedAttributes().joinToString(";") }
-                                    .joinToString("\n")
-                        val filename = "${itapiable.nameForApi}.csv"
-                        val file = File(filename)
-                        file.writeText(stringFileCSV)
-                        call.response.header(
-                            HttpHeaders.ContentDisposition,
-                            ContentDisposition.Attachment.withParameter(
-                                ContentDisposition.Parameters.FileName,
-                                filename
-                            )
-                                .toString()
+                }
+                get("/" + itapiable.downloadForApi) {
+                    val itemsFound = getCollectionElements(itapiable, ".*")
+                    val stringFileCSV = itemsFound.first().getParsingRulesAttributesAsList()
+                        .joinToString(";") { it.split(":").first() } + "\n" +
+                            itemsFound.map { it.getDeparsedAttributes().joinToString(";") }
+                                .joinToString("\n")
+                    val filename = "${itapiable.nameForApi}.csv"
+                    val file = File(filename)
+                    file.writeText(stringFileCSV)
+                    call.response.header(
+                        HttpHeaders.ContentDisposition,
+                        ContentDisposition.Attachment.withParameter(
+                            ContentDisposition.Parameters.FileName,
+                            filename
                         )
-                        call.respondFile(file)
-                    }
+                            .toString()
+                    )
+                    call.respondFile(file)
+                }
+                authenticate("auth-basic") {
+
                     if (itapiable is Joueur) {
                         post("/$ENDPOINT_MAJ_CARACS_JOUEUR") {
 
@@ -407,19 +407,22 @@ fun Application.module() {
                     }
                 }
             }
-            //Gestion des comptes utilisateurs
-            route("/$ENDPOINT_COMPTE_UTILISATEUR_ROOT"){
-                get("/$ENDPOINT_COMPTE_UTILISATEUR_GET_ALL"){
-                    val itemsFound = getAllComptesUtilisateurs()
-                    call.respond(itemsFound.ifEmpty { HttpStatusCode.NoContent })
-                }
-                post("/$ENDPOINT_COMPTE_UTILISATEUR_UPDATE"){
+        }
+        //Gestion des comptes utilisateurs
+        route("/$ENDPOINT_COMPTE_UTILISATEUR_ROOT") {
+            get("/$ENDPOINT_COMPTE_UTILISATEUR_GET_ALL") {
+                val itemsFound = getAllComptesUtilisateurs()
+                call.respond(itemsFound.ifEmpty { HttpStatusCode.NoContent })
+            }
+            authenticate("auth-basic") {
+
+                post("/$ENDPOINT_COMPTE_UTILISATEUR_UPDATE") {
 
                     if (isUserAdmin(call.principal<UserIdPrincipal>()?.name)) {
                         val compteToUpdate: CompteUtilisateur = call.receive()
 
                         call.respond(updateCompteUtilisateur(compteToUpdate))
-                    }else{
+                    } else {
                         call.respond(
                             HttpStatusCode.Forbidden,
                             "Vous n etes pas admin vous ne pouvez pas mettre a jour un profil"
@@ -428,7 +431,7 @@ fun Application.module() {
 
 
                 }
-                post("/$ENDPOINT_COMPTE_UTILISATEUR_INSERT"){
+                post("/$ENDPOINT_COMPTE_UTILISATEUR_INSERT") {
 
                     if (isUserAdmin(call.principal<UserIdPrincipal>()?.name)) {
                         val compteToInsert: CompteUtilisateur = call.receive()
@@ -436,9 +439,12 @@ fun Application.module() {
                         try {
                             call.respond(insertCompteUtilisateur(compteToInsert))
                         } catch (e: Exception) {
-                            call.respond(HttpStatusCode.ExpectationFailed, "impossible d'inserer le nouveau profil")
+                            call.respond(
+                                HttpStatusCode.ExpectationFailed,
+                                "impossible d'inserer le nouveau profil"
+                            )
                         }
-                    }else{
+                    } else {
                         call.respond(
                             HttpStatusCode.Forbidden,
                             "Vous n etes pas admin vous ne pouvez pas creer un profil"
@@ -447,17 +453,21 @@ fun Application.module() {
 
 
                 }
-                delete("/$ENDPOINT_COMPTE_UTILISATEUR_DELETE"){
+                delete("/$ENDPOINT_COMPTE_UTILISATEUR_DELETE") {
 
                     if (isUserAdmin(call.principal<UserIdPrincipal>()?.name)) {
-                        val idUtilisateur = call.request.queryParameters[QUERY_PARAMETER_ID]?.toInt()
+                        val idUtilisateur =
+                            call.request.queryParameters[QUERY_PARAMETER_ID]?.toInt()
 
                         try {
                             call.respond(deleteCompteUtilisateur(idUtilisateur))
                         } catch (e: Exception) {
-                            call.respond(HttpStatusCode.ExpectationFailed, "impossible de supprimer le nouveau profil")
+                            call.respond(
+                                HttpStatusCode.ExpectationFailed,
+                                "impossible de supprimer le nouveau profil"
+                            )
                         }
-                    }else{
+                    } else {
                         call.respond(
                             HttpStatusCode.Forbidden,
                             "Vous n etes pas admin vous ne pouvez pas supprimer un profil"
