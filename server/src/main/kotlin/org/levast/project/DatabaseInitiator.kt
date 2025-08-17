@@ -13,6 +13,8 @@ import org.levast.project.DB_NAME
 import org.levast.project.ENV_DETECTION_CONFIG_DB
 import org.levast.project.KEY_SECRET_ACCESS_DB
 import org.levast.project.logger
+import org.levast.project.model.CompteUtilisateur
+import org.litote.kmongo.and
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.coroutine.coroutine
@@ -66,9 +68,13 @@ fun initDatabase(){
             }
         }
     }
+}
 
+suspend fun checkIfPasswordIsCorrectForUser(username:String, password:String):Boolean{
+    return database.getCollection<CompteUtilisateur>().findOne(and(CompteUtilisateur::nom eq username, CompteUtilisateur::motDePasse eq password)) != null
 
 }
+
 
 //TODO ajouter ici une ligne dans le when a chaque fois qu'eun nouvelle collection dans la bdd est cree
 /**
