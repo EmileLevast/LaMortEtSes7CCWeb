@@ -23,6 +23,9 @@ import extractEquipementsListFromJoueur
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BasicAuthCredentials
+import io.ktor.client.plugins.auth.providers.basic
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -51,6 +54,14 @@ class ApiApp(val config: IConfiguration) {
         }
         install(HttpTimeout) {
             requestTimeoutMillis = 50000
+        }
+        install(Auth){
+            basic {
+                credentials {
+                    BasicAuthCredentials(username = config.getUserAuthentication()?.userName?:"", password = config.getUserAuthentication()?.password ?: "")
+                }
+                realm = "Access to the '/' path"
+            }
         }
     }
 
