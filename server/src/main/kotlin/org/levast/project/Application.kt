@@ -313,9 +313,9 @@ fun Application.module() {
                     )
                     call.respondFile(file)
                 }
-                authenticate("auth-basic") {
+                if (itapiable is Joueur) {
+                    authenticate("auth-basic") {
 
-                    if (itapiable is Joueur) {
                         post("/$ENDPOINT_MAJ_CARACS_JOUEUR") {
 
                             val joueurToUpdateCaracs: Joueur =
@@ -410,11 +410,19 @@ fun Application.module() {
         }
         //Gestion des comptes utilisateurs
         route("/$ENDPOINT_COMPTE_UTILISATEUR_ROOT") {
-            get("/$ENDPOINT_COMPTE_UTILISATEUR_GET_ALL") {
-                val itemsFound = getAllComptesUtilisateurs()
-                call.respond(itemsFound.ifEmpty { HttpStatusCode.NoContent })
-            }
             authenticate("auth-basic") {
+
+                get("/$ENDPOINT_COMPTE_UTILISATEUR_GET_ALL") {
+                    if (isUserAdmin(call.principal<UserIdPrincipal>()?.name)) {
+                        val itemsFound = getAllComptesUtilisateurs()
+                        call.respond(itemsFound.ifEmpty { HttpStatusCode.NoContent })
+                    } else {
+                        call.respond(
+                            HttpStatusCode.Forbidden,
+                            "Vous n etes pas admin vous ne pouvez pas recuperer tous les comptes"
+                        )
+                    }
+                }
 
                 post("/$ENDPOINT_COMPTE_UTILISATEUR_UPDATE") {
 

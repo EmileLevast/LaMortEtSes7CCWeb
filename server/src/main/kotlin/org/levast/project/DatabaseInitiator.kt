@@ -66,11 +66,11 @@ fun initDatabase(){
             // Create a new client and connect to the server
             database = KMongo.createClient(mongoClientSettings).coroutine.getDatabase(DB_NAME)
 
-            unmutableListApiItemDefinition.forEach {
-                collectionsApiableItem[it.nameForApi!!] = database.getCollection(it.nameForApi!!)
-            }
         }
+
     }
+    createCollectionTables()
+
 }
 
 suspend fun checkIfPasswordIsCorrectForUser(username:String, password:String):Boolean{
@@ -219,4 +219,10 @@ suspend fun getSecret() :String?{
 
     return getSecretValueResponse.secretString
 
+}
+
+fun createCollectionTables(){
+    unmutableListApiItemDefinition.forEach {
+        collectionsApiableItem[it.nameForApi!!] = database.getCollection(it.nameForApi!!)
+    }
 }
