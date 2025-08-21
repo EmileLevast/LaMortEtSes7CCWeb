@@ -48,17 +48,30 @@ class ApiApp(val config: IConfiguration) {
 
     val endpoint get() = config.getEndpointServer()
 
-    private val jsonClient = HttpClient() {
+    private var jsonClient: HttpClient;
+
+    init {
+        jsonClient = createHttpClient()
+    }
+
+    fun initJsonClient(){
+        jsonClient= createHttpClient();
+    }
+
+    private fun createHttpClient(): HttpClient = HttpClient() {
         install(ContentNegotiation) {
             json()
         }
         install(HttpTimeout) {
             requestTimeoutMillis = 50000
         }
-        install(Auth){
+        install(Auth) {
             basic {
                 credentials {
-                    BasicAuthCredentials(username = config.getUserAuthentication()?.userName?:"", password = config.getUserAuthentication()?.password ?: "")
+                    BasicAuthCredentials(
+                        username = config.getUserAuthentication()?.userName ?: "",
+                        password = config.getUserAuthentication()?.password ?: ""
+                    )
                 }
                 realm = "Access to the '/' path"
             }
@@ -284,7 +297,8 @@ class ApiApp(val config: IConfiguration) {
         }
     }
 
-    fun createUrlImageFromItem(item : IListItem) = endpoint + "/images/" + item.nom.cleanupForDB().replace(" ","") + ".jpg"
+    fun createUrlImageFromItem(item: IListItem) =
+        endpoint + "/images/" + item.nom.cleanupForDB().replace(" ", "") + ".jpg"
 }
 
 

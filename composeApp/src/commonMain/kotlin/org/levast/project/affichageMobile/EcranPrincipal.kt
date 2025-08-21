@@ -97,7 +97,10 @@ fun EcranPrincipal(
     //MENU
     var openChangeIpDialog by remember { mutableStateOf(false) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val onCloseChangeIpDialog: () -> Unit = { openChangeIpDialog = false }
+    val onCloseChangeIpDialog: () -> Unit = {
+        apiApp.initJsonClient()//on reinitialize le client avec les nouvelles configurations
+        openChangeIpDialog = false
+    }
     val filterUiState by filterViewModel.uiState.collectAsState()
 
     //Admin
