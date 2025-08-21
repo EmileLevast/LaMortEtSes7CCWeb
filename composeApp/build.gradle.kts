@@ -149,7 +149,7 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "org.levast.project"
+            packageName = "LesFeusPeregrins"
             packageVersion = "1.0.0"
 
             windows{

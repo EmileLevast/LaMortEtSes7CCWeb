@@ -1,6 +1,7 @@
 package org.levast.project.affichage
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -41,7 +42,8 @@ fun AlertDialogChangeNetworkConfiguration(
         text = {
 
             Column(Modifier.selectableGroup()) {
-                Row{
+
+                FlowRow {
                     TextField(
                         value = username,
                         onValueChange = { username = it },
