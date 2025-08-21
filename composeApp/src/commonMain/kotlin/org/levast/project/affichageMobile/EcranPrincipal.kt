@@ -89,7 +89,6 @@ fun EcranPrincipal(
     val (triggerEquipe, setTriggerEquipe) = remember { mutableStateOf(false) }
     val (selectEquipe, setSelectEquipe) = remember { mutableStateOf<Equipe?>(null) }
 
-
     //Variables de sélection du Joueur actuel
     var selectedJoueur: Joueur? by remember { mutableStateOf(null) }
     var nameSavedUser: String? by remember { mutableStateOf(config.getUserName()) }

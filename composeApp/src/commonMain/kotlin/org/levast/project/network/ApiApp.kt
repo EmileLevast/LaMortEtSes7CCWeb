@@ -55,6 +55,7 @@ class ApiApp(val config: IConfiguration) {
     }
 
     fun initJsonClient(){
+        jsonClient.close() //on cloture le client http et on en recrée un nouveau
         jsonClient= createHttpClient();
     }
 
