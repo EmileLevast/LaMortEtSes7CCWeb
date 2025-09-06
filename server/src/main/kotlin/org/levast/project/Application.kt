@@ -29,6 +29,7 @@ import deleteCompteUtilisateur
 import getAllComptesUtilisateurs
 import initDatabase
 import getCollectionElements
+import getCollectionElementsArraysAsString
 import getCollectionElementsAsString
 import insertCompteUtilisateur
 import insertListElements
@@ -136,11 +137,11 @@ fun Application.module() {
                 val listNameElementsSearched = call.receive<List<String>>()
                 val listItemsFound = mutableListOf<AnythingItemDTO>()
 
-                for (nameElementSearched in listNameElementsSearched) {
+                //FIXME quand il y'a plus de 100 elements ça ralentit fortement selon la doc
                     for (tableObject in unmutableListApiItemDefinition) {
-                        getCollectionElementsAsString(
+                        getCollectionElementsArraysAsString(
                             tableObject,
-                            nameElementSearched,
+                            listNameElementsSearched,
                             true
                         ).map {
                             AnythingItemDTO(
@@ -151,7 +152,6 @@ fun Application.module() {
                             if (it.isNotEmpty()) {
                                 listItemsFound.addAll(it)
                             }
-                        }
                     }
                 }
                 call.respond(listItemsFound.ifEmpty { HttpStatusCode.NoContent })
