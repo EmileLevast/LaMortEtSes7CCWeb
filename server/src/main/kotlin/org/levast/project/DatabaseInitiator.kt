@@ -21,6 +21,7 @@ import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
 import org.litote.kmongo.contains
+import org.litote.kmongo.`in`
 import org.litote.kmongo.or
 import org.litote.kmongo.reactivestreams.KMongo
 import org.litote.kmongo.regex
@@ -124,7 +125,6 @@ suspend fun insertListElements(instanceOfCollectionItemDefinition:ApiableItem,li
         is Special -> database.getCollection<Special>().insertMany(listToInsert as List<Special>)
         is Joueur -> database.getCollection<Joueur>().insertMany(listToInsert as List<Joueur>)
         is Equipe -> database.getCollection<Equipe>().insertMany(listToInsert as List<Equipe>)
-        else-> Unit
     }
 }
 
@@ -142,7 +142,6 @@ suspend fun getCollectionElements(instanceOfCollectionItemDefinition:ApiableItem
         is Special -> getElementAccordingToType(nameOfItemSearched, instanceOfCollectionItemDefinition,strict)
         is Joueur -> getElementAccordingToType(nameOfItemSearched, instanceOfCollectionItemDefinition,strict)
         is Equipe -> getElementAccordingToType(nameOfItemSearched, instanceOfCollectionItemDefinition,strict)
-        else-> getElementAccordingToType(nameOfItemSearched, instanceOfCollectionItemDefinition as Monster,strict)
     }
 }
 
@@ -160,7 +159,23 @@ suspend fun getCollectionElementsAsString(instanceOfCollectionItemDefinition:Api
         is Special -> getElementAccordingToTypeAsString(nameOfItemSearched, instanceOfCollectionItemDefinition,strict)
         is Joueur -> getElementAccordingToTypeAsString(nameOfItemSearched, instanceOfCollectionItemDefinition,strict)
         is Equipe -> getElementAccordingToTypeAsString(nameOfItemSearched, instanceOfCollectionItemDefinition,strict)
-        else-> getElementAccordingToTypeAsString(nameOfItemSearched, instanceOfCollectionItemDefinition as Monster,strict)
+    }
+}
+
+//TODO ici aussi
+/**
+ * strict est un booleen quand il est à true c'est à dire qu'on cherche exactement l'element qui matche le nom
+ */
+suspend fun getCollectionElementsArraysAsString(instanceOfCollectionItemDefinition:ApiableItem, namesOfItemsSearched:List<String>, strict:Boolean =false):List<String>{
+    return when(instanceOfCollectionItemDefinition){
+        is Arme -> getElementsAccordingToTypeAsString(namesOfItemsSearched, instanceOfCollectionItemDefinition)
+        is Armure -> getElementsAccordingToTypeAsString(namesOfItemsSearched, instanceOfCollectionItemDefinition)
+        is Monster -> getElementsAccordingToTypeAsString(namesOfItemsSearched, instanceOfCollectionItemDefinition)
+        is Bouclier -> getElementsAccordingToTypeAsString(namesOfItemsSearched, instanceOfCollectionItemDefinition)
+        is Sort -> getElementsAccordingToTypeAsString(namesOfItemsSearched, instanceOfCollectionItemDefinition)
+        is Special -> getElementsAccordingToTypeAsString(namesOfItemsSearched, instanceOfCollectionItemDefinition)
+        is Joueur -> getElementsAccordingToTypeAsString(namesOfItemsSearched, instanceOfCollectionItemDefinition)
+        is Equipe -> getElementsAccordingToTypeAsString(namesOfItemsSearched, instanceOfCollectionItemDefinition)
     }
 }
 
@@ -190,6 +205,14 @@ suspend inline fun <reified T:ApiableItem> getElementAccordingToTypeAsString(
         val regexp = if(nameOfItemWanted.contains('*')) nameOfItemWanted else ".*$nameOfItemWanted.*"
         database.getCollection<T>(T::class.simpleName!!).find(ApiableItem::nom regex regexp).toList().map { Json.encodeToString(it) }
     }
+}
+
+
+suspend inline fun <reified T:ApiableItem> getElementsAccordingToTypeAsString(
+    namesOfItemsWanted: List<String>,
+    instanceOfCollectionItemDefinition: T,
+):List<String>{
+        return database.getCollection<T>(T::class.simpleName!!).find(ApiableItem::nom `in` namesOfItemsWanted).toList().map { Json.encodeToString(it) }
 }
 
 
