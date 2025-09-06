@@ -1,1 +1,1 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"db4ea4f82c294f2f9d8d7959f9379909","collectionName":"Bouclier","type":"collection"}
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"03ad885843b741f5829820793b89c339","collectionName":"Bouclier","type":"collection"}
