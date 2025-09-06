@@ -36,16 +36,23 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import getListItemFiltered
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import lamortetses7ccweb.composeapp.generated.resources.Res
 import lamortetses7ccweb.composeapp.generated.resources.UnknownImage
 import lamortetses7ccweb.composeapp.generated.resources.refreshSymbol
 import org.jetbrains.compose.resources.painterResource
+import org.levast.project.DEBOUNCE_TIME_OUT_REQUEST_MS
 import org.levast.project.configuration.getApiApp
+import org.levast.project.viewModel.AdminViewModel
 import org.levast.project.viewModel.FilterViewModel
 import org.levast.project.viewModel.stateviewmodel.FilterUser
 
+@OptIn(FlowPreview::class)
 @Composable
 fun EcranJoueur(
     selectedJoueur: Joueur,
@@ -55,7 +62,8 @@ fun EcranJoueur(
     isRefreshedJoueur: Boolean,
     refreshJoueur: () -> Unit,
     isWideScreen:Boolean,
-    filterViewModel: FilterViewModel = viewModel { FilterViewModel() }
+    filterViewModel: FilterViewModel = viewModel { FilterViewModel() },
+    adminViewModel: AdminViewModel = viewModel { AdminViewModel() }
 ) {
 
     val apiApp = getApiApp()
@@ -81,20 +89,35 @@ fun EcranJoueur(
             selectedJoueur.unequip(nomItem)
         }
         listPinnedItems = selectedJoueur.getAllEquipmentSelectionneAsList()
-        coroutineScope.launch(Dispatchers.Default) { apiApp.updateJoueur(selectedJoueur) }
+        coroutineScope.launch(Dispatchers.Default) {
+            adminViewModel.setJoueurToUpdate(selectedJoueur)
+        }
+
     }
 
     val onSave: () -> Unit = {
-        coroutineScope.launch(Dispatchers.Default) { apiApp.updateJoueur(selectedJoueur) }
+        coroutineScope.launch(Dispatchers.Default) {
+            adminViewModel.setJoueurToUpdate(selectedJoueur)
+
+        }
     }
 
     val useItem: (IListItem, Int) -> Unit = { equipement, nbrUtilisationRestantes ->
         if (selectedJoueur.setUtilisationsItem(equipement, nbrUtilisationRestantes)) {
             coroutineScope.launch(Dispatchers.Default) {
-                apiApp.updateJoueur(selectedJoueur)
+                adminViewModel.setJoueurToUpdate(selectedJoueur)
+
             }
             mapUtilisationItems =
                 selectedJoueur.utilisationsRestantesItem.toMap() //TODO c'est censé relancer le changement des utilisations
+        }
+    }
+
+    remember {
+        coroutineScope.launch(Dispatchers.Default) {
+            adminViewModel.uiStateJoueur.debounce(DEBOUNCE_TIME_OUT_REQUEST_MS).collect { stateJoueur ->
+                apiApp.updateJoueur(stateJoueur)
+            }
         }
     }
 

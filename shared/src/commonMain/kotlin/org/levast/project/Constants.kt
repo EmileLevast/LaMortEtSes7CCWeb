@@ -12,3 +12,6 @@ const val KEY_SECRET_ACCESS_DB = "jdrdbaccess"
 
 //ROLES en base de donnee
 const val ROLE_ADMIN:String = "admin"
+
+//NETWORK
+const val DEBOUNCE_TIME_OUT_REQUEST_MS: Long = 1000
