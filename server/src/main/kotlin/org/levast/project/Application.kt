@@ -322,7 +322,7 @@ fun Application.module() {
                                 getApiableElementAccordingToType(call, itapiable) as Joueur
 
                             val username = call.principal<UserIdPrincipal>()?.name
-                            if (canUserModifyJoueur(username, joueurToUpdateCaracs.nom)) {
+                            if (canUserModifyJoueur(username, joueurToUpdateCaracs.nom) || isUserAdmin(username)) {
                                 val resInsertCaracs =
                                     collectionsApiableItem[itapiable.nameForApi]!!.updateOne(
                                         filter = Joueur::_id eq joueurToUpdateCaracs._id,
