@@ -60,7 +60,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./composeApp/build/compose/binaries/main/msi/LesFeusPeregrins-1.0.0.msi
+        asset_path: ./composeApp/build/compose/binaries/main-release/msi/LesFeusPeregrins-1.0.0.msi
         asset_name: LesFeusPeregrins-1.0.0.msi
         asset_content_type: application/octet-stream
 
