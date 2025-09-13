@@ -1,0 +1,5 @@
+-dontwarn io.ktor.network.sockets.SocketBase
+-keep class io.ktor.client.engine.cio.** { *; }
+-keep class io.ktor.client.HttpClientEngineContainer { *; }
+-keep class io.ktor.serialization.kotlinx.KotlinxSerializationExtensionProvider { *; }
+-keep class io.ktor.serialization.kotlinx.json.KotlinxSerializationJsonExtensionProvider { *; }
