@@ -152,8 +152,11 @@ compose.desktop {
             packageName = "LesFeusPeregrins"
             packageVersion = "1.0.0"
 
+            includeAllModules = true
+
             windows{
-                iconFile.set(project.file("src\\commonMain\\composeResources\\drawable\\iconchapeau.png"))
+                upgradeUuid = "68376e02-9aac-4968-91bc-5c3b0e454ba8"
+                iconFile.set(project.file("src\\commonMain\\composeResources\\drawable\\iconchapeau.ico"))
             }
 
         }
