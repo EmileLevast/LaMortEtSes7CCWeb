@@ -35,7 +35,7 @@ jobs:
         gradle-version: '8.11.1' # Quotes required to prevent YAML converting to number
     
     - name: Build Desktop with Gradle
-      run: gradle packageMsi
+      run: gradle packageReleaseMsi
 
     - name: Build Apk with Gradle
       run: gradle assembleDebug
