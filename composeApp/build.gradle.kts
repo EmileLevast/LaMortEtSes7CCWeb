@@ -159,6 +159,11 @@ compose.desktop {
                 iconFile.set(project.file("src\\commonMain\\composeResources\\drawable\\iconchapeau.ico"))
             }
 
+            buildTypes.release.proguard {
+                configurationFiles.from(project.file("compose-desktop.pro"))
+                optimize.set(false)
+            }
+
         }
     }
 }
