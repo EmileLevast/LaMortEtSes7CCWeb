@@ -161,7 +161,6 @@ compose.desktop {
 
             buildTypes.release.proguard {
                 configurationFiles.from(project.file("compose-desktop.pro"))
-                joinOutputJars.set(true)
             }
 
         }

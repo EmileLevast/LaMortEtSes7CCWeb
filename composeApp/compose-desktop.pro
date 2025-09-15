@@ -1,5 +1,8 @@
 -dontwarn io.ktor.network.sockets.SocketBase
+-keep class okio.** { *; }
 -keep class io.ktor.client.engine.cio.** { *; }
 -keep class io.ktor.client.HttpClientEngineContainer { *; }
 -keep class io.ktor.serialization.kotlinx.KotlinxSerializationExtensionProvider { *; }
 -keep class io.ktor.serialization.kotlinx.json.KotlinxSerializationJsonExtensionProvider { *; }
+-keep class * extends coil3.util.DecoderServiceLoaderTarget { *; }
+-keep class * extends coil3.util.FetcherServiceLoaderTarget { *; }
