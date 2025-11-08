@@ -75,6 +75,9 @@ class ApiApp(val config: IConfiguration) {
                     )
                 }
                 realm = "Access to the '/' path"
+                sendWithoutRequest { request ->
+                    true
+                }
             }
         }
     }

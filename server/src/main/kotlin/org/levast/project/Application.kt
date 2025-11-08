@@ -91,7 +91,7 @@ fun Application.module() {
         json()
     }
     install(CallLogging) {
-        level = org.slf4j.event.Level.WARN
+        level = org.slf4j.event.Level.DEBUG
 
     }
     install(CORS) {
@@ -314,6 +314,14 @@ fun Application.module() {
                     call.respondFile(file)
                 }
                 if (itapiable is Joueur) {
+
+                    options("/$ENDPOINT_MAJ_CARACS_JOUEUR") {
+                        // The CORS plugin will intercept this and respond automatically
+                        // with the correct headers (Access-Control-Allow-Methods, etc.).
+                        // We just need to respond with OK.
+                        call.respond(HttpStatusCode.OK)
+                    }
+
                     authenticate("auth-basic") {
 
                         post("/$ENDPOINT_MAJ_CARACS_JOUEUR") {
