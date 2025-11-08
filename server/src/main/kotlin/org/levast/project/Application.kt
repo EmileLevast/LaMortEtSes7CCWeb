@@ -12,6 +12,7 @@ import ENDPOINT_COMPTE_UTILISATEUR_UPDATE
 import ENDPOINT_MAJ_CARACS_JOUEUR
 import ENDPOINT_MAJ_NOTES_JOUEUR
 import ENDPOINT_RECHERCHE_STRICTE
+import ENDPOINT_RECHERCHE_TOUT_LISTE
 import Equipe
 import Joueur
 import Monster
@@ -133,7 +134,7 @@ fun Application.module() {
 
         route("/all") {
 
-            put {
+            get("/$ENDPOINT_RECHERCHE_TOUT_LISTE") {
                 val listNameElementsSearched = call.receive<List<String>>()
                 val listItemsFound = mutableListOf<AnythingItemDTO>()
 

@@ -9,6 +9,7 @@ const val ENDPOINT_RECHERCHE_STRICTE = "precis"
 const val QUERY_PARAMETER_NOM = "nom"
 const val QUERY_PARAMETER_ID = "id"
 const val ENDPOINT_RECHERCHE_TOUT = "all"
+const val ENDPOINT_RECHERCHE_TOUT_LISTE = "list"
 const val ENDPOINT_MAJ_CARACS_JOUEUR = "maj_caracs_joueur"
 const val ENDPOINT_MAJ_NOTES_JOUEUR = "maj_notes_joueur"
 //endpoints des comptes utilisateur

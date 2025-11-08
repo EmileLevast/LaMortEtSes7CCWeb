@@ -8,6 +8,7 @@ import ENDPOINT_MAJ_CARACS_JOUEUR
 import ENDPOINT_MAJ_NOTES_JOUEUR
 import ENDPOINT_RECHERCHE_STRICTE
 import ENDPOINT_RECHERCHE_TOUT
+import ENDPOINT_RECHERCHE_TOUT_LISTE
 import Equipe
 import IListItem
 import Joueur
@@ -36,8 +37,10 @@ import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
+import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
+import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.levast.project.ERROR_NETWORK_MESSAGE
@@ -76,7 +79,9 @@ class ApiApp(val config: IConfiguration) {
                 }
                 realm = "Access to the '/' path"
                 sendWithoutRequest { request ->
-                    true
+                    val method = request.method
+
+                    method == HttpMethod.Put || method == HttpMethod.Post || method == HttpMethod.Delete || method == HttpMethod.Patch
                 }
             }
         }
@@ -138,7 +143,7 @@ class ApiApp(val config: IConfiguration) {
 
     private suspend fun searchEverythingStringEncoded(searchedNames: List<String>): List<AnythingItemDTO> {
         return catchNetworkError(defaultReturnValue = listOf()) {
-            jsonClient.put("$endpoint/$ENDPOINT_RECHERCHE_TOUT") {
+            jsonClient.get("$endpoint/$ENDPOINT_RECHERCHE_TOUT/$ENDPOINT_RECHERCHE_TOUT_LISTE") {
                 contentType(ContentType.Application.Json)
                 setBody(searchedNames)
             }.let {
