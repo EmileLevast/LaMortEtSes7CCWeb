@@ -104,6 +104,7 @@ fun Application.module() {
         allowMethod(HttpMethod.Put)
         allowMethod(HttpMethod.Post)
         allowMethod(HttpMethod.Options)
+        allowCredentials = true
         allowSameOrigin
     }
     install(Compression) {
@@ -181,6 +182,17 @@ fun Application.module() {
         }
         unmutableListApiItemDefinition.forEach { itapiable ->
             route("/" + itapiable.nameForApi!!) {
+                // Routes de pré-vérification pour toutes les requêtes POST/PUT/DELETE
+                options("/" + itapiable.updateForApi) { call.respond(HttpStatusCode.OK) }
+                options("/" + itapiable.insertForApi) { call.respond(HttpStatusCode.OK) }
+                options("/" + itapiable.deleteForApi) { call.respond(HttpStatusCode.OK) }
+                if (itapiable is Joueur) {
+                    options("/$ENDPOINT_MAJ_CARACS_JOUEUR") { call.respond(HttpStatusCode.OK) }
+                    options("/$ENDPOINT_MAJ_NOTES_JOUEUR") { call.respond(HttpStatusCode.OK) }
+                    // Ajoutez ici d'autres routes OPTIONS spécifiques si nécessaire
+                }
+
+
                 get {
                     val nom = call.request.queryParameters[QUERY_PARAMETER_NOM] ?: ""
                     val itemsFound = getCollectionElements(itapiable, nom)
@@ -212,6 +224,27 @@ fun Application.module() {
                     }
                     call.respond(parsedData)
                 }
+
+                get("/" + itapiable.downloadForApi) {
+                    val itemsFound = getCollectionElements(itapiable, ".*")
+                    val stringFileCSV = itemsFound.first().getParsingRulesAttributesAsList()
+                        .joinToString(";") { it.split(":").first() } + "\n" +
+                            itemsFound.map { it.getDeparsedAttributes().joinToString(";") }
+                                .joinToString("\n")
+                    val filename = "${itapiable.nameForApi}.csv"
+                    val file = File(filename)
+                    file.writeText(stringFileCSV)
+                    call.response.header(
+                        HttpHeaders.ContentDisposition,
+                        ContentDisposition.Attachment.withParameter(
+                            ContentDisposition.Parameters.FileName,
+                            filename
+                        )
+                            .toString()
+                    )
+                    call.respondFile(file)
+                }
+
                 authenticate("auth-basic") {
 
                     post("/" + itapiable.updateForApi) {
@@ -294,36 +327,11 @@ fun Application.module() {
                             )
                         }
                     }
-                }
-                get("/" + itapiable.downloadForApi) {
-                    val itemsFound = getCollectionElements(itapiable, ".*")
-                    val stringFileCSV = itemsFound.first().getParsingRulesAttributesAsList()
-                        .joinToString(";") { it.split(":").first() } + "\n" +
-                            itemsFound.map { it.getDeparsedAttributes().joinToString(";") }
-                                .joinToString("\n")
-                    val filename = "${itapiable.nameForApi}.csv"
-                    val file = File(filename)
-                    file.writeText(stringFileCSV)
-                    call.response.header(
-                        HttpHeaders.ContentDisposition,
-                        ContentDisposition.Attachment.withParameter(
-                            ContentDisposition.Parameters.FileName,
-                            filename
-                        )
-                            .toString()
-                    )
-                    call.respondFile(file)
-                }
-                if (itapiable is Joueur) {
 
-                    options("/$ENDPOINT_MAJ_CARACS_JOUEUR") {
-                        // The CORS plugin will intercept this and respond automatically
-                        // with the correct headers (Access-Control-Allow-Methods, etc.).
-                        // We just need to respond with OK.
-                        call.respond(HttpStatusCode.OK)
-                    }
+                    if (itapiable is Joueur) {
 
-                    authenticate("auth-basic") {
+
+
 
                         post("/$ENDPOINT_MAJ_CARACS_JOUEUR") {
 
