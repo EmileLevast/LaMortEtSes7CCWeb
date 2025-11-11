@@ -141,20 +141,20 @@ fun Application.module() {
                 val listItemsFound = mutableListOf<AnythingItemDTO>()
 
                 //FIXME quand il y'a plus de 100 elements ça ralentit fortement selon la doc
-                    for (tableObject in unmutableListApiItemDefinition) {
-                        getCollectionElementsArraysAsString(
-                            tableObject,
-                            listNameElementsSearched,
-                            true
-                        ).map {
-                            AnythingItemDTO(
-                                tableObject.nameForApi,
-                                it
-                            )
-                        }.let {
-                            if (it.isNotEmpty()) {
-                                listItemsFound.addAll(it)
-                            }
+                for (tableObject in unmutableListApiItemDefinition) {
+                    getCollectionElementsArraysAsString(
+                        tableObject,
+                        listNameElementsSearched,
+                        true
+                    ).map {
+                        AnythingItemDTO(
+                            tableObject.nameForApi,
+                            it
+                        )
+                    }.let {
+                        if (it.isNotEmpty()) {
+                            listItemsFound.addAll(it)
+                        }
                     }
                 }
                 call.respond(listItemsFound.ifEmpty { HttpStatusCode.NoContent })
@@ -332,15 +332,17 @@ fun Application.module() {
                     if (itapiable is Joueur) {
 
 
-
-
                         post("/$ENDPOINT_MAJ_CARACS_JOUEUR") {
 
                             val joueurToUpdateCaracs: Joueur =
                                 getApiableElementAccordingToType(call, itapiable) as Joueur
 
                             val username = call.principal<UserIdPrincipal>()?.name
-                            if (canUserModifyJoueur(username, joueurToUpdateCaracs.nom) || isUserAdmin(username)) {
+                            if (canUserModifyJoueur(
+                                    username,
+                                    joueurToUpdateCaracs.nom
+                                ) || isUserAdmin(username)
+                            ) {
                                 val resInsertCaracs =
                                     collectionsApiableItem[itapiable.nameForApi]!!.updateOne(
                                         filter = Joueur::_id eq joueurToUpdateCaracs._id,
@@ -428,6 +430,26 @@ fun Application.module() {
         }
         //Gestion des comptes utilisateurs
         route("/$ENDPOINT_COMPTE_UTILISATEUR_ROOT") {
+
+
+            // --- DEBUT DE L'AJOUT ---
+            // Ajout des routes de pré-vérification (preflight) pour les endpoints protégés
+            // qui suivent. Cela permet au navigateur d'obtenir la permission avant
+            // d'envoyer la requête réelle avec les en-têtes d'authentification.
+            options("/$ENDPOINT_COMPTE_UTILISATEUR_GET_ALL") {
+                call.respond(HttpStatusCode.OK)
+            }
+            options("/$ENDPOINT_COMPTE_UTILISATEUR_UPDATE") {
+                call.respond(HttpStatusCode.OK)
+            }
+            options("/$ENDPOINT_COMPTE_UTILISATEUR_INSERT") {
+                call.respond(HttpStatusCode.OK)
+            }
+            options("/$ENDPOINT_COMPTE_UTILISATEUR_DELETE") {
+                call.respond(HttpStatusCode.OK)
+            }
+
+
             authenticate("auth-basic") {
 
                 get("/$ENDPOINT_COMPTE_UTILISATEUR_GET_ALL") {
