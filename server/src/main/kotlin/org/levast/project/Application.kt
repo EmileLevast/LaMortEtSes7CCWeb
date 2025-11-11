@@ -134,7 +134,7 @@ fun Application.module() {
 
         route("/all") {
 
-            get("/$ENDPOINT_RECHERCHE_TOUT_LISTE") {
+            put {
                 val listNameElementsSearched = call.receive<List<String>>()
                 val listItemsFound = mutableListOf<AnythingItemDTO>()
 

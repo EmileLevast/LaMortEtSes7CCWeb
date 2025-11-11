@@ -81,7 +81,7 @@ class ApiApp(val config: IConfiguration) {
                 sendWithoutRequest { request ->
                     val method = request.method
 
-                    method == HttpMethod.Put || method == HttpMethod.Post || method == HttpMethod.Delete || method == HttpMethod.Patch
+                    method == HttpMethod.Post || method == HttpMethod.Delete || method == HttpMethod.Patch
                 }
             }
         }
@@ -143,7 +143,7 @@ class ApiApp(val config: IConfiguration) {
 
     private suspend fun searchEverythingStringEncoded(searchedNames: List<String>): List<AnythingItemDTO> {
         return catchNetworkError(defaultReturnValue = listOf()) {
-            jsonClient.get("$endpoint/$ENDPOINT_RECHERCHE_TOUT/$ENDPOINT_RECHERCHE_TOUT_LISTE") {
+            jsonClient.put("$endpoint/$ENDPOINT_RECHERCHE_TOUT") {
                 contentType(ContentType.Application.Json)
                 setBody(searchedNames)
             }.let {
