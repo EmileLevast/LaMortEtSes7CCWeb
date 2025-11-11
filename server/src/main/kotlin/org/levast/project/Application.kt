@@ -99,6 +99,7 @@ fun Application.module() {
         anyHost()
         allowHeader(HttpHeaders.ContentType)
         allowHeader(HttpHeaders.AccessControlAllowOrigin)
+        allowHeader(HttpHeaders.Authorization)
         allowMethod(HttpMethod.Delete)
         allowMethod(HttpMethod.Get)
         allowMethod(HttpMethod.Put)
