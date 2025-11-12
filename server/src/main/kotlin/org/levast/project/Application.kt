@@ -47,8 +47,11 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.basic
 import io.ktor.server.auth.principal
 import io.ktor.server.engine.*
+import io.ktor.server.http.content.default
 import io.ktor.server.http.content.resources
 import io.ktor.server.http.content.static
+import io.ktor.server.http.content.staticFiles
+import io.ktor.server.http.content.staticResources
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.calllogging.CallLogging
 import io.ktor.server.plugins.compression.Compression
@@ -130,8 +133,8 @@ fun Application.module() {
                 ContentType.Text.Html
             )
         }
-        static("/") {
-            resources("")
+        staticResources("/images", "images"){
+            default("unknownimage.jpg")
         }
 
         route("/all") {
