@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class CompteUtilisateur(
+data class CompteUtilisateur(
     var nom: String,
     var motDePasse: String,
     var roles: List<String>,
