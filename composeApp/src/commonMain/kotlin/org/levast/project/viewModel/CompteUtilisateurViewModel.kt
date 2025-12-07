@@ -4,57 +4,44 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import org.levast.project.DEBOUNCE_TIME_OUT_REQUEST_MS
 import org.levast.project.configuration.getApiApp
 import org.levast.project.model.CompteUtilisateur
+import org.levast.project.viewModel.stateviewmodel.CompteUtilisateurStateFlow
 
 class CompteUtilisateurViewModel : ViewModel(){
 
     val apiApp = getApiApp()
 
-    private val _stateInsertCompteUtilisateur = MutableSharedFlow<CompteUtilisateur>() // private mutable shared flow
-    val stateInsertCompteUtilisateur : SharedFlow<CompteUtilisateur> = _stateInsertCompteUtilisateur.asSharedFlow() // publicly exposed as read-only shared flow
+    val insertCompte = CompteUtilisateurStateFlow(viewModelScope, apiApp::insertCompteUtilisateur)
+    val updateCompte = CompteUtilisateurStateFlow(viewModelScope, apiApp::updateCompteUtilisateur)
+    val deleteCompte = CompteUtilisateurStateFlow(viewModelScope, apiApp::deleteCompteUtilisateur)
 
-    private val _stateUpdateCompteUtilisateur = MutableSharedFlow<CompteUtilisateur>() // private mutable shared flow
-    val stateUpdateCompteUtilisateur : SharedFlow<CompteUtilisateur> = _stateUpdateCompteUtilisateur.asSharedFlow() // publicly exposed as read-only shared flow
+    private val _stateGetAllCompteUtilisateur = MutableSharedFlow<Boolean>() // private mutable shared flow
+    val stateGetAllCompteUtilisateur : SharedFlow<Boolean> = _stateGetAllCompteUtilisateur.asSharedFlow() // publicly exposed as read-only shared flow
 
-    private val _stateDeleteCompteUtilisateur = MutableSharedFlow<CompteUtilisateur>() // private mutable shared flow
-    val stateDeleteCompteUtilisateur : SharedFlow<CompteUtilisateur> = _stateDeleteCompteUtilisateur.asSharedFlow() // publicly exposed as read-only shared flow
-
-    private val _stateGetAllCompteUtilisateur = MutableSharedFlow<CompteUtilisateur>() // private mutable shared flow
-    val stateGetAllCompteUtilisateur : SharedFlow<CompteUtilisateur> = _stateGetAllCompteUtilisateur.asSharedFlow() // publicly exposed as read-only shared flow
-
-    private val _uiStateAllCompteUtilisateur = MutableSharedFlow<CompteUtilisateur>() // private mutable shared flow
-    val uiStateAllCompteUtilisateur : SharedFlow<CompteUtilisateur> = _uiStateAllCompteUtilisateur.asSharedFlow() // publicly exposed as read-only shared flow
+    private val _uiStateAllComptes = MutableStateFlow(listOf<CompteUtilisateur>()) // private mutable shared flow
+    val uiStateAllComptes : StateFlow<List<CompteUtilisateur>> = _uiStateAllComptes.asStateFlow() // publicly exposed as read-only shared flow
 
     init {
         viewModelScope.launch(Dispatchers.Default) {
-            launch {
-                stateInsertCompteUtilisateur.debounce(DEBOUNCE_TIME_OUT_REQUEST_MS).collect{ compteUtilisateur ->
-                    apiApp.insertCompteUtilisateur(compteUtilisateur)
-                }
-            }
-            launch {
-                stateUpdateCompteUtilisateur.debounce(DEBOUNCE_TIME_OUT_REQUEST_MS).collect{ compteUtilisateur ->
-                    apiApp.updateCompteUtilisateur(compteUtilisateur)
-                }
-            }
-            launch {
-                stateDeleteCompteUtilisateur.debounce(DEBOUNCE_TIME_OUT_REQUEST_MS).collect{ compteUtilisateur ->
-                    apiApp.deleteCompteUtilisateur(compteUtilisateur)
-                }
-            }
-            launch {
-                stateGetAllCompteUtilisateur.debounce(DEBOUNCE_TIME_OUT_REQUEST_MS).collect{ _ ->
-                    apiApp.getAllCompteUtilisateur()
-                }
+            stateGetAllCompteUtilisateur.debounce(DEBOUNCE_TIME_OUT_REQUEST_MS).collect { _ ->
+                _uiStateAllComptes.value = apiApp.getAllCompteUtilisateur()
             }
         }
     }
 
+    fun getAllComptesRequest(){
+        viewModelScope.launch(Dispatchers.Default) {
+            _stateGetAllCompteUtilisateur.emit(true)
+        }
+    }
 
 }
