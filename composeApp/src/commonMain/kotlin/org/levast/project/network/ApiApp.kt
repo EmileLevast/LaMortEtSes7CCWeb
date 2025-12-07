@@ -4,19 +4,23 @@ import ApiableItem
 import Arme
 import Armure
 import Bouclier
+import ENDPOINT_COMPTE_UTILISATEUR_DELETE
+import ENDPOINT_COMPTE_UTILISATEUR_GET_ALL
+import ENDPOINT_COMPTE_UTILISATEUR_INSERT
+import ENDPOINT_COMPTE_UTILISATEUR_ROOT
+import ENDPOINT_COMPTE_UTILISATEUR_UPDATE
 import ENDPOINT_MAJ_CARACS_JOUEUR
 import ENDPOINT_MAJ_NOTES_JOUEUR
 import ENDPOINT_RECHERCHE_STRICTE
 import ENDPOINT_RECHERCHE_TOUT
-import ENDPOINT_RECHERCHE_TOUT_LISTE
 import Equipe
 import IListItem
 import Joueur
 import Monster
+import QUERY_PARAMETER_ID
 import QUERY_PARAMETER_NOM
 import Sort
 import Special
-import androidx.compose.ui.graphics.ImageBitmap
 import cleanupForDB
 import org.levast.project.configuration.IConfiguration
 import extractDecouvertesListFromEquipe
@@ -28,10 +32,6 @@ import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BasicAuthCredentials
 import io.ktor.client.plugins.auth.providers.basic
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.put
@@ -40,10 +40,10 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
-import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.levast.project.ERROR_NETWORK_MESSAGE
+import org.levast.project.model.CompteUtilisateur
 import unmutableListApiItemDefinition
 
 
@@ -266,6 +266,51 @@ class ApiApp(val config: IConfiguration) {
             jsonClient.post(endpoint + "/" + itemSelected.nameForApi + "/${itemSelected.deleteForApi}") {
                 url {
                     parameters.append(QUERY_PARAMETER_NOM, itemSelected.nom)
+                }
+            }.let {
+                it.status == HttpStatusCode.OK
+            }
+        }
+    }
+
+    //Gérer les comptes utilisateurs
+    suspend fun getAllCompteUtilisateur(): List<CompteUtilisateur>? {
+        return catchNetworkError(defaultReturnValue = listOf()) {
+            jsonClient.get("$endpoint/$ENDPOINT_COMPTE_UTILISATEUR_ROOT/$ENDPOINT_COMPTE_UTILISATEUR_GET_ALL\"") {
+            }.let {
+                if (it.status == HttpStatusCode.OK) it.body<List<CompteUtilisateur>>() else null
+            }
+        }
+    }
+
+    //Gérer les comptes utilisateurs
+    suspend fun insertCompteUtilisateur(compteUtilisateur: CompteUtilisateur): Boolean {
+        return catchNetworkError(defaultReturnValue = false) {
+            jsonClient.post("$endpoint/$ENDPOINT_COMPTE_UTILISATEUR_ROOT/$ENDPOINT_COMPTE_UTILISATEUR_INSERT") {
+                contentType(ContentType.Application.Json)
+                setBody(compteUtilisateur)
+            }.let {
+                it.status == HttpStatusCode.OK
+            }
+        }
+    }
+
+    suspend fun updateCompteUtilisateur(compteUtilisateur: CompteUtilisateur): Boolean {
+        return catchNetworkError(defaultReturnValue = false) {
+            jsonClient.post("$endpoint/$ENDPOINT_COMPTE_UTILISATEUR_ROOT/$ENDPOINT_COMPTE_UTILISATEUR_UPDATE") {
+                contentType(ContentType.Application.Json)
+                setBody(compteUtilisateur)
+            }.let {
+                it.status == HttpStatusCode.OK
+            }
+        }
+    }
+
+    suspend fun deleteCompteUtilisateur(compteUtilisateur: CompteUtilisateur): Boolean {
+        return catchNetworkError(defaultReturnValue = false) {
+            jsonClient.post("$endpoint/$ENDPOINT_COMPTE_UTILISATEUR_ROOT/$ENDPOINT_COMPTE_UTILISATEUR_DELETE") {
+                url {
+                    parameters.append(QUERY_PARAMETER_ID, compteUtilisateur.id.toString())
                 }
             }.let {
                 it.status == HttpStatusCode.OK
