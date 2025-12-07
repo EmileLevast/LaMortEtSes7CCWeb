@@ -151,7 +151,11 @@ fun EcranPrincipal(
                     })
 
             if (adminUiState.filterAdminScreen != FilterAdminScreen.NONE && adminUiState.isAdminModeOn == true) {
-                EcranAdmin()
+                if(adminUiState.filterAdminScreen == FilterAdminScreen.USER_ACCOUNT){
+                    EcranCompteUtilisateur()
+                }else{
+                    EcranAdmin()
+                }
             } else if (selectEquipe == null) {
                 Column(
                     Modifier.fillMaxWidth(),
@@ -430,6 +434,7 @@ private fun AdminOptions(
     drawerState: DrawerState,
     adminViewModel: AdminViewModel = viewModel { AdminViewModel() }
 ) {
+    //FIXME c'est très lourd la présentation des options administratrices
     val adminUiState by adminViewModel.uiState.collectAsState()
 
     if(adminUiState.isAdminModeOn == true){
