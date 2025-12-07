@@ -1,12 +1,15 @@
 package org.levast.project.affichageMobile
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -15,9 +18,12 @@ import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -29,7 +35,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.levast.project.model.CompteUtilisateur
@@ -53,7 +62,7 @@ fun EcranCompteUtilisateur(
 
         Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                TextButton(
+                Button(
                     onClick = {
                         if (isShowingInsertCard == null) {
                             isShowingInsertCard = CompteUtilisateur("", "", listOf())
@@ -73,15 +82,17 @@ fun EcranCompteUtilisateur(
 
 
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 128.dp),
+                modifier = Modifier.fillMaxSize(),
+                columns = GridCells.Adaptive(minSize = 220.dp),
             ) {
                 items(compteUtilisateurUiState) {
-                    Card(modifier = Modifier.padding(2.dp)) {
+
+                    Card(modifier = Modifier.padding(2.dp), onClick = { isShowingUpdateCard = it }) {
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                             Text(
                                 it.nom,
                                 fontWeight = FontWeight.Bold,
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f).padding(2.dp)
                             )
 
                             IconButton(onClick = {
@@ -90,16 +101,10 @@ fun EcranCompteUtilisateur(
                             {
                                 Icon(Icons.Rounded.Delete, "Supprimer compte")
                             }
-                            IconButton(onClick = {
-                                isShowingUpdateCard = it
-                            })
-                            {
-                                Icon(Icons.Rounded.Edit, "editer compte")
-                            }
                         }
 
                         Text(it.motDePasse)
-                        Text(it.roles.joinToString(","))
+                        Text(it.roles.joinToString(","), fontStyle = FontStyle.Italic)
                     }
                 }
             }
@@ -182,8 +187,18 @@ fun CardCompteUtilisateur(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Card(modifier = Modifier.padding(10.dp)) {
-            Text(titreCard)
+        Card(modifier = Modifier.padding(10.dp).width(IntrinsicSize.Min),
+            colors = CardDefaults.cardColors()
+                .copy(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+            elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        ), ) {
+            Text(
+                titreCard,
+                style = MaterialTheme.typography.titleSmall,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(7.dp)
+            )
             TextField(
                 value = compteToSend.nom,
                 onValueChange = { compteToSend = compteToSend.copy(nom = it) },
@@ -195,18 +210,20 @@ fun CardCompteUtilisateur(
             TextField(
                 value = compteToSend.roles.joinToString(","),
                 onValueChange = { compteToSend = compteToSend.copy(roles = it.split(",")) },
-                label = { Text("Roles (séparés par des virgules)") })
-            Row {
-                TextButton(onClick = {
-                    confirm(compteToSend)
-                }) {
-                    Text("Valider")
-                }
+                label = { Text("Roles (séparés par des virgules)", fontStyle = FontStyle.Italic) },
+            )
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 TextButton(onClick = {
                     cancel()
                 }) {
                     Text("Annuler")
                 }
+                TextButton(onClick = {
+                    confirm(compteToSend)
+                }) {
+                    Text("Valider")
+                }
+
             }
         }
     }
