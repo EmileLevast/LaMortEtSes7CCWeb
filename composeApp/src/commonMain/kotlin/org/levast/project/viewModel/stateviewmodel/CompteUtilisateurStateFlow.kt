@@ -9,11 +9,11 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import org.levast.project.DEBOUNCE_TIME_OUT_REQUEST_MS
 import org.levast.project.model.CompteUtilisateur
-import org.levast.project.network.ApiApp
 
 class CompteUtilisateurStateFlow (
     private val scope: CoroutineScope,
     networkMethod: suspend (CompteUtilisateur) -> Boolean,
+    refreshElements: () -> Unit,
 ) {
 
     private val _stateRequest = MutableSharedFlow<CompteUtilisateur>() // private mutable shared flow
@@ -23,6 +23,7 @@ class CompteUtilisateurStateFlow (
         scope.launch(Dispatchers.Default) {
             stateRequest.debounce(DEBOUNCE_TIME_OUT_REQUEST_MS).collect{ compteUtilisateur ->
                 networkMethod(compteUtilisateur)
+                refreshElements()
             }
         }
     }

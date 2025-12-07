@@ -1,6 +1,5 @@
 package org.levast.project.affichageMobile
 
-import CHAR_SEP_EQUIPEMENT
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -136,6 +135,7 @@ fun EcranCompteUtilisateur(
 
         isShowingUpdateCard?.let {
             CardCompteUtilisateur(
+                "Maj",
                 it,
                 confirm = {
                     compteUtilisateurViewModel.updateCompte.sendRequest(it)
@@ -149,15 +149,15 @@ fun EcranCompteUtilisateur(
 
         isShowingInsertCard?.let {
             CardCompteUtilisateur(
+                "Création",
                 it,
                 confirm = {
                     compteUtilisateurViewModel.insertCompte.sendRequest(it)
                     isShowingInsertCard = null
-                },
-                cancel = {
-                    isShowingInsertCard = null
                 }
-            )
+            ) {
+                isShowingInsertCard = null
+            }
         }
     }
 
@@ -165,6 +165,7 @@ fun EcranCompteUtilisateur(
 
 @Composable
 fun CardCompteUtilisateur(
+    titreCard: String,
     compteUtilisateur: CompteUtilisateur,
     confirm: (CompteUtilisateur) -> Unit,
     cancel: () -> Unit
@@ -182,6 +183,7 @@ fun CardCompteUtilisateur(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Card(modifier = Modifier.padding(10.dp)) {
+            Text(titreCard)
             TextField(
                 value = compteToSend.nom,
                 onValueChange = { compteToSend = compteToSend.copy(nom = it) },
@@ -196,7 +198,7 @@ fun CardCompteUtilisateur(
                 label = { Text("Roles (séparés par des virgules)") })
             Row {
                 TextButton(onClick = {
-                    confirm(compteUtilisateur)
+                    confirm(compteToSend)
                 }) {
                     Text("Valider")
                 }

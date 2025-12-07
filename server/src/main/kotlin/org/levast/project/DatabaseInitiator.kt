@@ -97,7 +97,7 @@ suspend fun getAllComptesUtilisateurs():List<CompteUtilisateur>{
 
 //met à jour un compte utilisateur
 suspend fun updateCompteUtilisateur(compteUtilisateur: CompteUtilisateur?): Boolean{
-    return compteUtilisateur!= null && database.getCollection<CompteUtilisateur>().updateOneById(CompteUtilisateur::id eq compteUtilisateur.id, compteUtilisateur).wasAcknowledged()
+    return compteUtilisateur!= null && database.getCollection<CompteUtilisateur>().updateOneById(compteUtilisateur.id, compteUtilisateur).wasAcknowledged()
 }
 
 //cree un compte utilisateur

@@ -16,19 +16,35 @@ import org.levast.project.configuration.getApiApp
 import org.levast.project.model.CompteUtilisateur
 import org.levast.project.viewModel.stateviewmodel.CompteUtilisateurStateFlow
 
-class CompteUtilisateurViewModel : ViewModel(){
+class CompteUtilisateurViewModel : ViewModel() {
 
     val apiApp = getApiApp()
 
-    val insertCompte = CompteUtilisateurStateFlow(viewModelScope, apiApp::insertCompteUtilisateur)
-    val updateCompte = CompteUtilisateurStateFlow(viewModelScope, apiApp::updateCompteUtilisateur)
-    val deleteCompte = CompteUtilisateurStateFlow(viewModelScope, apiApp::deleteCompteUtilisateur)
+    val insertCompte = CompteUtilisateurStateFlow(
+        viewModelScope,
+        apiApp::insertCompteUtilisateur,
+        this::getAllComptesRequest
+    )
+    val updateCompte = CompteUtilisateurStateFlow(
+        viewModelScope,
+        apiApp::updateCompteUtilisateur,
+        this::getAllComptesRequest
+    )
+    val deleteCompte = CompteUtilisateurStateFlow(
+        viewModelScope,
+        apiApp::deleteCompteUtilisateur,
+        this::getAllComptesRequest
+    )
 
-    private val _stateGetAllCompteUtilisateur = MutableSharedFlow<Boolean>() // private mutable shared flow
-    private val stateGetAllCompteUtilisateur : SharedFlow<Boolean> = _stateGetAllCompteUtilisateur.asSharedFlow() // publicly exposed as read-only shared flow
+    private val _stateGetAllCompteUtilisateur =
+        MutableSharedFlow<Boolean>() // private mutable shared flow
+    private val stateGetAllCompteUtilisateur: SharedFlow<Boolean> =
+        _stateGetAllCompteUtilisateur.asSharedFlow() // publicly exposed as read-only shared flow
 
-    private val _uiStateAllComptes = MutableStateFlow(listOf<CompteUtilisateur>()) // private mutable shared flow
-    val uiStateAllComptes : StateFlow<List<CompteUtilisateur>> = _uiStateAllComptes.asStateFlow() // publicly exposed as read-only shared flow
+    private val _uiStateAllComptes =
+        MutableStateFlow(listOf<CompteUtilisateur>()) // private mutable shared flow
+    val uiStateAllComptes: StateFlow<List<CompteUtilisateur>> =
+        _uiStateAllComptes.asStateFlow() // publicly exposed as read-only shared flow
 
     init {
         viewModelScope.launch(Dispatchers.Default) {
@@ -38,7 +54,7 @@ class CompteUtilisateurViewModel : ViewModel(){
         }
     }
 
-    fun getAllComptesRequest(){
+    fun getAllComptesRequest() {
         viewModelScope.launch(Dispatchers.Default) {
             _stateGetAllCompteUtilisateur.emit(true)
         }
