@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -52,24 +53,37 @@ fun EcranCompteUtilisateur(
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 
         Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-
-            TextButton(
-                onClick = {
-                    if(isShowingInsertCard == null){
-                        isShowingInsertCard = CompteUtilisateur("", "", listOf())
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                TextButton(
+                    onClick = {
+                        if (isShowingInsertCard == null) {
+                            isShowingInsertCard = CompteUtilisateur("", "", listOf())
+                        }
                     }
+                ) {
+                    Text("Nouveau compte")
                 }
-            ) {
-                Text("Nouveau compte")
+
+                IconButton(onClick = {
+                    compteUtilisateurViewModel.getAllComptesRequest()
+                })
+                {
+                    Icon(Icons.Rounded.Refresh, "recharger les comptes")
+                }
             }
+
 
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = 128.dp),
             ) {
                 items(compteUtilisateurUiState) {
                     Card(modifier = Modifier.padding(2.dp)) {
-                        Row (Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.Center){
-                            Text(it.nom, fontWeight = FontWeight.Bold, modifier =  Modifier.weight(1f))
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                            Text(
+                                it.nom,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.weight(1f)
+                            )
 
                             IconButton(onClick = {
                                 isShowingDeleteDialog = it
@@ -124,7 +138,7 @@ fun EcranCompteUtilisateur(
             CardCompteUtilisateur(
                 it,
                 confirm = {
-                        compteUtilisateurViewModel.updateCompte.sendRequest(it)
+                    compteUtilisateurViewModel.updateCompte.sendRequest(it)
                     isShowingUpdateCard = null
                 },
                 cancel = {
