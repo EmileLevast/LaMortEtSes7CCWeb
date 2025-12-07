@@ -32,6 +32,7 @@ import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BasicAuthCredentials
 import io.ktor.client.plugins.auth.providers.basic
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.put
@@ -308,7 +309,7 @@ class ApiApp(val config: IConfiguration) {
 
     suspend fun deleteCompteUtilisateur(compteUtilisateur: CompteUtilisateur): Boolean {
         return catchNetworkError(defaultReturnValue = false) {
-            jsonClient.post("$endpoint/$ENDPOINT_COMPTE_UTILISATEUR_ROOT/$ENDPOINT_COMPTE_UTILISATEUR_DELETE") {
+            jsonClient.delete("$endpoint/$ENDPOINT_COMPTE_UTILISATEUR_ROOT/$ENDPOINT_COMPTE_UTILISATEUR_DELETE") {
                 url {
                     parameters.append(QUERY_PARAMETER_ID, compteUtilisateur.id.toString())
                 }
