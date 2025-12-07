@@ -15,5 +15,6 @@ data class AdminModelState(
 enum class FilterAdminScreen{
     RESEARCH,
     EDIT,
+    USER_ACCOUNT,
     NONE
 }

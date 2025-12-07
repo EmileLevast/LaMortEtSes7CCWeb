@@ -25,7 +25,7 @@ class CompteUtilisateurViewModel : ViewModel(){
     val deleteCompte = CompteUtilisateurStateFlow(viewModelScope, apiApp::deleteCompteUtilisateur)
 
     private val _stateGetAllCompteUtilisateur = MutableSharedFlow<Boolean>() // private mutable shared flow
-    val stateGetAllCompteUtilisateur : SharedFlow<Boolean> = _stateGetAllCompteUtilisateur.asSharedFlow() // publicly exposed as read-only shared flow
+    private val stateGetAllCompteUtilisateur : SharedFlow<Boolean> = _stateGetAllCompteUtilisateur.asSharedFlow() // publicly exposed as read-only shared flow
 
     private val _uiStateAllComptes = MutableStateFlow(listOf<CompteUtilisateur>()) // private mutable shared flow
     val uiStateAllComptes : StateFlow<List<CompteUtilisateur>> = _uiStateAllComptes.asStateFlow() // publicly exposed as read-only shared flow

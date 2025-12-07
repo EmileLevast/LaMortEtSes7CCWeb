@@ -444,13 +444,37 @@ private fun AdminOptions(
             }
         }
 
+        val onClickUserAccountOption: () -> Unit = {
+            if (adminUiState.filterAdminScreen != FilterAdminScreen.USER_ACCOUNT) {
+                adminViewModel.changeAdminScreen(FilterAdminScreen.USER_ACCOUNT)
+            } else {
+                adminViewModel.changeAdminScreen(FilterAdminScreen.NONE)
+            }
+            coroutineScope.launch {
+                drawerState.close()
+            }
+        }
+
         if (adminUiState.filterAdminScreen == FilterAdminScreen.RESEARCH) {
             OutlinedButton(onClickResearchOption) {
                 ContentOptionButtonResearch()
             }
+            TextButton(onClickUserAccountOption) {
+                ContentOptionButtonUserAccount()
+            }
+        } else if (adminUiState.filterAdminScreen == FilterAdminScreen.USER_ACCOUNT){
+            TextButton(onClickResearchOption) {
+                ContentOptionButtonResearch()
+            }
+            OutlinedButton(onClickUserAccountOption) {
+                ContentOptionButtonUserAccount()
+            }
         } else {
             TextButton(onClickResearchOption) {
                 ContentOptionButtonResearch()
+            }
+            TextButton(onClickUserAccountOption) {
+                ContentOptionButtonUserAccount()
             }
         }
     }
@@ -462,6 +486,12 @@ private fun AdminOptions(
 private fun ContentOptionButtonResearch() {
     Icon(Icons.Default.Search, contentDescription = "Rechercher item")
     Text("Rechercher")
+}
+
+@Composable
+private fun ContentOptionButtonUserAccount() {
+    Icon(Icons.Default.Search, contentDescription = "Gerer les utilisateurs")
+    Text("Gérer les comptes")
 }
 
 @Composable
