@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,7 +55,7 @@ fun EcranCompteUtilisateur(
     var isShowingInsertCard by remember { mutableStateOf<CompteUtilisateur?>(null) }
     val compteUtilisateurUiState by compteUtilisateurViewModel.uiStateAllComptes.collectAsState()
 
-    remember {
+    LaunchedEffect(Unit) {
         compteUtilisateurViewModel.getAllComptesRequest()
     }
 
@@ -187,12 +188,14 @@ fun CardCompteUtilisateur(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Card(modifier = Modifier.padding(10.dp).width(IntrinsicSize.Min),
+        Card(
+            modifier = Modifier.padding(10.dp).width(IntrinsicSize.Min),
             colors = CardDefaults.cardColors()
                 .copy(containerColor = MaterialTheme.colorScheme.secondaryContainer),
             elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
-        ), ) {
+                defaultElevation = 6.dp
+            ),
+        ) {
             Text(
                 titreCard,
                 style = MaterialTheme.typography.titleSmall,
