@@ -276,7 +276,7 @@ class ApiApp(val config: IConfiguration) {
     //Gérer les comptes utilisateurs
     suspend fun getAllCompteUtilisateur(): List<CompteUtilisateur> {
         return catchNetworkError(defaultReturnValue = listOf()) {
-            jsonClient.get("$endpoint/$ENDPOINT_COMPTE_UTILISATEUR_ROOT/$ENDPOINT_COMPTE_UTILISATEUR_GET_ALL\"") {
+            jsonClient.get("$endpoint/$ENDPOINT_COMPTE_UTILISATEUR_ROOT/$ENDPOINT_COMPTE_UTILISATEUR_GET_ALL") {
             }.let {
                 if (it.status == HttpStatusCode.OK) it.body<List<CompteUtilisateur>>() else listOf()
             }
