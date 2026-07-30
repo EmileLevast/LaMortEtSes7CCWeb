@@ -111,4 +111,4 @@ jobs:
           # Donner les droits d'exécution au nouveau JAR
           sudo chmod 755 /home/ec2-user/files/server-all.jar
           sudo systemctl stop lesfeusperegrins
-          sudo systemctl start lesfeusperegrins
+          sudo systemctl restart lesfeusperegrins
