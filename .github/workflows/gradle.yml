@@ -43,46 +43,19 @@ jobs:
     - name: Build FatJar Ktor with Gradle
       run: gradle buildFatJar
 
-    - name: Create release
-      id: create_release
-      uses: actions/create-release@v1
+    - name: Create & Publish Release with Assets
+      uses: softprops/action-gh-release@v2
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: true
+        name: Release ${{ github.ref }}
+        draft: false
         prerelease: false
-
-    - name: Upload release Desktop asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./composeApp/build/compose/binaries/main-release/msi/LesFeusPeregrins-1.0.0.msi
-        asset_name: LesFeusPeregrins-1.0.0.msi
-        asset_content_type: application/octet-stream
-
-    - name: Upload release Android asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./composeApp/build/outputs/apk/debug/composeApp-debug.apk
-        asset_name: composeApp-debug.apk
-        asset_content_type: application/vnd.android.package-archive
-
-    - name: Upload release Ktor Server asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./server/build/libs/server-all.jar
-        asset_name: server-all.jar
-        asset_content_type: application/java-archive
+        files: |
+          ./composeApp/build/compose/binaries/main-release/msi/LesFeusPeregrins-1.0.0.msi
+          ./composeApp/build/outputs/apk/debug/composeApp-debug.apk
+          ./server/build/libs/server-all.jar
 
     - name: Publish release
       uses: StuYarrow/publish-release@v1.1.2
