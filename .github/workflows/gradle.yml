@@ -43,6 +43,12 @@ jobs:
     - name: Build FatJar Ktor with Gradle
       run: gradle buildFatJar
 
+    - name: Upload FatJar artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: server-all.jar
+        path: ./server/build/libs/server-all.jar
+
     - name: Create & Publish Release with Assets
       uses: softprops/action-gh-release@v2
       env:
