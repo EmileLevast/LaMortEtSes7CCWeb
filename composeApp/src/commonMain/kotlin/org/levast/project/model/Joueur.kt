@@ -57,8 +57,8 @@ class Joueur(
         )
     }
 
-    fun getAllEquipmentAsList()=chaineEquipementSerialisee.deserializeToListElements()?: listOf()
-    fun getAllEquipmentSelectionneAsList()=chaineEquipementSelectionneSerialisee.deserializeToListElements()?: listOf()
+    fun getAllEquipmentAsList()=chaineEquipementSerialisee.deserializeToListElements()
+    fun getAllEquipmentSelectionneAsList()=chaineEquipementSelectionneSerialisee.deserializeToListElements()
 
 
     override fun getDeparsedAttributes(): List<String> {

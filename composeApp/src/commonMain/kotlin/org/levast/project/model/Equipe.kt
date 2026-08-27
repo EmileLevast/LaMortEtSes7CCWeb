@@ -36,11 +36,7 @@ class Equipe(
     }
 
     fun getMembreEquipe():List<String>{
-        return chaineJoueurSerialisee.deserializeToListElements()?: listOf()
-    }
-
-    fun getDecouvertes():List<String>{
-        return chaineDecouvertSerialisee.deserializeToListElements()?: listOf()
+        return chaineJoueurSerialisee.deserializeToListElements()
     }
 
     override fun getParsingRulesAttributesAsList(): List<String> {
@@ -65,7 +61,7 @@ class Equipe(
     }
 
 
-    override fun getBody()= getMembreEquipe().joinToString("\n")
+    override fun getBody()=  chaineJoueurSerialisee.deserializeToListElements().joinToString("\n")
 
     override fun getImageDrawable(): DrawableResource {
         return Res.drawable.logoequipe

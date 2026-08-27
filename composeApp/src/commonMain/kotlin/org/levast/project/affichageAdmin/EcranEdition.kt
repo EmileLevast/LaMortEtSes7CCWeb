@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import deserializeToListElements
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -218,7 +219,7 @@ fun layoutEdition(
                 layoutListeSelectables(
                     Modifier,
                     listeEquipes,
-                    { equipe -> (equipe as Equipe).getDecouvertes().contains(itemToEdit.nom) },
+                    { equipe -> (equipe as Equipe).chaineDecouvertSerialisee.deserializeToListElements().contains(itemToEdit.nom) },
                     { isSelect, equipe ->
                         val equipeToUpdate = equipe as? Equipe
                         if (equipeToUpdate != null) {

@@ -282,6 +282,6 @@ sealed class ApiableItem() : IListItem {
     }
 
     protected fun getDeparseStringAsMapStrInt(parsedStr : String) = parsedStr.deserializeToListElements()
-        ?.associate { entry -> entry.substringBefore(':') to entry.substringAfter(':').toInt() }
-        ?.toMutableMap() ?: mutableMapOf()
+        .associate { entry -> entry.substringBefore(':') to entry.substringAfter(':').toInt() }
+        .toMutableMap()
 }

@@ -127,7 +127,7 @@ fun deparseDefense(defense: Map<EffectType, String>): String {
     return res.removeSuffix("|")
 }
 
-fun String.deserializeToListElements() = this.removeSurrounding(CHAR_SEP_EQUIPEMENT).ifBlank { null }?.split(CHAR_SEP_EQUIPEMENT+CHAR_SEP_EQUIPEMENT)
+fun String.deserializeToListElements() = this.removeSurrounding(CHAR_SEP_EQUIPEMENT).ifBlank { null }?.split(CHAR_SEP_EQUIPEMENT+CHAR_SEP_EQUIPEMENT) ?: listOf()
 fun String.formatToPrettyString() = this.replace(CHAR_SEP_EQUIPEMENT+CHAR_SEP_EQUIPEMENT,"\n")
 
 fun getNbrUtilisationAccordingItem(equipement : IListItem,nbrUtilisation : Int?):String{
