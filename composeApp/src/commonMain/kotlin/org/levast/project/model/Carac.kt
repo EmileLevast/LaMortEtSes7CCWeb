@@ -22,7 +22,7 @@ class Carac(
         ame = other.ame
     )
 
-    fun toCSV():String{
+    fun toFormattedString():String{
         return "$vie/$force/${deparseDefense(defense)}/$intelligence/$energie/$humanite/$ame"
     }
 

@@ -1,7 +1,5 @@
-import androidx.compose.ui.graphics.ImageBitmap
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import org.levast.project.network.ApiApp
 
 @Serializable
 sealed class ApiableItem() : IListItem {
@@ -282,4 +280,8 @@ sealed class ApiableItem() : IListItem {
         return CHAR_SEP_EQUIPEMENT+this.entries
             .joinToString("$CHAR_SEP_EQUIPEMENT${CHAR_SEP_EQUIPEMENT}") { entry -> "${entry.key}:${entry.value}" }+CHAR_SEP_EQUIPEMENT
     }
+
+    protected fun getDeparseStringAsMapStrInt(parsedStr : String) = parsedStr.deserializeToListElements()
+        ?.associate { entry -> entry.substringBefore(':') to entry.substringAfter(':').toInt() }
+        ?.toMutableMap() ?: mutableMapOf()
 }

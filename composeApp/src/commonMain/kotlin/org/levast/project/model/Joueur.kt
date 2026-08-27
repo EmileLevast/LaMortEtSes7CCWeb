@@ -1,8 +1,6 @@
 import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable
 import lamortetses7ccweb.composeapp.generated.resources.Res
-import lamortetses7ccweb.composeapp.generated.resources.logoarme
-import lamortetses7ccweb.composeapp.generated.resources.logoequipe
 import lamortetses7ccweb.composeapp.generated.resources.logojoueur
 import org.jetbrains.compose.resources.DrawableResource
 
@@ -41,7 +39,7 @@ class Joueur(
             listStringElement[5].getIntOrZero(),
             listStringElement[6],
             listStringElement[7],
-            getDeparseAllUtilisationsStringAsMap(listStringElement[8])
+            getDeparseStringAsMapStrInt(listStringElement[8])
         )
     }
 
@@ -59,15 +57,8 @@ class Joueur(
         )
     }
 
-
-    private fun getDeparseAllUtilisationsStringAsMap(parsedStr : String) = parsedStr.deserializeToListElements()
-        ?.associate { entry -> entry.substringBefore(':') to entry.substringAfter(':').toInt() }
-        ?.toMutableMap() ?: mutableMapOf()
-
     fun getAllEquipmentAsList()=chaineEquipementSerialisee.deserializeToListElements()?: listOf()
     fun getAllEquipmentSelectionneAsList()=chaineEquipementSelectionneSerialisee.deserializeToListElements()?: listOf()
-
-
 
 
     override fun getDeparsedAttributes(): List<String> {
@@ -75,8 +66,8 @@ class Joueur(
             nom,
             chaineEquipementSerialisee,
             details,
-            caracOrigin.toCSV(),
-            caracActuel.toCSV(),
+            caracOrigin.toFormattedString(),
+            caracActuel.toFormattedString(),
             niveau.toString(),
             nomComplet,
             chaineEquipementSelectionneSerialisee,

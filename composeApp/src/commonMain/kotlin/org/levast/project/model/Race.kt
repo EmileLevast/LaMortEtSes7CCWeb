@@ -23,18 +23,33 @@ class Race(
     }
 
     override fun getStatsAsStrings(): String = "" +
-            "${nomComplet}\nCarac : ${carac.toCSV()}\n" +
+            "${nomComplet}\nCarac : ${carac.toFormattedString()}\n" +
             capacites.getAsString()
 
     override fun getParsingRulesAttributesAsList(): List<String> {
-        TODO("Not yet implemented")
+        return listOf(
+            "Nom: String",
+            "caracteristiques : vie/force/EffectType:Int|Effect:Int.../intelligence/energie/humanite/ame",
+            "nom complet : String",
+            "capacites: ${CHAR_SEP_EQUIPEMENT}String:Int$CHAR_SEP_EQUIPEMENT${CHAR_SEP_EQUIPEMENT}String:Int${CHAR_SEP_EQUIPEMENT}",
+        )
     }
 
     override fun getDeparsedAttributes(): List<String> {
-        TODO("Not yet implemented")
+        return listOf<String>(
+            nom,
+            carac.toFormattedString(),
+            nomComplet,
+            capacites.getAsString()
+        )
     }
 
     override fun parseFromString(listStringElement: List<String>): ApiableItem {
-        TODO("Not yet implemented")
+        return Race(
+            listStringElement[0].cleanupForDB(),
+            listStringElement[2],
+            Carac.fromCSV(listStringElement[1]),
+            getDeparseStringAsMapStrInt(listStringElement[3])
+        )
     }
 }
