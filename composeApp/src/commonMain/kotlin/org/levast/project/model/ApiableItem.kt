@@ -275,6 +275,11 @@ sealed class ApiableItem() : IListItem {
         return Pair(textSeuils, coupcCritiquesCalcules)
     }
 
-    override fun getBackgroundBorder(): String = "border$nameForApi.svg"
-
+    protected fun Map<String,Int>.getAsString() : String{
+        if(this.isEmpty()){//s'il n'y a pas d'utilisations on retourne une chaine vide
+            return ""
+        }
+        return CHAR_SEP_EQUIPEMENT+this.entries
+            .joinToString("$CHAR_SEP_EQUIPEMENT${CHAR_SEP_EQUIPEMENT}") { entry -> "${entry.key}:${entry.value}" }+CHAR_SEP_EQUIPEMENT
+    }
 }

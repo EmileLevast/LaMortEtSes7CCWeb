@@ -28,7 +28,7 @@ class Joueur(
     override fun getStatsAsStrings():String{
         return "Niveau : $niveau\n"+getAllEquipmentAsList().joinToString("\n") +
                 "\n"+caracActuel.showWithComparisonOriginCarac(caracOrigin)+"\n"+details +"\néquipé:"+ getAllEquipmentSelectionneAsList() +
-                (getAllUtilisationsRestantesAsString().ifBlank { null }?.let{ "\nUtilisations restantes :$it" } ?: "")
+                (utilisationsRestantesItem.getAsString().ifBlank { null }?.let{ "\nUtilisations restantes :$it" } ?: "")
     }
 
     override fun parseFromString(listStringElement : List<String>):ApiableItem{
@@ -59,13 +59,7 @@ class Joueur(
         )
     }
 
-    private fun getAllUtilisationsRestantesAsString() : String{
-        if(utilisationsRestantesItem.isEmpty()){//s'il n'y a pas d'utilisations on retourne une chaine vide
-            return ""
-        }
-        return CHAR_SEP_EQUIPEMENT+utilisationsRestantesItem.entries
-            .joinToString("$CHAR_SEP_EQUIPEMENT${CHAR_SEP_EQUIPEMENT}") { entry -> "${entry.key}:${entry.value}" }+CHAR_SEP_EQUIPEMENT
-    }
+
     private fun getDeparseAllUtilisationsStringAsMap(parsedStr : String) = parsedStr.deserializeToListElements()
         ?.associate { entry -> entry.substringBefore(':') to entry.substringAfter(':').toInt() }
         ?.toMutableMap() ?: mutableMapOf()
@@ -86,7 +80,7 @@ class Joueur(
             niveau.toString(),
             nomComplet,
             chaineEquipementSelectionneSerialisee,
-            getAllUtilisationsRestantesAsString()
+            utilisationsRestantesItem.getAsString()
         )
     }
 

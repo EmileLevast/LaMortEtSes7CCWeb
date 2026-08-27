@@ -20,8 +20,6 @@ interface IListItem : HeadBodyShowable {
     fun getParsingRulesAttributesAsList():List<String>
     fun getDeparsedAttributes():List<String>
 
-    fun getBackgroundBorder():String
-
     override fun getHead(): String = nomComplet.ifBlank { nom }
 
     override fun getBody(): String = getStatsSimplifiedAsStrings()
