@@ -15,7 +15,10 @@ class Joueur(
     override val nomComplet:String = "",
     var chaineEquipementSelectionneSerialisee: String ="",
     var utilisationsRestantesItem:MutableMap<String,Int> = mutableMapOf(),
-    var notesPnj:MutableMap<String,String> = mutableMapOf(),//on parse pas ça ce sera juste editable dans l ecran des joueurs
+    //on parse pas les attributs ci-dessous c'est trop chiant
+    var race:Race = Race(),
+    var classeType:ClasseType = ClasseType(),
+    var notesPnj:MutableMap<String,String> = mutableMapOf(),
 ) : ApiableItem() {
 
     override val _id = nom.hashCode()
@@ -24,7 +27,7 @@ class Joueur(
         get() = Color(0xFFDFAF2C)
 
     override fun getStatsAsStrings():String{
-        return "Niveau : $niveau\n"+getAllEquipmentAsList().joinToString("\n") +
+        return "${classeType.nom} ${race.nom} de Niveau : $niveau\n"+getAllEquipmentAsList().joinToString("\n") +
                 "\n"+caracActuel.showWithComparisonOriginCarac(caracOrigin)+"\n"+details +"\néquipé:"+ getAllEquipmentSelectionneAsList() +
                 (utilisationsRestantesItem.getAsString().ifBlank { null }?.let{ "\nUtilisations restantes :$it" } ?: "")
     }
@@ -76,6 +79,7 @@ class Joueur(
     }
 
     override fun getBody() = "Niveau : $niveau\n" +
+            "${classeType.nom} ${race.nom}\n"+
             "\n"+caracActuel.showWithComparisonOriginCarac(caracOrigin)
 
     fun equip(itemNom:String){
