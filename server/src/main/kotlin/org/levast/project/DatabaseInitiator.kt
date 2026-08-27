@@ -125,6 +125,8 @@ suspend fun insertListElements(instanceOfCollectionItemDefinition:ApiableItem,li
         is Special -> database.getCollection<Special>().insertMany(listToInsert as List<Special>)
         is Joueur -> database.getCollection<Joueur>().insertMany(listToInsert as List<Joueur>)
         is Equipe -> database.getCollection<Equipe>().insertMany(listToInsert as List<Equipe>)
+        is ClasseType -> database.getCollection<ClasseType>().insertMany(listToInsert as List<ClasseType>)
+        is Race -> database.getCollection<Race>().insertMany(listToInsert as List<Race>)
     }
 }
 
@@ -142,6 +144,8 @@ suspend fun getCollectionElements(instanceOfCollectionItemDefinition:ApiableItem
         is Special -> getElementAccordingToType(nameOfItemSearched, instanceOfCollectionItemDefinition,strict)
         is Joueur -> getElementAccordingToType(nameOfItemSearched, instanceOfCollectionItemDefinition,strict)
         is Equipe -> getElementAccordingToType(nameOfItemSearched, instanceOfCollectionItemDefinition,strict)
+        is ClasseType -> getElementAccordingToType(nameOfItemSearched, instanceOfCollectionItemDefinition,strict)
+        is Race -> getElementAccordingToType(nameOfItemSearched, instanceOfCollectionItemDefinition,strict)
     }
 }
 
@@ -159,6 +163,8 @@ suspend fun getCollectionElementsAsString(instanceOfCollectionItemDefinition:Api
         is Special -> getElementAccordingToTypeAsString(nameOfItemSearched, instanceOfCollectionItemDefinition,strict)
         is Joueur -> getElementAccordingToTypeAsString(nameOfItemSearched, instanceOfCollectionItemDefinition,strict)
         is Equipe -> getElementAccordingToTypeAsString(nameOfItemSearched, instanceOfCollectionItemDefinition,strict)
+        is ClasseType -> getElementAccordingToTypeAsString(nameOfItemSearched, instanceOfCollectionItemDefinition,strict)
+        is Race -> getElementAccordingToTypeAsString(nameOfItemSearched, instanceOfCollectionItemDefinition,strict)
     }
 }
 
@@ -176,6 +182,8 @@ suspend fun getCollectionElementsArraysAsString(instanceOfCollectionItemDefiniti
         is Special -> getElementsAccordingToTypeAsString(namesOfItemsSearched, instanceOfCollectionItemDefinition)
         is Joueur -> getElementsAccordingToTypeAsString(namesOfItemsSearched, instanceOfCollectionItemDefinition)
         is Equipe -> getElementsAccordingToTypeAsString(namesOfItemsSearched, instanceOfCollectionItemDefinition)
+        is ClasseType -> getElementsAccordingToTypeAsString(namesOfItemsSearched, instanceOfCollectionItemDefinition)
+        is Race -> getElementsAccordingToTypeAsString(namesOfItemsSearched, instanceOfCollectionItemDefinition)
     }
 }
 

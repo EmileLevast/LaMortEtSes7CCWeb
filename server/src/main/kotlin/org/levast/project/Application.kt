@@ -4,6 +4,7 @@ import ApiableItem
 import Arme
 import Armure
 import Bouclier
+import ClasseType
 import ENDPOINT_COMPTE_UTILISATEUR_DELETE
 import ENDPOINT_COMPTE_UTILISATEUR_GET_ALL
 import ENDPOINT_COMPTE_UTILISATEUR_INSERT
@@ -18,6 +19,7 @@ import Joueur
 import Monster
 import QUERY_PARAMETER_ID
 import QUERY_PARAMETER_NOM
+import Race
 import Sort
 import Special
 import canUserModifyJoueur
@@ -72,8 +74,9 @@ import updateCompteUtilisateur
 import java.io.File
 import java.io.FileNotFoundException
 
+//TODO ajouter ici les nouveaux APIAbleItem pour faire leurs root
 val unmutableListApiItemDefinition =
-    listOf(Arme(), Armure(), Monster(), Bouclier(), Sort(), Special(), Joueur(), Equipe())
+    listOf(Arme(), Armure(), Monster(), Bouclier(), Sort(), Special(), Joueur(), Equipe(), Race(), ClasseType())
 
 val logger = KtorSimpleLogger("logger")
 
@@ -574,7 +577,11 @@ private suspend fun getApiableElementAccordingToType(
         call.receive<Equipe>()
     }
 
-    else -> {
-        call.receive<Armure>()
+    is ClasseType -> {
+        call.receive<ClasseType>()
+    }
+
+    is Race -> {
+        call.receive<Race>()
     }
 }
