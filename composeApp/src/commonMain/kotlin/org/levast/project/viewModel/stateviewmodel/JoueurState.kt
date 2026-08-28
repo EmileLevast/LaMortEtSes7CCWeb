@@ -9,7 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import org.levast.project.model.CompteUtilisateur
 
-class JoueurState {
+class JoueurState() {
     var nom by mutableStateOf("")
 
     var classeType by mutableStateOf<ClasseType?>(null)
@@ -27,7 +27,7 @@ class JoueurState {
         return Joueur(nom,classeType= classeType?: ClasseType(), race=race?: Race())
     }
 
-    constructor(joueur : Joueur) {
+    constructor(joueur : Joueur) : this() {
         nom = joueur.nom
         classeType = joueur.classeType
         race = joueur.race

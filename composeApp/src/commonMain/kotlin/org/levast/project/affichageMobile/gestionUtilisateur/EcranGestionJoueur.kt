@@ -49,7 +49,7 @@ fun EcranGestionJoueur(
 
     if (joueurCreating == null) {
         LayouShowAllJoueurs(
-            {joueurCreating = JoueurState(it)},
+            {joueurCreating = JoueurState()},
             allJoueurs
         ) {
             gestionJoueurViewModel.downloadNeededData()
