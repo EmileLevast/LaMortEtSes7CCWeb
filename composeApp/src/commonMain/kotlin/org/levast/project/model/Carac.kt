@@ -29,16 +29,26 @@ class Carac(
     fun showWithComparisonOriginCarac(originCarac:Carac):String{
         return "Vie (${originCarac.vie}): $vie\n" +
                 "Force (${originCarac.force}): $force\n" +
-                "Defense : ${convertEffectTypeStatsToString(originCarac.defense)}\n" +
+                "Defense : ${convertEffectTypeStatsToString(defense)}\n" +
                 "Intelligence (${originCarac.intelligence}): $intelligence\n" +
                 "Energie (${originCarac.energie}): $energie\n" +
                 "Humanite : $humanite\n" +
                 "Ames : $ame\n"
     }
 
+    fun toPrettyString():String{
+        return "Vie : $vie\n" +
+                "Force : $force\n" +
+                "Defense : ${convertEffectTypeStatsToString(defense)}\n" +
+                "Intelligence : $intelligence\n" +
+                "Energie : $energie\n" +
+                "Humanite : $humanite\n" +
+                "Ames : $ame\n"
+    }
+
     companion object {
-        fun fromCSV(csvStr:String):Carac{
-            val listCarac = csvStr.split("/")
+        fun fromFormattedString(formattedString:String):Carac{
+            val listCarac = formattedString.split("/")
             return Carac(
                 listCarac[0].getIntOrZero(),
                 listCarac[1].getIntOrZero(),

@@ -69,6 +69,7 @@ import lamortetses7ccweb.composeapp.generated.resources.mjmenu
 import model.HeadBodyShowable
 import org.jetbrains.compose.resources.painterResource
 import org.levast.project.affichageAdmin.EcranAdmin
+import org.levast.project.affichageMobile.gestionUtilisateur.EcranGestionUtilisateur
 import org.levast.project.configuration.IConfiguration
 import org.levast.project.viewModel.AdminViewModel
 import org.levast.project.viewModel.FilterViewModel
@@ -152,7 +153,7 @@ fun EcranPrincipal(
 
             if (adminUiState.filterAdminScreen != FilterAdminScreen.NONE && adminUiState.isAdminModeOn == true) {
                 if(adminUiState.filterAdminScreen == FilterAdminScreen.USER_ACCOUNT){
-                    EcranCompteUtilisateur()
+                    EcranGestionUtilisateur()
                 }else{
                     EcranAdmin()
                 }

@@ -23,7 +23,8 @@ class ClasseType(
     }
 
     override fun getStatsAsStrings(): String = "" +
-            "${nomComplet}\nCarac : ${carac.toFormattedString()}\n" +
+            "${nomComplet}\n" +
+            "${carac.toPrettyString()}\n" +
             chaineEquipementSerialisee.deserializeToListElements().joinToString("\n")
 
     override fun getParsingRulesAttributesAsList(): List<String> {
@@ -48,7 +49,7 @@ class ClasseType(
         return ClasseType(
             listStringElement[0].cleanupForDB(),
             listStringElement[1],
-            Carac.fromCSV(listStringElement[2]),
+            Carac.fromFormattedString(listStringElement[2]),
             listStringElement[3]
         )
     }

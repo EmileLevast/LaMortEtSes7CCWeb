@@ -23,7 +23,8 @@ class Race(
     }
 
     override fun getStatsAsStrings(): String = "" +
-            "${nomComplet}\nCarac : ${carac.toFormattedString()}\n" +
+            "${nomComplet}\n" +
+            "${carac.toPrettyString()}\n" +
             capacites.getAsString()
 
     override fun getParsingRulesAttributesAsList(): List<String> {
@@ -48,7 +49,7 @@ class Race(
         return Race(
             listStringElement[0].cleanupForDB(),
             listStringElement[2],
-            Carac.fromCSV(listStringElement[1]),
+            Carac.fromFormattedString(listStringElement[1]),
             getDeparseStringAsMapStrInt(listStringElement[3])
         )
     }
