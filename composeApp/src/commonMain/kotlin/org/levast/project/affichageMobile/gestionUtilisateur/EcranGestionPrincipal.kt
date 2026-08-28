@@ -12,13 +12,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
-import org.levast.project.viewModel.CompteUtilisateurViewModel
 
 @Composable
-fun EcranGestionUtilisateur(
+fun EcranGestionPrincipal(
 ) {
-    var selectedTab by remember {  mutableStateOf(UtilisateurTab.JOUEUR)}
+    var selectedTab by remember { mutableStateOf(UtilisateurTab.JOUEUR) }
 
     Scaffold { contentPadding ->
         Column {
@@ -31,18 +29,18 @@ fun EcranGestionUtilisateur(
                     })
                 }
             }
-        if(selectedTab == UtilisateurTab.JOUEUR){
-            Text("Création joueur")
-        }else{
-            EcranCompteUtilisateur()
-        }
+            if (selectedTab == UtilisateurTab.JOUEUR) {
+                EcranGestionJoueur()
+            } else {
+                EcranCompteUtilisateur()
+            }
         }
 
     }
 
 }
 
-enum class UtilisateurTab(val label:String){
+enum class UtilisateurTab(val label: String) {
     JOUEUR("Joueurs"),
     COMPTE("Comptes")
 }

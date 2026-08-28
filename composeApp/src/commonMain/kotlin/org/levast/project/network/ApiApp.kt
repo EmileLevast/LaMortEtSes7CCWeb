@@ -175,8 +175,8 @@ class ApiApp(val config: IConfiguration) {
         listNomSearched.forEach { nameSearched ->
             if (nameSearched.isNotBlank()) {
                 //pour chacun des équipements on cherche dans chacune des tables mais on recupere que le premier trouvé
-                searchJoueur(nameSearched)?.let { joueurTrouve ->
-                    if (joueurTrouve.isNotEmpty()) listJoueurs.add(joueurTrouve.first())
+                searchJoueur(nameSearched)?.let { joueurTrouves ->
+                    if (joueurTrouves.isNotEmpty()) listJoueurs.addAll(joueurTrouves)
                 }
             }
         }
