@@ -52,9 +52,6 @@ class Special(
         )
     }
 
-    override fun getBackgroundBorder(): String = "border${itemType.name.lowercase()}.svg"
-
-
     override fun getImageDrawable(): DrawableResource {
         return Res.drawable.logospecial
     }

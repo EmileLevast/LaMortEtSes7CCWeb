@@ -70,13 +70,10 @@ import org.levast.project.network.AnythingItemDTO
 import org.litote.kmongo.eq
 import org.litote.kmongo.setValue
 import org.slf4j.LoggerFactory
+import unmutableListApiItemDefinition
 import updateCompteUtilisateur
 import java.io.File
 import java.io.FileNotFoundException
-
-//TODO ajouter ici les nouveaux APIAbleItem pour faire leurs root
-val unmutableListApiItemDefinition =
-    listOf(Arme(), Armure(), Monster(), Bouclier(), Sort(), Special(), Joueur(), Equipe(), Race(), ClasseType())
 
 val logger = KtorSimpleLogger("logger")
 

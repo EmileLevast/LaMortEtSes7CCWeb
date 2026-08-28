@@ -114,7 +114,6 @@ class Sort(
         )
     }
 
-    override fun getBackgroundBorder(): String = "border${sortType.name.lowercase()}.svg"
 
 
     override fun getImageDrawable(): DrawableResource {

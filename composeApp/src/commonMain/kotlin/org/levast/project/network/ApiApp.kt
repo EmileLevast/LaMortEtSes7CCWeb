@@ -4,6 +4,7 @@ import ApiableItem
 import Arme
 import Armure
 import Bouclier
+import ClasseType
 import ENDPOINT_COMPTE_UTILISATEUR_DELETE
 import ENDPOINT_COMPTE_UTILISATEUR_GET_ALL
 import ENDPOINT_COMPTE_UTILISATEUR_INSERT
@@ -19,6 +20,7 @@ import Joueur
 import Monster
 import QUERY_PARAMETER_ID
 import QUERY_PARAMETER_NOM
+import Race
 import Sort
 import Special
 import cleanupForDB
@@ -134,6 +136,8 @@ class ApiApp(val config: IConfiguration) {
                         is Special -> Json.decodeFromString<Special>(anythingItem.itemContent!!)
                         is Joueur -> Json.decodeFromString<Joueur>(anythingItem.itemContent!!)
                         is Equipe -> Json.decodeFromString<Equipe>(anythingItem.itemContent!!)
+                        is Race -> Json.decodeFromString<Race>(anythingItem.itemContent!!)
+                        is ClasseType -> Json.decodeFromString<ClasseType>(anythingItem.itemContent!!)
                         else -> throw IllegalArgumentException("Impossible de deserialiser l'objet json recu, il ne fait pas parti des elements connus")
                     }
                 )
