@@ -170,6 +170,18 @@ class ApiApp(val config: IConfiguration) {
         }
     }
 
+    suspend fun <T: ApiableItem> searchSomethings(blankItemToSearchApi: T, nomSearched: String): List<T>? {
+        return catchNetworkError(defaultReturnValue = listOf()) {
+            jsonClient.get(endpoint + "/" + blankItemToSearchApi.nameForApi) {
+                url {
+                    parameters.append(QUERY_PARAMETER_NOM, nomSearched)
+                }
+            }.let {
+                if (it.status != HttpStatusCode.NoContent) it.body<List<T>>() else null
+            }
+        }
+    }
+
     suspend fun searchAllJoueur(listNomSearched: List<String>): List<Joueur> {
         val listJoueurs = mutableListOf<Joueur>()
         listNomSearched.forEach { nameSearched ->

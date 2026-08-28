@@ -28,37 +28,47 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import org.levast.project.model.CompteUtilisateur
+import org.levast.project.viewModel.stateviewmodel.JoueurState
 
 @Composable
 fun EcranGestionJoueur(
     gestionJoueurViewModel: GestionJoueurViewModel = viewModel { GestionJoueurViewModel() }
 ) {
     val allJoueurs by gestionJoueurViewModel.uiStateAllJoueurs.collectAsState()
-    var (isCreatingJoueur, setCreatingJoueur) = remember { mutableStateOf<Joueur?>(null) }
+    val allEquipes by gestionJoueurViewModel.uiStateAllEquipes.collectAsState()
+    val allCompte by gestionJoueurViewModel.uiStateAllComptes.collectAsState()
+    val allRaces by gestionJoueurViewModel.uiStateAllRaces.collectAsState()
+    val allClasseTypes by gestionJoueurViewModel.uiStateAllClasseTypes.collectAsState()
+    var joueurCreating by remember { mutableStateOf<JoueurState?>(null) }
 
 
     //TODO je viens de créer le viewModel de joueurs ici, il faudrait l'utiliser aussi au niveau de l'écran principal pour ne download les joueurs qu'nue fois
     LaunchedEffect(Unit) {
-        gestionJoueurViewModel.retrieveAllJoueurs()
+        gestionJoueurViewModel.downloadNeededData()
     }
 
-    if (isCreatingJoueur == null) {
+    if (joueurCreating == null) {
         LayouShowAllJoueurs(
-            isCreatingJoueur,
-            setCreatingJoueur,
+            {joueurCreating = JoueurState(it)},
             allJoueurs
         ) {
-            gestionJoueurViewModel.retrieveAllJoueurs()
+            gestionJoueurViewModel.downloadNeededData()
         }
+    }else{
+        LayoutCreationJoueur(
+            joueurCreating!!,
+            allEquipes,
+            allCompte,
+            allRaces,
+            allClasseTypes
+        )
     }
 
 }
 
 @Composable
 fun LayouShowAllJoueurs(
-    isCreatingJoueur: Joueur?,
-    setCreatingJoueur: (Joueur) -> Unit,
+    onJoueurCreating: (Joueur) -> Unit,
     allJoueurs: List<Joueur>,
     refreshAllJoueurs: () -> Unit
 ) {
@@ -66,9 +76,7 @@ fun LayouShowAllJoueurs(
         Row(Modifier.fillMaxWidth()) {
             Button(
                 onClick = {
-                    if (isCreatingJoueur == null) {
-                        setCreatingJoueur(Joueur())
-                    }
+                        onJoueurCreating(Joueur())
                 }
             ) {
                 Text("Nouveau joueur")
