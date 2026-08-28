@@ -2,6 +2,7 @@ package org.levast.project.affichageMobile.gestionUtilisateur
 
 import ClasseType
 import Equipe
+import Joueur
 import Race
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -31,6 +33,7 @@ import org.levast.project.viewModel.stateviewmodel.JoueurState
 @Composable
 fun LayoutCreationJoueur(
     joueurState: JoueurState,
+    onCreateJoueur: (JoueurState) -> Unit,
     equipes: List<Equipe>,
     comptes: List<CompteUtilisateur>,
     races : List<Race>,
@@ -93,6 +96,14 @@ fun LayoutCreationJoueur(
                 onValueChange = {
                     joueurState.mdpField = it
                 })
+        }
+
+        Button(
+            onClick = {
+                onCreateJoueur(joueurState)
+            }
+        ) {
+            Text("Créer le joueur")
         }
     }
 }

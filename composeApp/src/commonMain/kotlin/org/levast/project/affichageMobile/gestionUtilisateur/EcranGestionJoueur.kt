@@ -1,6 +1,7 @@
 package org.levast.project.affichageMobile.gestionUtilisateur
 
 import Joueur
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -57,6 +58,7 @@ fun EcranGestionJoueur(
     }else{
         LayoutCreationJoueur(
             joueurCreating!!,
+            gestionJoueurViewModel::createJoueur,
             allEquipes,
             allCompte,
             allRaces,
@@ -73,7 +75,7 @@ fun LayouShowAllJoueurs(
     refreshAllJoueurs: () -> Unit
 ) {
     Column(Modifier.fillMaxSize()) {
-        Row(Modifier.fillMaxWidth()) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Button(
                 onClick = {
                         onJoueurCreating(Joueur())

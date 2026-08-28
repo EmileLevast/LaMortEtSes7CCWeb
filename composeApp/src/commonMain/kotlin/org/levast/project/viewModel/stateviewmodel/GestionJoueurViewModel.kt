@@ -53,5 +53,17 @@ class GestionJoueurViewModel : ViewModel() {
         }
     }
 
+    fun createJoueur(joueurState: JoueurState){
+        //Créer ou maj compte
+            //il y'a déjà les méthode apis
+
+    //Créer ou maj Equipe
+
+        //Récupérer l'objet race
+        //Récupérer l'objet classe
+    //Créer l'objet joueur
+
+    }
+
 
 }

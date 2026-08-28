@@ -63,7 +63,7 @@ fun EcranStatistiques(actuelJoueur: Joueur, isWideScreen : Boolean, onSave: () -
         //Affichage niveau
         item {
             Text(
-                text = "Niveau : ${actuelJoueur.niveau}",
+                text = "${actuelJoueur.race.nom} ${actuelJoueur.classeType.nom} de Niveau : ${actuelJoueur.niveau}",
                 textAlign = TextAlign.Center,
             )
         }
