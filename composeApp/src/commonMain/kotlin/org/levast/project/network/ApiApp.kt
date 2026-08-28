@@ -54,7 +54,7 @@ class ApiApp(val config: IConfiguration) {
 
     val endpoint get() = config.getEndpointServer()
 
-    private var jsonClient: HttpClient;
+    var jsonClient: HttpClient;
 
     init {
         jsonClient = createHttpClient()
@@ -170,7 +170,7 @@ class ApiApp(val config: IConfiguration) {
         }
     }
 
-    suspend fun <T: ApiableItem> searchSomethings(blankItemToSearchApi: T, nomSearched: String): List<T>? {
+    suspend inline fun <reified T: ApiableItem> searchSomethings(blankItemToSearchApi: T, nomSearched: String): List<T>? {
         return catchNetworkError(defaultReturnValue = listOf()) {
             jsonClient.get(endpoint + "/" + blankItemToSearchApi.nameForApi) {
                 url {
@@ -336,7 +336,7 @@ class ApiApp(val config: IConfiguration) {
     }
 
 
-    private suspend fun <T> catchNetworkError(
+    suspend fun <T> catchNetworkError(
         errorMessage: String = ERROR_NETWORK_MESSAGE,
         defaultReturnValue: T,
         networkAction: suspend () -> T,
