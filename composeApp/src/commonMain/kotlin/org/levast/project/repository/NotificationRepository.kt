@@ -1,15 +1,22 @@
 package org.levast.project.repository
 
-import Joueur
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class NotificationRepository() {
-    private val _uiStateAllNotifications: MutableStateFlow<String?> = MutableStateFlow(null)
-    val uiStateAllNotifications: StateFlow<String?> = _uiStateAllNotifications.asStateFlow()
+    private val _notifications: MutableSharedFlow<String?> = MutableSharedFlow(
+        replay = 0,
+        extraBufferCapacity = 32,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    val uiStateAllNotifications: SharedFlow<String?> = _notifications.asSharedFlow()
 
-    suspend fun sendNotification(notification : String){
-        _uiStateAllNotifications.emit(notification)
+    fun sendNotification(notification : String){
+        _notifications.tryEmit(notification)
     }
 }

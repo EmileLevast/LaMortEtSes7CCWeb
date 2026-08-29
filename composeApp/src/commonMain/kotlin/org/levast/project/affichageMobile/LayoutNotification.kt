@@ -8,6 +8,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -19,14 +20,18 @@ import org.levast.project.configuration.injectNotification
 fun LayoutNotification(content: @Composable () -> Unit){
     val scope = rememberCoroutineScope()
     val notificationRepository = injectNotification()
-    val notification by notificationRepository.uiStateAllNotifications.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    if(notification != null){
-        scope.launch {
-            snackbarHostState.showSnackbar(notification!!)
+    LaunchedEffect(Unit) {
+        notificationRepository.uiStateAllNotifications.collect {
+            if (it != null) {
+                scope.launch {
+                    snackbarHostState.showSnackbar(it)
+                }
+            }
         }
     }
+
 
     Scaffold(
         snackbarHost = {

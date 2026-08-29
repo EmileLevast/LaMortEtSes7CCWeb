@@ -149,7 +149,7 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
     }
 
     private suspend fun searchEverythingStringEncoded(searchedNames: List<String>): List<AnythingItemDTO> {
-        return catchNetworkError("Recherche de tous les items OK") {
+        return catchNetworkError("Recherche des items OK") {
             jsonClient.put("$endpoint/$ENDPOINT_RECHERCHE_TOUT") {
                 contentType(ContentType.Application.Json)
                 setBody(searchedNames)

@@ -66,8 +66,8 @@ class Equipe(
         return Res.drawable.logoequipe
     }
 
-    public fun addMembreEquipe(membre: String){
-        chaineJoueurSerialisee+=CHAR_SEP_EQUIPEMENT+membre+CHAR_SEP_EQUIPEMENT
+    fun addMembreEquipe(membre: String){
+        chaineJoueurSerialisee+=CHAR_SEP_EQUIPEMENT+membre
     }
 
 }

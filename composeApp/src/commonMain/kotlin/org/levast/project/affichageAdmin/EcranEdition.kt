@@ -83,9 +83,7 @@ fun layoutEdition(
             val itemParsed = (itemToEdit as ApiableItem).parseFromString(listAttributsToDeparse)
             return itemParsed
         }catch (e : Exception){
-            coroutineScope.launch {
-                notificationRepository.sendNotification("${itemToEdit.nom} - erreur formatage")
-            }
+            notificationRepository.sendNotification("${itemToEdit.nom} - erreur formatage")
             return null
         }
 
