@@ -261,82 +261,82 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
     }
 
     suspend fun insertItem(itemSelected: ApiableItem): Boolean {
-        return catchNetworkError(defaultReturnValue = false) {
+        return catchNetworkError("Insertion ${itemSelected.nom} OK") {
             jsonClient.post(endpoint + "/" + itemSelected.nameForApi + "/${itemSelected.insertForApi}") {
                 contentType(ContentType.Application.Json)
                 setBody(itemSelected)
-            }.let {
-                it.status == HttpStatusCode.OK
             }
-        }
+        }?.let {
+            it.status == HttpStatusCode.OK
+        } == true
     }
 
     suspend fun updateItem(itemSelected: ApiableItem): Boolean {
-        return catchNetworkError(defaultReturnValue = false) {
+        return catchNetworkError("Mise à jour ${itemSelected.nom} OK") {
             jsonClient.post(endpoint + "/" + itemSelected.nameForApi + "/${itemSelected.updateForApi}") {
                 contentType(ContentType.Application.Json)
                 setBody(itemSelected)
-            }.let {
-                    it.status == HttpStatusCode.OK
             }
-        }
+        }?.let {
+            it.status == HttpStatusCode.OK
+        } == true
     }
 
     suspend fun deleteItem(itemSelected: ApiableItem): Boolean {
-        return catchNetworkError(defaultReturnValue = false) {
+        return catchNetworkError("Suppression ${itemSelected.nom} OK") {
             jsonClient.post(endpoint + "/" + itemSelected.nameForApi + "/${itemSelected.deleteForApi}") {
                 url {
                     parameters.append(QUERY_PARAMETER_NOM, itemSelected.nom)
                 }
-            }.let {
-                it.status == HttpStatusCode.OK
             }
-        }
+        }?.let {
+            it.status == HttpStatusCode.OK
+        } == true
     }
 
     //Gérer les comptes utilisateurs
     suspend fun getAllCompteUtilisateur(): List<CompteUtilisateur> {
-        return catchNetworkError(defaultReturnValue = listOf()) {
+        return catchNetworkError("Recherche de tous les comptes OK") {
             jsonClient.get("$endpoint/$ENDPOINT_COMPTE_UTILISATEUR_ROOT/$ENDPOINT_COMPTE_UTILISATEUR_GET_ALL") {
-            }.let {
-                if (it.status == HttpStatusCode.OK) it.body<List<CompteUtilisateur>>() else listOf()
             }
-        }
+        }?.let {
+            if (it.status == HttpStatusCode.OK) it.body<List<CompteUtilisateur>>() else listOf()
+        } ?: listOf()
     }
 
     //Gérer les comptes utilisateurs
     suspend fun insertCompteUtilisateur(compteUtilisateur: CompteUtilisateur): Boolean {
-        return catchNetworkError(defaultReturnValue = false) {
+        return catchNetworkError("Insertion compte ${compteUtilisateur.nom} OK") {
             jsonClient.post("$endpoint/$ENDPOINT_COMPTE_UTILISATEUR_ROOT/$ENDPOINT_COMPTE_UTILISATEUR_INSERT") {
                 contentType(ContentType.Application.Json)
                 setBody(compteUtilisateur)
-            }.let {
-                it.status == HttpStatusCode.OK
             }
-        }
+        }?.let {
+            it.status == HttpStatusCode.OK
+        } == true
     }
 
     suspend fun updateCompteUtilisateur(compteUtilisateur: CompteUtilisateur): Boolean {
-        return catchNetworkError(defaultReturnValue = false) {
+        return catchNetworkError("Mise à jour compte ${compteUtilisateur.nom} OK") {
             jsonClient.post("$endpoint/$ENDPOINT_COMPTE_UTILISATEUR_ROOT/$ENDPOINT_COMPTE_UTILISATEUR_UPDATE") {
                 contentType(ContentType.Application.Json)
                 setBody(compteUtilisateur)
-            }.let {
-                it.status == HttpStatusCode.OK
             }
-        }
+        }?.let {
+            it.status == HttpStatusCode.OK
+        } == true
     }
 
     suspend fun deleteCompteUtilisateur(compteUtilisateur: CompteUtilisateur): Boolean {
-        return catchNetworkError(defaultReturnValue = false) {
+        return catchNetworkError("Suppression compte ${compteUtilisateur.nom} OK") {
             jsonClient.delete("$endpoint/$ENDPOINT_COMPTE_UTILISATEUR_ROOT/$ENDPOINT_COMPTE_UTILISATEUR_DELETE") {
                 url {
                     parameters.append(QUERY_PARAMETER_ID, compteUtilisateur.id.toString())
                 }
-            }.let {
-                it.status == HttpStatusCode.OK
             }
-        }
+        }?.let {
+            it.status == HttpStatusCode.OK
+        } == true
     }
 
 
