@@ -39,8 +39,8 @@ class ClasseType(
     override fun getDeparsedAttributes(): List<String> {
         return listOf<String>(
             nom,
-            carac.toFormattedString(),
             nomComplet,
+            carac.toFormattedString(),
             chaineEquipementSerialisee
         )
     }
