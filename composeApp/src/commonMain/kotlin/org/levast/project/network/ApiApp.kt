@@ -96,16 +96,16 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
         nomSearched: String,
         strict: Boolean
     ): List<AnythingItemDTO> {
-        return catchNetworkError(defaultReturnValue = listOf()) {
+        return catchNetworkError("Recherche ${if(strict)"stricte" else ""} $nomSearched OK") {
             jsonClient.get("$endpoint/$ENDPOINT_RECHERCHE_TOUT") {
                 url {
                     parameters.append(ENDPOINT_RECHERCHE_STRICTE, strict.toString())
                     parameters.append(QUERY_PARAMETER_NOM, nomSearched)
                 }
-            }.let {
-                if (it.status != HttpStatusCode.NoContent) it.body<List<AnythingItemDTO>>() else listOf()
             }
-        }
+        }?.let {
+            if (it.status != HttpStatusCode.NoContent) it.body<List<AnythingItemDTO>>() else listOf()
+        } ?: listOf()
     }
 
     private suspend fun searchEverything(
@@ -149,26 +149,25 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
     }
 
     private suspend fun searchEverythingStringEncoded(searchedNames: List<String>): List<AnythingItemDTO> {
-        return catchNetworkError(defaultReturnValue = listOf()) {
+        return catchNetworkError("Recherche de tous les items OK") {
             jsonClient.put("$endpoint/$ENDPOINT_RECHERCHE_TOUT") {
                 contentType(ContentType.Application.Json)
                 setBody(searchedNames)
-            }.let {
-                if (it.status != HttpStatusCode.NoContent) it.body<List<AnythingItemDTO>>() else listOf()
             }
-        }
+        }?.let {
+            if (it.status != HttpStatusCode.NoContent) it.body<List<AnythingItemDTO>>() else listOf()
+        } ?: listOf()
     }
 
     suspend fun searchJoueur(nomSearched: String): List<Joueur>? {
-        return catchNetworkError(defaultReturnValue = listOf()) {
-
+        return catchNetworkError("Recherche joueur $nomSearched OK") {
             jsonClient.get(endpoint + "/" + Joueur().nameForApi) {
                 url {
                     parameters.append(QUERY_PARAMETER_NOM, nomSearched)
                 }
-            }.let {
-                if (it.status != HttpStatusCode.NoContent) it.body<List<Joueur>>() else null
             }
+        }?.let {
+            if (it.status != HttpStatusCode.NoContent) it.body<List<Joueur>>() else null
         }
     }
 
@@ -176,14 +175,14 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
         blankItemToSearchApi: T,
         nomSearched: String
     ): List<T>? {
-        return catchNetworkError(defaultReturnValue = listOf()) {
+        return catchNetworkError("Recherche de quoi que ce soit $nomSearched OK") {
             jsonClient.get(endpoint + "/" + blankItemToSearchApi.nameForApi) {
                 url {
                     parameters.append(QUERY_PARAMETER_NOM, nomSearched)
                 }
-            }.let {
-                if (it.status != HttpStatusCode.NoContent) it.body<List<T>>() else null
             }
+        }?.let {
+            if (it.status != HttpStatusCode.NoContent) it.body<List<T>>() else null
         }
     }
 
@@ -201,14 +200,14 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
     }
 
     suspend fun searchEquipe(nomSearched: String): List<Equipe>? {
-        return catchNetworkError(defaultReturnValue = listOf()) {
+        return catchNetworkError("Recherche de l'équipe $nomSearched OK") {
             jsonClient.get(endpoint + "/" + Equipe().nameForApi) {
                 url {
                     parameters.append(QUERY_PARAMETER_NOM, nomSearched)
                 }
-            }.let {
-                if (it.status != HttpStatusCode.NoContent) it.body<List<Equipe>>() else null
             }
+        }?.let {
+            if (it.status != HttpStatusCode.NoContent) it.body<List<Equipe>>() else null
         }
     }
 
@@ -239,26 +238,26 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
      */
     //Ne mets à jour que les notes du joueurs
     suspend fun updateNotesPnjJoueur(joueurToUpdate: Joueur): Boolean {
-        return catchNetworkError(defaultReturnValue = false) {
+        return catchNetworkError("Maj notes ${joueurToUpdate.nom} OK") {
             jsonClient.post(endpoint + "/" + joueurToUpdate.nameForApi + "/${ENDPOINT_MAJ_NOTES_JOUEUR}") {
                 contentType(ContentType.Application.Json)
                 setBody(joueurToUpdate)
-            }.let {
-                it.status == HttpStatusCode.OK
             }
-        }
+        }?.let {
+            it.status == HttpStatusCode.OK
+        } == true
     }
 
     //Mets à jour les stats du joueurs
     suspend fun updateJoueur(joueurToUpdate: Joueur): Boolean {
-        return catchNetworkError(defaultReturnValue = false) {
+        return catchNetworkError("Maj stats ${joueurToUpdate.nom} OK") {
             jsonClient.post(endpoint + "/" + joueurToUpdate.nameForApi + "/$ENDPOINT_MAJ_CARACS_JOUEUR") {
                 contentType(ContentType.Application.Json)
                 setBody(joueurToUpdate)
-            }.let {
-                it.status == HttpStatusCode.OK
             }
-        }
+        }?.let {
+            it.status == HttpStatusCode.OK
+        } == true
     }
 
     suspend fun insertItem(itemSelected: ApiableItem): Boolean {
@@ -342,10 +341,10 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
 
 
     suspend fun catchNetworkError(
-        errorMessage: String = ERROR_NETWORK_MESSAGE,
         messageOk : String = "Requête OK",
+        errorMessage: String = ERROR_NETWORK_MESSAGE,
         networkAction: suspend () -> HttpResponse,
-    ): Boolean {
+    ): HttpResponse? {
         return try {
             networkAction().also {
                 when(it.status){
@@ -363,15 +362,12 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
                     HttpStatusCode.OK -> notification.sendNotification(messageOk)
                 }
             }
-                .let {
-                it.status == HttpStatusCode.OK
-            }
         } catch (e: Exception) {
             println(
                 " $errorMessage\n " +
                         e.stackTraceToString()
             )
-            return false
+            return null
         }
     }
 
