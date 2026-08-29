@@ -266,15 +266,7 @@ fun layoutEdition(
             }
         }
         if (show && message != null) {
-            Card(
-                modifier = Modifier.align(Alignment.Center),
-                colors = CardDefaults.elevatedCardColors( if(message!!.contains("erreur")) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.primaryContainer),
-            ) {
-                Text(
-                    text = message!!, color = if(message!!.contains("erreur")) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer,
-                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = 40.sp),
-                )
-            }
+
         }
         if (openAlertDialogDeletion) {
             val itemParsed = deparseStringToCreateItem(listAttributs)

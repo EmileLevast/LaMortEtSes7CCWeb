@@ -28,6 +28,7 @@ import lamortetses7ccweb.composeapp.generated.resources.mjbandeau
 import lamortetses7ccweb.composeapp.generated.resources.mjmenu
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.levast.project.affichageMobile.LayoutNotification
 import org.levast.project.configuration.injectConfiguration
 import org.levast.project.viewModel.AdminViewModel
 
@@ -77,9 +78,10 @@ fun EcranSplashScreen(
                     Text("MJ")
                 }
             }
-
         } else {
-            EcranPrincipal()
+            LayoutNotification {
+                EcranPrincipal()
+            }
         }
     }
 }
