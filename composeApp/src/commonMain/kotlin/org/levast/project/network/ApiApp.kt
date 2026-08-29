@@ -350,6 +350,7 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
                 when(it.status){
                     HttpStatusCode.Unauthorized -> notification.sendNotification("Erreur  d'authentification ${it.status}")
                     HttpStatusCode.Forbidden -> notification.sendNotification("Erreur d'autorisation ${it.status}")
+                    HttpStatusCode.ExpectationFailed -> notification.sendNotification("Erreur  ${it.status}")
                     HttpStatusCode.NotFound -> notification.sendNotification("Erreur de recherche ${it.status}")
                     HttpStatusCode.InternalServerError -> notification.sendNotification("Erreur serveur ${it.status}")
                     HttpStatusCode.BadRequest -> notification.sendNotification("Erreur de formatage ${it.status}")
@@ -359,6 +360,9 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
                     HttpStatusCode.RequestTimeout -> notification.sendNotification("Erreur de timeout ${it.status}")
                     HttpStatusCode.GatewayTimeout -> notification.sendNotification("Erreur de timeout ${it.status}")
                     HttpStatusCode.ServiceUnavailable -> notification.sendNotification("Erreur de service indisponible ${it.status}")
+                    HttpStatusCode.NotModified -> notification.sendNotification("Erreur Aucune mise à jour effectuée ${it.status}")
+                    HttpStatusCode.NotAcceptable -> notification.sendNotification("Impossible de supprimer ${it.status}")
+                    HttpStatusCode.UnprocessableEntity -> notification.sendNotification("Impossible de créer ${it.status}")
                     HttpStatusCode.NoContent -> notification.sendNotification("Rien trouvé")
                     HttpStatusCode.Created -> notification.sendNotification(messageOk)
                     HttpStatusCode.OK -> notification.sendNotification(messageOk)

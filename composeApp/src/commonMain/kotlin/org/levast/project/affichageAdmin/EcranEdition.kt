@@ -148,14 +148,7 @@ fun layoutEdition(
 
                             if(itemParsed!= null){
                                 coroutineScope.launch(Dispatchers.Default) {
-                                    val res = apiApp.insertItem(itemParsed)
-                                    withContext(Dispatchers.Default) {
-                                        message = if (res) {
-                                            "${itemParsed.nom} créé"
-                                        } else {
-                                            "${itemParsed.nom} - erreur création"
-                                        }
-                                    }
+                                    apiApp.insertItem(itemParsed)
                                 }
                             }
 
@@ -251,9 +244,7 @@ fun layoutEdition(
                 )
             }
         }
-        if (show && message != null) {
 
-        }
         if (openAlertDialogDeletion) {
             val itemParsed = deparseStringToCreateItem(listAttributs)
 
@@ -266,14 +257,8 @@ fun layoutEdition(
                             onClick = {
                                 openAlertDialogDeletion = false
                                 coroutineScope.launch(Dispatchers.Default) {
-                                    val res = apiApp.deleteItem(itemParsed)
-                                    withContext(Dispatchers.Default) {
-                                        message = if (res) {
-                                            "${itemParsed.nom} suppression"
-                                        } else {
-                                            "${itemParsed.nom} - erreur suppression"
-                                        }
-                                    }
+                                    apiApp.deleteItem(itemParsed)
+
                                 }
                             }
                         ) {

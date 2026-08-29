@@ -266,7 +266,7 @@ fun Application.module() {
                             if (resInsert.modifiedCount > 0) {
                                 call.respond(HttpStatusCode.OK)
                             } else {
-                                call.respond(HttpStatusCode.ExpectationFailed)
+                                call.respond(HttpStatusCode.NotModified)
                             }
                         } else {
                             call.respond(
@@ -301,7 +301,7 @@ fun Application.module() {
                             if (resInsert?.wasAcknowledged() == true) {
                                 call.respond(HttpStatusCode.OK)
                             } else {
-                                call.respond(HttpStatusCode.ExpectationFailed)
+                                call.respond(HttpStatusCode.UnprocessableEntity)
                             }
                         } else {
                             call.respond(
@@ -322,7 +322,7 @@ fun Application.module() {
                             ) {
                                 call.respond(HttpStatusCode.OK)
                             } else {
-                                call.respond(HttpStatusCode.ExpectationFailed)
+                                call.respond(HttpStatusCode.NotAcceptable)
                             }
                         } else {
                             call.respond(
@@ -386,7 +386,7 @@ fun Application.module() {
                                     //dans le cas où seulement une des deux données a correctement etait mise à jour
                                     call.respond(HttpStatusCode.PartialContent)
                                 } else {
-                                    call.respond(HttpStatusCode.ExpectationFailed)
+                                    call.respond(HttpStatusCode.NotModified)
                                 }
                             } else {
                                 call.respond(
@@ -418,7 +418,7 @@ fun Application.module() {
                                     //dans le cas où seulement une des deux données a correctement etait mise à jour
                                     call.respond(HttpStatusCode.PartialContent)
                                 } else {
-                                    call.respond(HttpStatusCode.ExpectationFailed)
+                                    call.respond(HttpStatusCode.NotModified)
                                 }
                             } else {
                                 call.respond(
@@ -491,7 +491,7 @@ fun Application.module() {
                             call.respond(insertCompteUtilisateur(compteToInsert))
                         } catch (e: Exception) {
                             call.respond(
-                                HttpStatusCode.ExpectationFailed,
+                                HttpStatusCode.UnprocessableEntity,
                                 "impossible d'inserer le nouveau profil"
                             )
                         }
