@@ -43,18 +43,19 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.levast.project.configuration.injectApiApp
 import org.levast.project.configuration.injectGraphicConstants
+import org.levast.project.configuration.injectNotification
 
 @Composable
 fun layoutEdition(
     itemToEdit: IListItem,
     backClick: (Boolean) -> Unit
 ) {
-    var show by remember { mutableStateOf(false) }
     val graphicsConsts = injectGraphicConstants()
 
     val deparsedAttributs = itemToEdit.getDeparsedAttributes()
     val parsingRulesAttributs = itemToEdit.getParsingRulesAttributesAsList()
     val apiApp = injectApiApp()
+    val notificationRepository = injectNotification()
     val coroutineScope = rememberCoroutineScope()
     val listAttributs = remember {
         mutableStateListOf<String>().apply {
@@ -65,7 +66,6 @@ fun layoutEdition(
     var listeEquipes by remember { mutableStateOf<List<Equipe>>(emptyList()) }
     var listeJoueurs by remember { mutableStateOf<List<Joueur>>(emptyList()) }
 
-    var message by remember { mutableStateOf<String?>(null) }
     var openAlertDialogDeletion by remember { mutableStateOf(false) }
 
     //pour sizer l'image selon la taille du titre
@@ -74,15 +74,6 @@ fun layoutEdition(
     }
     // Get local density from composable
     val localDensity = LocalDensity.current
-
-    LaunchedEffect(message) {
-        if (message != null) {
-            show = true
-            delay(5000)
-            message = null
-            show = false
-        }
-    }
 
     remember {
         coroutineScope.launch {
@@ -96,7 +87,9 @@ fun layoutEdition(
             val itemParsed = (itemToEdit as ApiableItem).parseFromString(listAttributsToDeparse)
             return itemParsed
         }catch (e : Exception){
-            message = "${itemToEdit.nom} - erreur formatage"
+            coroutineScope.launch {
+                notificationRepository.sendNotification("${itemToEdit.nom} - erreur formatage")
+            }
             return null
         }
 
@@ -144,13 +137,6 @@ fun layoutEdition(
                             if(itemParsed != null){
                                 coroutineScope.launch(Dispatchers.Default) {
                                     val res = apiApp.updateItem(itemParsed)
-                                    withContext(Dispatchers.Default) {
-                                        message = if (res) {
-                                            "${itemParsed.nom} majed"
-                                        } else {
-                                            "${itemParsed.nom} - erreur mise à jour"
-                                        }
-                                    }
                                 }
                             }
 

@@ -3,9 +3,10 @@ package org.levast.project.configuration
 import org.levast.project.network.ApiApp
 import org.levast.project.repository.NotificationRepository
 
-private val apiApp = ApiApp(injectConfiguration())
-private val graphicsConstants = GraphicConstantsFullGrid()
 private val notification = NotificationRepository()
+
+private val apiApp = ApiApp(injectConfiguration(), notification)
+private val graphicsConstants = GraphicConstantsFullGrid()
 
 fun injectApiApp() = apiApp
 

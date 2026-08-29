@@ -39,6 +39,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
@@ -47,10 +48,11 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.levast.project.ERROR_NETWORK_MESSAGE
 import org.levast.project.model.CompteUtilisateur
+import org.levast.project.repository.NotificationRepository
 import unmutableListApiItemDefinition
 
 
-class ApiApp(val config: IConfiguration) {
+class ApiApp(val config: IConfiguration, val notification: NotificationRepository) {
 
     val endpoint get() = config.getEndpointServer()
 
@@ -60,9 +62,9 @@ class ApiApp(val config: IConfiguration) {
         jsonClient = createHttpClient()
     }
 
-    fun initJsonClient(){
+    fun initJsonClient() {
         jsonClient.close() //on cloture le client http et on en recrée un nouveau
-        jsonClient= createHttpClient();
+        jsonClient = createHttpClient();
     }
 
     private fun createHttpClient(): HttpClient = HttpClient() {
@@ -170,7 +172,10 @@ class ApiApp(val config: IConfiguration) {
         }
     }
 
-    suspend inline fun <reified T: ApiableItem> searchSomethings(blankItemToSearchApi: T, nomSearched: String): List<T>? {
+    suspend inline fun <reified T : ApiableItem> searchSomethings(
+        blankItemToSearchApi: T,
+        nomSearched: String
+    ): List<T>? {
         return catchNetworkError(defaultReturnValue = listOf()) {
             jsonClient.get(endpoint + "/" + blankItemToSearchApi.nameForApi) {
                 url {
@@ -273,7 +278,7 @@ class ApiApp(val config: IConfiguration) {
                 contentType(ContentType.Application.Json)
                 setBody(itemSelected)
             }.let {
-                it.status == HttpStatusCode.OK
+                    it.status == HttpStatusCode.OK
             }
         }
     }
@@ -336,19 +341,37 @@ class ApiApp(val config: IConfiguration) {
     }
 
 
-    suspend fun <T> catchNetworkError(
+    suspend fun catchNetworkError(
         errorMessage: String = ERROR_NETWORK_MESSAGE,
-        defaultReturnValue: T,
-        networkAction: suspend () -> T,
-    ): T {
+        messageOk : String = "Requête OK",
+        networkAction: suspend () -> HttpResponse,
+    ): Boolean {
         return try {
-            networkAction()
+            networkAction().also {
+                when(it.status){
+                    HttpStatusCode.Unauthorized -> notification.sendNotification("Erreur  d'authentification ${it.status}")
+                    HttpStatusCode.Forbidden -> notification.sendNotification("Erreur d'autorisation ${it.status}")
+                    HttpStatusCode.NotFound -> notification.sendNotification("Erreur de recherche ${it.status}")
+                    HttpStatusCode.InternalServerError -> notification.sendNotification("Erreur serveur ${it.status}")
+                    HttpStatusCode.BadRequest -> notification.sendNotification("Erreur de formatage ${it.status}")
+                    HttpStatusCode.Conflict -> notification.sendNotification("Erreur de conflit ${it.status}")
+                    HttpStatusCode.UnprocessableEntity -> notification.sendNotification("Erreur de traitement ${it.status}")
+                    HttpStatusCode.TooManyRequests -> notification.sendNotification("Erreur trop de requetes ${it.status}")
+                    HttpStatusCode.RequestTimeout -> notification.sendNotification("Erreur de timeout ${it.status}")
+                    HttpStatusCode.GatewayTimeout -> notification.sendNotification("Erreur de timeout ${it.status}")
+                    HttpStatusCode.ServiceUnavailable -> notification.sendNotification("Erreur de service indisponible ${it.status}")
+                    HttpStatusCode.OK -> notification.sendNotification(messageOk)
+                }
+            }
+                .let {
+                it.status == HttpStatusCode.OK
+            }
         } catch (e: Exception) {
             println(
                 " $errorMessage\n " +
                         e.stackTraceToString()
             )
-            return defaultReturnValue
+            return false
         }
     }
 
