@@ -22,6 +22,16 @@ class Carac(
         ame = other.ame
     )
 
+    operator fun plus(carac: Carac):Carac = Carac(
+        vie + carac.vie,
+        force + carac.force,
+        defense.mapValues { (effectType, value) -> value + carac.defense[effectType] },
+        intelligence + carac.intelligence,
+        energie + carac.energie,
+        humanite + carac.humanite,
+        ame + carac.ame
+    )
+
     fun toFormattedString():String{
         return "$vie/$force/${deparseDefense(defense)}/$intelligence/$energie/$humanite/$ame"
     }

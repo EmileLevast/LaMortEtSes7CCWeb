@@ -11,5 +11,7 @@ data class CompteUtilisateur(
 ) {
 
     @SerialName("_id") val id: Int = nom.hashCode();
-
+    fun addRole(role: String) {
+        roles = listOf(role) + roles
+    }
 }
