@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 fun DeletionDialog(nomASupprimer: String, show: Boolean, hide: () -> Unit, onValidation:()->Unit) {
     if (show) {
         AlertDialog(
-            title = { Text("Supprimer nomASupprimer") },
+            title = { Text("Supprimer $nomASupprimer") },
             onDismissRequest = { hide() },
             confirmButton = {
                 TextButton(

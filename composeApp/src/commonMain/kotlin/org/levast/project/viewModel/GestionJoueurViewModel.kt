@@ -112,6 +112,7 @@ class GestionJoueurViewModel : ViewModel() {
         if (existingEquipe != null) {
             //Si l'équipe ne contient pas déjà ce personnage
             if(!existingEquipe.getMembreEquipe().contains(joueurState.nom)){
+                existingEquipe.addMembreEquipe(joueurState.nom)
                 viewModelScope.launch {
                     apiApp.updateItem(existingEquipe)
                 }
