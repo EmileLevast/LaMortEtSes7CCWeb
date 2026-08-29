@@ -160,7 +160,7 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
     }
 
     suspend fun searchJoueur(nomSearched: String): List<Joueur>? {
-        return catchNetworkError("Recherche joueur $nomSearched OK") {
+        return catchNetworkError("$nomSearched récupéré") {
             jsonClient.get(endpoint + "/" + Joueur().nameForApi) {
                 url {
                     parameters.append(QUERY_PARAMETER_NOM, nomSearched)

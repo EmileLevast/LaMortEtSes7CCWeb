@@ -63,7 +63,6 @@ fun EcranChoixJoueur(
             {
                 refreshData = refreshData.not()
                 isLoadingJoueur = true
-                println("REFRESH JOUEUR")
             },
             isWideScreen = iSWideScreen)//on declenche la mise à jour du joueur
 
