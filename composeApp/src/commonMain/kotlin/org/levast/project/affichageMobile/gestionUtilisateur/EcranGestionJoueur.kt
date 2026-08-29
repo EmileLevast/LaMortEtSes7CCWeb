@@ -68,7 +68,9 @@ fun EcranGestionJoueur(
             allCompte,
             allRaces,
             allClasseTypes
-        )
+        ){
+            joueurCreating = null
+        }
     }
 
 }

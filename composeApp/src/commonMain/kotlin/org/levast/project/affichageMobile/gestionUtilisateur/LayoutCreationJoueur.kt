@@ -2,7 +2,6 @@ package org.levast.project.affichageMobile.gestionUtilisateur
 
 import ClasseType
 import Equipe
-import Joueur
 import Race
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,8 +10,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -39,8 +38,16 @@ fun LayoutCreationJoueur(
     comptes: List<CompteUtilisateur>,
     races : List<Race>,
     classeTypes : List<ClasseType>,
+    goToPreviousScreen:()->Unit
 ) {
-
+    Row(horizontalArrangement = Arrangement.Start) {
+        IconButton(onClick = {
+            goToPreviousScreen()
+        })
+        {
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, "Retour")
+        }
+    }
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         TextField(
             label = {
@@ -112,6 +119,7 @@ fun LayoutCreationJoueur(
         Button(
             onClick = {
                 onCreateJoueur(joueurState)
+                goToPreviousScreen()
             }
         ) {
             Text("Créer le joueur")
