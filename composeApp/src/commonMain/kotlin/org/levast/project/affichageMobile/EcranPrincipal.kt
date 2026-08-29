@@ -55,8 +55,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import kotlinx.coroutines.CoroutineScope
-import org.levast.project.configuration.getApiApp
-import org.levast.project.configuration.getConfiguration
+import org.levast.project.configuration.injectApiApp
+import org.levast.project.configuration.injectConfiguration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -81,8 +81,8 @@ import org.levast.project.viewModel.stateviewmodel.FilterUser
 fun EcranPrincipal(
     adminViewModel: AdminViewModel = viewModel { AdminViewModel() }
 ) {
-    val apiApp = getApiApp()
-    val config = getConfiguration()
+    val apiApp = injectApiApp()
+    val config = injectConfiguration()
 
     val filterViewModel: FilterViewModel = viewModel { FilterViewModel() }
     val coroutineScope = rememberCoroutineScope()

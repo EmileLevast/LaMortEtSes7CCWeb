@@ -12,8 +12,8 @@ import androidx.compose.runtime.setValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.levast.project.configuration.getApiApp
-import org.levast.project.configuration.getConfiguration
+import org.levast.project.configuration.injectApiApp
+import org.levast.project.configuration.injectConfiguration
 
 @Composable
 fun EcranChoixJoueur(
@@ -22,8 +22,8 @@ fun EcranChoixJoueur(
     onSelectedJoueurChange: (Joueur) -> Unit,
     iSWideScreen: Boolean,
 ) {
-    val apiApp = getApiApp()
-    val config = getConfiguration()
+    val apiApp = injectApiApp()
+    val config = injectConfiguration()
     var refreshData by remember { mutableStateOf(true) } //à utiliser pour rafraichir tous les launchedEffect
     var isLoadingJoueur by remember { mutableStateOf(false) }
 

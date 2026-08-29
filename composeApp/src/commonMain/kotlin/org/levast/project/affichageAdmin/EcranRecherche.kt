@@ -8,10 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.material3.Button
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -31,8 +29,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.levast.project.affichageMobile.EcranListItem
-import org.levast.project.configuration.getApiApp
-import org.levast.project.configuration.getGraphicConstants
+import org.levast.project.configuration.injectApiApp
+import org.levast.project.configuration.injectGraphicConstants
 import org.levast.project.viewModel.AdminViewModel
 
 
@@ -48,11 +46,11 @@ fun EcranRecherche(
     var loading by mutableStateOf(false)
     var isDetailedModeOn by remember { mutableStateOf(true) }
     val coroutineScope = rememberCoroutineScope()
-    val graphicsConsts = getGraphicConstants()
+    val graphicsConsts = injectGraphicConstants()
 
     val adminUiState by adminViewModel.uiState.collectAsState()
 
-    val apiApp = getApiApp()
+    val apiApp = injectApiApp()
 
     val rechercheItems: () -> Unit = {
         coroutineScope.launch {

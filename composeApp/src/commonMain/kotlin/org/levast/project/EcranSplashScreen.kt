@@ -4,9 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import org.levast.project.affichageMobile.EcranPrincipal
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -30,7 +28,7 @@ import lamortetses7ccweb.composeapp.generated.resources.mjbandeau
 import lamortetses7ccweb.composeapp.generated.resources.mjmenu
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
-import org.levast.project.configuration.getConfiguration
+import org.levast.project.configuration.injectConfiguration
 import org.levast.project.viewModel.AdminViewModel
 
 @Composable
@@ -38,7 +36,7 @@ fun EcranSplashScreen(
     adminViewModel: AdminViewModel = viewModel { AdminViewModel() }
 ) {
 
-    val configuration = getConfiguration()
+    val configuration = injectConfiguration()
     val adminUiState by adminViewModel.uiState.collectAsState()
 
 

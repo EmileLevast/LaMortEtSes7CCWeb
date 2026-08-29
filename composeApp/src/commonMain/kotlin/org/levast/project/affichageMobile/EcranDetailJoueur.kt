@@ -37,12 +37,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import org.levast.project.configuration.getGraphicConstants
+import org.levast.project.configuration.injectGraphicConstants
 
 @Composable
 fun layoutDetailJoueur(infoToShow: String, onSave: (String) -> Unit) {
 
-    val graphicsConsts = getGraphicConstants()
+    val graphicsConsts = injectGraphicConstants()
 
     var isShowingAddDetailPopup by remember { mutableStateOf(false) }
     var isShowingModifyDetailPopup by remember { mutableStateOf<String?>(null) }

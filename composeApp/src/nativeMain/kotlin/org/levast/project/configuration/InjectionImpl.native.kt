@@ -4,7 +4,7 @@ import org.levast.project.network.ApiApp
 import org.levast.project.network.IImageDownloader
 
 @Composable
-actual fun getConfiguration(): IConfiguration {
+actual fun injectConfiguration(): IConfiguration {
     TODO("Not yet implemented")
 }
 

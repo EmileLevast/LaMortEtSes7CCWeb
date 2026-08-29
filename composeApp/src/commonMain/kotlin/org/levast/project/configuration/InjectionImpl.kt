@@ -1,14 +1,16 @@
 package org.levast.project.configuration
 
-import androidx.compose.runtime.Composable
 import org.levast.project.network.ApiApp
-import org.levast.project.network.IImageDownloader
+import org.levast.project.repository.Notification
 
-private val apiApp = ApiApp(getConfiguration())
+private val apiApp = ApiApp(injectConfiguration())
 private val graphicsConstants = GraphicConstantsFullGrid()
+private val notification = Notification()
 
-fun getApiApp() = apiApp
+fun injectApiApp() = apiApp
 
-expect fun getConfiguration(): IConfiguration
+expect fun injectConfiguration(): IConfiguration
 
-fun getGraphicConstants(): GraphicConstantsFullGrid = graphicsConstants
+fun injectGraphicConstants(): GraphicConstantsFullGrid = graphicsConstants
+
+fun injectNotification(): Notification = notification

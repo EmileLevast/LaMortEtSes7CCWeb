@@ -21,7 +21,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,12 +30,10 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import deserializeToListElements
@@ -44,8 +41,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.levast.project.configuration.getApiApp
-import org.levast.project.configuration.getGraphicConstants
+import org.levast.project.configuration.injectApiApp
+import org.levast.project.configuration.injectGraphicConstants
 
 @Composable
 fun layoutEdition(
@@ -53,11 +50,11 @@ fun layoutEdition(
     backClick: (Boolean) -> Unit
 ) {
     var show by remember { mutableStateOf(false) }
-    val graphicsConsts = getGraphicConstants()
+    val graphicsConsts = injectGraphicConstants()
 
     val deparsedAttributs = itemToEdit.getDeparsedAttributes()
     val parsingRulesAttributs = itemToEdit.getParsingRulesAttributesAsList()
-    val apiApp = getApiApp()
+    val apiApp = injectApiApp()
     val coroutineScope = rememberCoroutineScope()
     val listAttributs = remember {
         mutableStateListOf<String>().apply {
@@ -330,7 +327,7 @@ fun layoutListeSelectables(
     colorCard : Color,
     colorCardEnd : Color,
 ) {
-    val graphicsConsts = getGraphicConstants()
+    val graphicsConsts = injectGraphicConstants()
 
     LazyVerticalGrid(
         modifier = Modifier.then(modifier),

@@ -5,4 +5,4 @@ import org.levast.project.network.IImageDownloader
 
 private val configurationImplDesktop = ConfigurationImplDesktop()
 
-actual fun getConfiguration(): IConfiguration = configurationImplDesktop
+actual fun injectConfiguration(): IConfiguration = configurationImplDesktop

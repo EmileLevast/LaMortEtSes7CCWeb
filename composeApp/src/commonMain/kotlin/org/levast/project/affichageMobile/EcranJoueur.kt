@@ -37,9 +37,7 @@ import coil3.compose.AsyncImage
 import getListItemFiltered
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import lamortetses7ccweb.composeapp.generated.resources.Res
@@ -47,7 +45,7 @@ import lamortetses7ccweb.composeapp.generated.resources.UnknownImage
 import lamortetses7ccweb.composeapp.generated.resources.refreshSymbol
 import org.jetbrains.compose.resources.painterResource
 import org.levast.project.DEBOUNCE_TIME_OUT_REQUEST_MS
-import org.levast.project.configuration.getApiApp
+import org.levast.project.configuration.injectApiApp
 import org.levast.project.viewModel.AdminViewModel
 import org.levast.project.viewModel.FilterViewModel
 import org.levast.project.viewModel.stateviewmodel.FilterUser
@@ -66,7 +64,7 @@ fun EcranJoueur(
     adminViewModel: AdminViewModel = viewModel { AdminViewModel() }
 ) {
 
-    val apiApp = getApiApp()
+    val apiApp = injectApiApp()
     val coroutineScope = rememberCoroutineScope()
 
 
@@ -225,7 +223,7 @@ fun IconProfilRefreshable(
     refreshJoueur: () -> Unit
 ) {
 
-    val apiApp = getApiApp()
+    val apiApp = injectApiApp()
 
 
     Box(modifier.height(IntrinsicSize.Min)) {

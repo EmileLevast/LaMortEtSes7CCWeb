@@ -11,7 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.levast.project.configuration.getApiApp
+import org.levast.project.configuration.injectApiApp
 
 
 @Composable
@@ -27,7 +27,7 @@ fun EcranDecouverteEquipe(
         )
     }
 
-    val apiApp = getApiApp()
+    val apiApp = injectApiApp()
     val scrollListState by remember { mutableStateOf(LazyGridState()) }
 
 

@@ -12,13 +12,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import org.levast.project.DEBOUNCE_TIME_OUT_REQUEST_MS
-import org.levast.project.configuration.getApiApp
+import org.levast.project.configuration.injectApiApp
 import org.levast.project.model.CompteUtilisateur
 import org.levast.project.viewModel.stateviewmodel.CompteUtilisateurStateFlow
 
 class CompteUtilisateurViewModel : ViewModel() {
 
-    val apiApp = getApiApp()
+    val apiApp = injectApiApp()
 
     val insertCompte = CompteUtilisateurStateFlow(
         viewModelScope,

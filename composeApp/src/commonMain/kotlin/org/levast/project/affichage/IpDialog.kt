@@ -19,14 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import org.levast.project.DNS_ADRESS_SERVER
 import org.levast.project.configuration.UserAuthentication
-import org.levast.project.configuration.getConfiguration
+import org.levast.project.configuration.injectConfiguration
 
 
 @Composable
 fun AlertDialogChangeNetworkConfiguration(
     onDismissRequest: () -> Unit
 ) {
-    val config = getConfiguration()
+    val config = injectConfiguration()
 
     var ipAdressInput by remember { mutableStateOf(config.getAdressTargetServer()) }
 

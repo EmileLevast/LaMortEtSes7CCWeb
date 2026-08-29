@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -41,8 +40,8 @@ import lamortetses7ccweb.composeapp.generated.resources.Res
 import lamortetses7ccweb.composeapp.generated.resources.UnknownImage
 import org.jetbrains.compose.resources.painterResource
 import org.levast.project.affichageMobile.layoutDetailJoueur
-import org.levast.project.configuration.getGraphicConstants
-import org.levast.project.configuration.getApiApp
+import org.levast.project.configuration.injectGraphicConstants
+import org.levast.project.configuration.injectApiApp
 
 @Composable
 fun layoutBigImage(
@@ -53,9 +52,9 @@ fun layoutBigImage(
     joueur: Joueur? = null,
     isWideScreen : Boolean = false
 ) {
-    val graphicsConsts = getGraphicConstants()
+    val graphicsConsts = injectGraphicConstants()
     var notesJoueur by remember { mutableStateOf("") }
-    val apiApp = getApiApp()
+    val apiApp = injectApiApp()
     val coroutineScope = rememberCoroutineScope()
 
 

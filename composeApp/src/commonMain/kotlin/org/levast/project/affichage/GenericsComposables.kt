@@ -8,11 +8,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import org.jetbrains.compose.resources.Font
-import org.levast.project.configuration.getGraphicConstants
+import org.levast.project.configuration.injectGraphicConstants
 
 @Composable
 fun buttonDarkStyled(texte:String, onClick:()->Unit){
-    val graphicsConsts = getGraphicConstants()
+    val graphicsConsts = injectGraphicConstants()
 
     FloatingActionButton( onClick=onClick) {
         Text(modifier = Modifier.padding(graphicsConsts.paddingCellLayoutJoueur),color = Color.White, text = texte,fontFamily = FontFamily(Font(graphicsConsts.fontCard)))

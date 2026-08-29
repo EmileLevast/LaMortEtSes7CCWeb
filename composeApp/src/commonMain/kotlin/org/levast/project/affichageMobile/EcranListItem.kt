@@ -34,13 +34,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import org.levast.project.configuration.getApiApp
+import org.levast.project.configuration.injectApiApp
 import getNbrUtilisationAccordingItem
 import lamortetses7ccweb.composeapp.generated.resources.Aniron_7BaP
 import lamortetses7ccweb.composeapp.generated.resources.Res
 import lamortetses7ccweb.composeapp.generated.resources.UnknownImage
-import lamortetses7ccweb.composeapp.generated.resources.logoliche
-import lamortetses7ccweb.composeapp.generated.resources.logomonstre
 import lamortetses7ccweb.composeapp.generated.resources.mainFermee
 import lamortetses7ccweb.composeapp.generated.resources.mainOuverte
 import org.jetbrains.compose.resources.Font
@@ -67,7 +65,7 @@ fun EcranListItem(
 
     //pour savoir quel élément à afficher en gros
     var equipementToShow by remember { mutableStateOf<IListItem?>(null) }
-    val apiApp = getApiApp()
+    val apiApp = injectApiApp()
 
 
     LazyVerticalGrid(
