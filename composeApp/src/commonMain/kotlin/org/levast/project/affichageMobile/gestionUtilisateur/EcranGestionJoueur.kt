@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -29,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import org.levast.project.model.CompteUtilisateur
 import org.levast.project.viewModel.stateviewmodel.JoueurState
 
 @Composable
@@ -51,7 +53,10 @@ fun EcranGestionJoueur(
     if (joueurCreating == null) {
         LayouShowAllJoueurs(
             {joueurCreating = JoueurState()},
-            allJoueurs
+            allJoueurs,
+            {
+                gestionJoueurViewModel.deleteJoueur(it)
+            }
         ) {
             gestionJoueurViewModel.downloadNeededData()
         }
@@ -72,8 +77,12 @@ fun EcranGestionJoueur(
 fun LayouShowAllJoueurs(
     onJoueurCreating: (Joueur) -> Unit,
     allJoueurs: List<Joueur>,
+    deleteJoueur: (Joueur) -> Unit,
     refreshAllJoueurs: () -> Unit
 ) {
+
+    var isShowingDeleteDialog by remember { mutableStateOf<Joueur?>(null) }
+
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Button(
@@ -97,13 +106,27 @@ fun LayouShowAllJoueurs(
         ) {
             items(allJoueurs) {
                 Card(modifier = Modifier.padding(2.dp)) {
-                    Text(
-                        it.nom,
-                        fontWeight = FontWeight.Bold,
-                    )
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
+                        Text(
+                            it.nom,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.weight(1f)
+                        )
+                        IconButton(onClick = {
+                            isShowingDeleteDialog = it
+                        })
+                        {
+                            Icon(Icons.Rounded.Delete, "Supprimer Joueur")
+                        }
+                    }
+
                     Text(it.getStatsAsStrings())
                 }
             }
+        }
+
+        DeletionDialog(isShowingDeleteDialog?.nom ?: "Erreur", isShowingDeleteDialog != null, { isShowingDeleteDialog = null }) {
+            isShowingDeleteDialog?.let{deleteJoueur(it)}
         }
     }
 }

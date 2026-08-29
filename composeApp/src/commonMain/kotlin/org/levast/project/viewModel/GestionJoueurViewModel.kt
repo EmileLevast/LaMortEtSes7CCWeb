@@ -128,5 +128,11 @@ class GestionJoueurViewModel : ViewModel() {
         }
     }
 
+    fun deleteJoueur(joueur: Joueur){
+        viewModelScope.launch {
+            apiApp.deleteItem(joueur)
+        }
+    }
+
 
 }

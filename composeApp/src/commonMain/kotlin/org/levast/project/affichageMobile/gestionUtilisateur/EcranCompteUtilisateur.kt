@@ -110,30 +110,8 @@ fun EcranCompteUtilisateur(
 
         }
 
-        isShowingDeleteDialog?.let { compte ->
-            AlertDialog(
-                title = { Text("Supprimer ${compte.nom}") },
-                onDismissRequest = { isShowingDeleteDialog = null },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            compteUtilisateurViewModel.deleteCompte.sendRequest(compte)
-                            isShowingDeleteDialog = null
-                        }
-                    ) {
-                        Text("Supprimer")
-                    }
-                },
-                dismissButton = {
-                    TextButton(
-                        onClick = {
-                            isShowingDeleteDialog = null
-                        }
-                    ) {
-                        Text("Annuler")
-                    }
-                }
-            )
+        DeletionDialog(isShowingDeleteDialog?.nom ?: "Erreur", isShowingDeleteDialog != null, { isShowingDeleteDialog = null }) {
+            isShowingDeleteDialog?.let{compteUtilisateurViewModel.deleteCompte.sendRequest(it)}
         }
 
         isShowingUpdateCard?.let {
