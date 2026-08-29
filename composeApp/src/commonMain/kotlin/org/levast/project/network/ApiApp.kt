@@ -359,6 +359,8 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
                     HttpStatusCode.RequestTimeout -> notification.sendNotification("Erreur de timeout ${it.status}")
                     HttpStatusCode.GatewayTimeout -> notification.sendNotification("Erreur de timeout ${it.status}")
                     HttpStatusCode.ServiceUnavailable -> notification.sendNotification("Erreur de service indisponible ${it.status}")
+                    HttpStatusCode.NoContent -> notification.sendNotification("Rien trouvé")
+                    HttpStatusCode.Created -> notification.sendNotification(messageOk)
                     HttpStatusCode.OK -> notification.sendNotification(messageOk)
                 }
             }
