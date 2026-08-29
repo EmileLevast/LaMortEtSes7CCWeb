@@ -4,6 +4,7 @@ import ClasseType
 import Equipe
 import Joueur
 import Race
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -62,10 +63,24 @@ class GestionJoueurViewModel : ViewModel() {
         createOrUpdateCompte(joueurState)
         createOrUpdateEquipe(joueurState)
 
+        val race = uiStateAllRaces.value.find { it.nom == joueurState.raceField }
+        val classeType = uiStateAllClasseTypes.value.find { it.nom == joueurState.classeTypeField }
+        if(race != null && classeType != null){
+            val caracInitial = race.carac+classeType.carac
 
-        //Récupérer l'objet race
-        //Récupérer l'objet classe
-        //Créer l'objet joueur
+            val joueur = Joueur(
+                nom = joueurState.nom,
+                caracOrigin = caracInitial,
+                caracActuel = caracInitial,
+                niveau = 1,
+                race = race,
+                classeType = classeType)
+
+            viewModelScope.launch {
+                apiApp.insertItem(joueur)
+            }
+        }
+
 
     }
 
