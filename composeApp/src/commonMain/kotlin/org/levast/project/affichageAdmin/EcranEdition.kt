@@ -18,7 +18,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
@@ -35,12 +34,9 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import deserializeToListElements
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.levast.project.configuration.injectApiApp
 import org.levast.project.configuration.injectGraphicConstants
 import org.levast.project.configuration.injectNotification
@@ -77,8 +73,8 @@ fun layoutEdition(
 
     remember {
         coroutineScope.launch {
-            listeEquipes = apiApp.searchEquipe(".*") ?: listOf()
-            listeJoueurs = apiApp.searchJoueur(".*") ?: listOf()
+            listeEquipes = apiApp.searchEquipe(".*", true) ?: listOf()
+            listeJoueurs = apiApp.searchJoueur(".*", true) ?: listOf()
         }
     }
 

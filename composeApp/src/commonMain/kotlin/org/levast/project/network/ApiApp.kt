@@ -159,8 +159,8 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
         } ?: listOf()
     }
 
-    suspend fun searchJoueur(nomSearched: String): List<Joueur>? {
-        return catchNetworkError("$nomSearched récupéré") {
+    suspend fun searchJoueur(nomSearched: String, silenceNotif: Boolean = false): List<Joueur>? {
+        return catchNetworkError("$nomSearched récupéré", silenceNotif) {
             jsonClient.get(endpoint + "/" + Joueur().nameForApi) {
                 url {
                     parameters.append(QUERY_PARAMETER_NOM, nomSearched)
@@ -191,7 +191,7 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
         listNomSearched.forEach { nameSearched ->
             if (nameSearched.isNotBlank()) {
                 //pour chacun des équipements on cherche dans chacune des tables mais on recupere que le premier trouvé
-                searchJoueur(nameSearched)?.let { joueurTrouves ->
+                searchJoueur(nameSearched, true)?.let { joueurTrouves ->
                     if (joueurTrouves.isNotEmpty()) listJoueurs.addAll(joueurTrouves)
                 }
             }
@@ -199,8 +199,8 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
         return listJoueurs
     }
 
-    suspend fun searchEquipe(nomSearched: String): List<Equipe>? {
-        return catchNetworkError("Recherche de l'équipe $nomSearched OK") {
+    suspend fun searchEquipe(nomSearched: String, silenceNotif: Boolean = false): List<Equipe>? {
+        return catchNetworkError("Recherche de l'équipe $nomSearched OK", silenceNotif) {
             jsonClient.get(endpoint + "/" + Equipe().nameForApi) {
                 url {
                     parameters.append(QUERY_PARAMETER_NOM, nomSearched)
@@ -342,30 +342,33 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
 
     suspend fun catchNetworkError(
         messageOk : String = "Requête OK",
+        silenceNotif : Boolean = false,
         errorMessage: String = ERROR_NETWORK_MESSAGE,
         networkAction: suspend () -> HttpResponse,
     ): HttpResponse? {
         return try {
             networkAction().also {
-                when(it.status){
-                    HttpStatusCode.Unauthorized -> notification.sendNotification("Erreur  d'authentification ${it.status}")
-                    HttpStatusCode.Forbidden -> notification.sendNotification("Erreur d'autorisation ${it.status}")
-                    HttpStatusCode.ExpectationFailed -> notification.sendNotification("Erreur  ${it.status}")
-                    HttpStatusCode.NotFound -> notification.sendNotification("Erreur de recherche ${it.status}")
-                    HttpStatusCode.InternalServerError -> notification.sendNotification("Erreur serveur ${it.status}")
-                    HttpStatusCode.BadRequest -> notification.sendNotification("Erreur de formatage ${it.status}")
-                    HttpStatusCode.Conflict -> notification.sendNotification("Erreur de conflit ${it.status}")
-                    HttpStatusCode.UnprocessableEntity -> notification.sendNotification("Erreur de traitement ${it.status}")
-                    HttpStatusCode.TooManyRequests -> notification.sendNotification("Erreur trop de requetes ${it.status}")
-                    HttpStatusCode.RequestTimeout -> notification.sendNotification("Erreur de timeout ${it.status}")
-                    HttpStatusCode.GatewayTimeout -> notification.sendNotification("Erreur de timeout ${it.status}")
-                    HttpStatusCode.ServiceUnavailable -> notification.sendNotification("Erreur de service indisponible ${it.status}")
-                    HttpStatusCode.NotModified -> notification.sendNotification("Erreur Aucune mise à jour effectuée ${it.status}")
-                    HttpStatusCode.NotAcceptable -> notification.sendNotification("Impossible de supprimer ${it.status}")
-                    HttpStatusCode.UnprocessableEntity -> notification.sendNotification("Impossible de créer ${it.status}")
-                    HttpStatusCode.NoContent -> notification.sendNotification("Rien trouvé")
-                    HttpStatusCode.Created -> notification.sendNotification(messageOk)
-                    HttpStatusCode.OK -> notification.sendNotification(messageOk)
+                if(!silenceNotif) {
+                    when (it.status) {
+                        HttpStatusCode.Unauthorized -> notification.sendNotification("Erreur  d'authentification ${it.status}")
+                        HttpStatusCode.Forbidden -> notification.sendNotification("Erreur d'autorisation ${it.status}")
+                        HttpStatusCode.ExpectationFailed -> notification.sendNotification("Erreur  ${it.status}")
+                        HttpStatusCode.NotFound -> notification.sendNotification("Erreur de recherche ${it.status}")
+                        HttpStatusCode.InternalServerError -> notification.sendNotification("Erreur serveur ${it.status}")
+                        HttpStatusCode.BadRequest -> notification.sendNotification("Erreur de formatage ${it.status}")
+                        HttpStatusCode.Conflict -> notification.sendNotification("Erreur de conflit ${it.status}")
+                        HttpStatusCode.UnprocessableEntity -> notification.sendNotification("Erreur de traitement ${it.status}")
+                        HttpStatusCode.TooManyRequests -> notification.sendNotification("Erreur trop de requetes ${it.status}")
+                        HttpStatusCode.RequestTimeout -> notification.sendNotification("Erreur de timeout ${it.status}")
+                        HttpStatusCode.GatewayTimeout -> notification.sendNotification("Erreur de timeout ${it.status}")
+                        HttpStatusCode.ServiceUnavailable -> notification.sendNotification("Erreur de service indisponible ${it.status}")
+                        HttpStatusCode.NotModified -> notification.sendNotification("Erreur Aucune mise à jour effectuée ${it.status}")
+                        HttpStatusCode.NotAcceptable -> notification.sendNotification("Impossible de supprimer ${it.status}")
+                        HttpStatusCode.UnprocessableEntity -> notification.sendNotification("Impossible de créer ${it.status}")
+                        HttpStatusCode.NoContent -> notification.sendNotification("Rien trouvé")
+                        HttpStatusCode.Created -> notification.sendNotification(messageOk)
+                        HttpStatusCode.OK -> notification.sendNotification(messageOk)
+                    }
                 }
             }
         } catch (e: Exception) {

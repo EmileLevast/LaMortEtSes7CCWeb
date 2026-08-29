@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.HorizontalDivider
@@ -53,7 +52,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import kotlinx.coroutines.CoroutineScope
@@ -73,7 +71,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.levast.project.affichageAdmin.EcranAdmin
 import org.levast.project.affichageMobile.gestionUtilisateur.EcranGestionPrincipal
 import org.levast.project.configuration.IConfiguration
-import org.levast.project.configuration.injectNotification
 import org.levast.project.viewModel.AdminViewModel
 import org.levast.project.viewModel.FilterViewModel
 import org.levast.project.viewModel.stateviewmodel.FilterAdminScreen
@@ -124,7 +121,7 @@ fun EcranPrincipal(
         coroutineScope.launch {
             withContext(Dispatchers.Default) {
                 setEquipes(//dans un thread à part on maj toute l'equipe
-                    apiApp.searchEquipe(".*") ?: listOf()
+                    apiApp.searchEquipe(".*", true) ?: listOf()
                 )
             }
 

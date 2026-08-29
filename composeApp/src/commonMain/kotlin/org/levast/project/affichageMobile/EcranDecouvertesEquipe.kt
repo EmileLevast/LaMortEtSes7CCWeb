@@ -34,7 +34,7 @@ fun EcranDecouverteEquipe(
     LaunchedEffect(refreshDecouvertes, selectedEquipe) {
         val updatedEquipes =
             withContext(Dispatchers.Default) {//dans un thread à part on maj toute l'equipe
-                apiApp.searchEquipe(selectedEquipe.nom)
+                apiApp.searchEquipe(selectedEquipe.nom, true)
             }
         val updatedDecouvertes =
             withContext(Dispatchers.Default) {//dans un thread à part on recherche toutes les decouvertes de l'equipe

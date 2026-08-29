@@ -45,7 +45,7 @@ class GestionJoueurViewModel : ViewModel() {
                 _uiStateAllCompte.value = apiApp.getAllCompteUtilisateur()
             }
             launch {
-                _uiStateAllEquipes.value = apiApp.searchEquipe(".*") ?: listOf()
+                _uiStateAllEquipes.value = apiApp.searchEquipe(".*", true) ?: listOf()
             }
             launch {
                 _uiStateAllRaces.value = apiApp.searchSomethings(Race(), ".*") ?: listOf()
