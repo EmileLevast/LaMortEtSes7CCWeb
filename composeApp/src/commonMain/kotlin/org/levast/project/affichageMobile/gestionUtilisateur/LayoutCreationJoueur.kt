@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
@@ -51,15 +52,25 @@ fun LayoutCreationJoueur(
             })
 
         MinimalDropdownMenu(races.map { it.nom }, { joueurState.raceField = it }) {
-            Text(
-                text = joueurState.raceField,
+            TextField(
+                label = {
+                    Text("Race")
+                },
+                value = joueurState.raceField,
+                onValueChange = {},
+                enabled = false
             )
         }
 
         MinimalDropdownMenu(classeTypes.map { it.nom }, { joueurState.classeTypeField = it }) {
 
-            Text(
-                text = joueurState.classeTypeField,
+            TextField(
+                label = {
+                    Text("Classe")
+                },
+                value = joueurState.classeTypeField,
+                onValueChange = {},
+                enabled = false
             )
         }
 
@@ -118,7 +129,7 @@ fun MinimalDropdownMenu(options:List<String>, onClickOption : (String) -> Unit,c
         Row(verticalAlignment = Alignment.CenterVertically){
             content()
             IconButton(onClick = { expanded = !expanded }) {
-                Icon(Icons.Default.MoreVert, contentDescription = "More options")
+                Icon(Icons.Default.ArrowDropDown, contentDescription = "More options")
             }
         }
 
