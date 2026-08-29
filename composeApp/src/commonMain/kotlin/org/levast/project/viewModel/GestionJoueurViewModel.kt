@@ -119,9 +119,10 @@ class GestionJoueurViewModel : ViewModel() {
         } else {
             //Sinon on crée l'équipe
             val equipe = Equipe(
-                joueurState.equipeField,
-                joueurState.nom
-            )
+                joueurState.equipeField
+            ).apply {
+                addMembreEquipe(joueurState.nom)
+            }
             viewModelScope.launch {
                 apiApp.insertItem(equipe)
             }

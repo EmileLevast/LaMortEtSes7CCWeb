@@ -67,7 +67,7 @@ class Equipe(
     }
 
     fun addMembreEquipe(membre: String){
-        chaineJoueurSerialisee+=CHAR_SEP_EQUIPEMENT+membre
+        chaineJoueurSerialisee+="$CHAR_SEP_EQUIPEMENT$membre$CHAR_SEP_EQUIPEMENT"
     }
 
 }
