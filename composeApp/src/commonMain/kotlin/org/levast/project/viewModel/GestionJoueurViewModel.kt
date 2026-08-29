@@ -1,4 +1,4 @@
-package org.levast.project.viewModel.stateviewmodel
+package org.levast.project.viewModel
 
 import ClasseType
 import Equipe
@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.levast.project.configuration.getApiApp
 import org.levast.project.model.CompteUtilisateur
+import org.levast.project.viewModel.stateviewmodel.JoueurState
 
 class GestionJoueurViewModel : ViewModel() {
 
@@ -24,13 +25,15 @@ class GestionJoueurViewModel : ViewModel() {
     private val _uiStateAllEquipes : MutableStateFlow<List<Equipe>> = MutableStateFlow(emptyList())
     val uiStateAllEquipes : StateFlow<List<Equipe>> = _uiStateAllEquipes.asStateFlow()
 
-    private val _uiStateAllCompte : MutableStateFlow<List<CompteUtilisateur>> = MutableStateFlow(emptyList())
+    private val _uiStateAllCompte : MutableStateFlow<List<CompteUtilisateur>> =
+        MutableStateFlow(emptyList())
     val uiStateAllComptes : StateFlow<List<CompteUtilisateur>> = _uiStateAllCompte.asStateFlow()
 
     private val _uiStateAllRaces : MutableStateFlow<List<Race>> = MutableStateFlow(emptyList())
     val uiStateAllRaces : StateFlow<List<Race>> = _uiStateAllRaces.asStateFlow()
 
-    private val _uiStateAllClasseTypes : MutableStateFlow<List<ClasseType>> = MutableStateFlow(emptyList())
+    private val _uiStateAllClasseTypes : MutableStateFlow<List<ClasseType>> =
+        MutableStateFlow(emptyList())
     val uiStateAllClasseTypes : StateFlow<List<ClasseType>> = _uiStateAllClasseTypes.asStateFlow()
 
     fun downloadNeededData(){
