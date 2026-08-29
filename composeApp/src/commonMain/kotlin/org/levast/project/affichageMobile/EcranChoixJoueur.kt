@@ -50,7 +50,7 @@ fun EcranChoixJoueur(
 
     //s'il n'y a pas de joueur sélectionné on montre la liste des joueurs de l'équipe
     if (selectedJoueur == null) {
-        LayoutListSelectableItem(joueurs, onSelectedJoueurChange)
+        LayoutListSelectableItem(joueurs, onSelectElement = onSelectedJoueurChange)
     } else {//Sinon on montre l'écran du joueur
         EcranJoueur(
             selectedJoueur,

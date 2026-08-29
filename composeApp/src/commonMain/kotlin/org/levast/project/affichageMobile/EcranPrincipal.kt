@@ -88,6 +88,9 @@ fun EcranPrincipal(
     val coroutineScope = rememberCoroutineScope()
     val (equipes, setEquipes) = remember { mutableStateOf<List<Equipe>>(emptyList()) }
     val (triggerEquipe, setTriggerEquipe) = remember { mutableStateOf(false) }
+
+    var showClassesAndRaces by remember { mutableStateOf(false) }
+
     val (selectEquipe, setSelectEquipe) = remember { mutableStateOf<Equipe?>(null) }
 
     //Variables de sélection du Joueur actuel
@@ -162,10 +165,19 @@ fun EcranPrincipal(
                     Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Button({ setTriggerEquipe(triggerEquipe.not()) }) {
+                    Button({ showClassesAndRaces = true }) {
+                        Text("Voir Classes & Races")
+                    }
+                    OutlinedButton({ setTriggerEquipe(triggerEquipe.not()) }) {
                         Text("Rafraîchissez-vous")
                     }
-                    LayoutListSelectableItem(equipes) { setSelectEquipe(it) }
+                    if(showClassesAndRaces){
+                        LayoutClassesRace({
+                            showClassesAndRaces = false
+                        })
+                    }else{
+                        LayoutListSelectableItem(equipes) { setSelectEquipe(it) }
+                    }
                 }
             } else {
                 Column(Modifier.fillMaxSize()) {
@@ -504,11 +516,12 @@ private fun ContentOptionButtonUserAccount() {
 @Composable
 fun <T : HeadBodyShowable> LayoutListSelectableItem(
     elementsAfficher: List<T>,
-    onSelectElement: (T) -> Unit
+    modifier: Modifier = Modifier,
+    onSelectElement: (T) -> Unit,
 ) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         items(elementsAfficher) {
             Card(Modifier.padding(15.dp).clickable { onSelectElement(it) }) {
