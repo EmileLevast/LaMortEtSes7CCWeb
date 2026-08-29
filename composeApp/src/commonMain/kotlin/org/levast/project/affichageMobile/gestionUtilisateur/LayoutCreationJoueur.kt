@@ -120,7 +120,13 @@ fun LayoutCreationJoueur(
             onClick = {
                 onCreateJoueur(joueurState)
                 goToPreviousScreen()
-            }
+            },
+            enabled = joueurState.nom.isNotBlank()
+                    && joueurState.raceField.isNotBlank()
+                    && joueurState.classeTypeField.isNotBlank()
+                    && joueurState.equipeField.isNotBlank()
+                    && joueurState.compteField.isNotBlank()
+                    && (comptes.map { it.nom }.contains(joueurState.compteField) || joueurState.mdpField.isNotBlank())
         ) {
             Text("Créer le joueur")
         }
