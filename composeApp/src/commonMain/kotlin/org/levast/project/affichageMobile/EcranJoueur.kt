@@ -9,15 +9,21 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.shape.CircleShape
@@ -33,8 +39,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
@@ -230,17 +238,18 @@ fun ProfileImage(
 
     //Affichage de l'image et du nom de profil
     Box(Modifier.fillMaxSize()) {
-        Row(Modifier.align(Alignment.TopEnd)) {
-            if (showSwitchPlayers) {
-                AnimatedVisibility(
-                    visible = true,
-                    enter = slideInHorizontally(
-                        initialOffsetX = { -it }
-                    ),
-                    exit = slideOutHorizontally(
-                        targetOffsetX = { -it }
-                    )
-                ) {
+        Row(Modifier.align(Alignment.TopEnd), verticalAlignment = Alignment.CenterVertically) {
+            AnimatedVisibility(
+                visible = showSwitchPlayers,
+                enter = slideInHorizontally(
+                    initialOffsetX = { it },
+                    animationSpec = tween(durationMillis = 500) // Animation plus douce
+                ) + fadeIn(animationSpec = tween(500)), // Ajout du fondu
+                exit = slideOutHorizontally(
+                    targetOffsetX = { it },
+                    animationSpec = tween(durationMillis = 500)
+                ) + fadeOut(animationSpec = tween(500)) // Ajout du fondu en sortie
+            ){
                     SwitchProfilPlayers(
                         joueurs.filter { it.nom != selectedJoueur.nom },
                         isWideScreen
@@ -249,9 +258,8 @@ fun ProfileImage(
                         switchSelectedJoueur(it)
                     }
                 }
-            }
             IconProfilRefreshable(
-                selectedJoueur, Modifier.size(if (isWideScreen) 150.dp else 70.dp)
+                selectedJoueur, Modifier.size(if (isWideScreen) 180.dp else 100.dp)
                     .graphicsLayer {
                         rotationZ = rotation
                     }, onClickIcon = {
@@ -278,7 +286,7 @@ fun IconProfilRefreshable(
 
 
     Box(modifier.height(IntrinsicSize.Min)) {
-        Box(Modifier.fillMaxSize(0.55f).align(Alignment.Center).clickable { onClickIcon() }) {
+        Box(Modifier.fillMaxSize(if(isRefreshable) 0.50f else 1f).align(Alignment.Center).clickable { onClickIcon() }) {
             AsyncImage(
                 model = apiApp.createUrlImageFromItem(selectedJoueur),
                 modifier = Modifier.clip(CircleShape).align(Alignment.Center),
@@ -304,12 +312,22 @@ fun SwitchProfilPlayers(
     isWideScreen: Boolean,
     onClickJoueur: (Joueur) -> Unit
 ) {
-    Row {
-        otherJoueurs.forEach {
-            IconProfilRefreshable(it, Modifier.size(if (isWideScreen) 150.dp else 70.dp), false) {
-                onClickJoueur(it)
+    Box(Modifier.height(IntrinsicSize.Min)) {
+        Row(
+            modifier = Modifier.fillMaxHeight(0.75f).align(Alignment.Center)
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    shape = CircleShape // Donne l'effet demi-cercle aux extrémités
+                ).padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            otherJoueurs.forEach {
+                IconProfilRefreshable(it, Modifier.size(if (isWideScreen) 120.dp else 75.dp), false) {
+                    onClickJoueur(it)
+                }
             }
         }
     }
+
 }
 
