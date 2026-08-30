@@ -3,15 +3,19 @@ package org.levast.project.affichageMobile
 import Equipe
 import IListItem
 import Joueur
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -60,6 +64,8 @@ fun EcranJoueur(
     isRefreshedJoueur: Boolean,
     refreshJoueur: () -> Unit,
     isWideScreen:Boolean,
+    joueurs: List<Joueur>,
+    setSelectedJoueur: (Joueur) -> Unit,
     filterViewModel: FilterViewModel = viewModel { FilterViewModel() },
     adminViewModel: AdminViewModel = viewModel { AdminViewModel() }
 ) {
@@ -161,7 +167,7 @@ fun EcranJoueur(
             }
         }
 
-        ProfileImage(selectedJoueur, isLoadingJoueur, refreshJoueur, isWideScreen)
+        ProfileImage(selectedJoueur, isLoadingJoueur, refreshJoueur, isWideScreen, joueurs, setSelectedJoueur)
     }
 
 }
@@ -195,7 +201,9 @@ fun ProfileImage(
     selectedJoueur: Joueur,
     isLoadingJoueur: Boolean,
     refreshJoueur: () -> Unit,
-    isWideScreen: Boolean
+    isWideScreen: Boolean,
+    joueurs: List<Joueur>,
+    switchSelectedJoueur:(Joueur)->Unit
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "infinite transition")
     val rotation by infiniteTransition.animateFloat(
@@ -205,14 +213,35 @@ fun ProfileImage(
         label = "rotate"
     )
 
+    var showSwitchPlayers by remember { mutableStateOf(false) }
+
     //Affichage de l'image et du nom de profil
     Box(Modifier.fillMaxSize()) {
-        IconProfilRefreshable(
-            selectedJoueur, Modifier.size(if(isWideScreen) 150.dp else 70.dp).align(Alignment.TopEnd)
-                .graphicsLayer {
-                    rotationZ = rotation
-                }, refreshJoueur
-        )
+        Row(Modifier.align(Alignment.TopEnd)){
+            if(showSwitchPlayers){
+                AnimatedVisibility(
+                    visible = true,
+                    enter = slideInHorizontally(
+                        initialOffsetX = { -it }
+                    ),
+                    exit = slideOutHorizontally(
+                        targetOffsetX = { -it }
+                    )
+                ) {
+                    SwitchProfilPlayers(joueurs.filter { it.nom != selectedJoueur.nom }, isWideScreen){
+                        showSwitchPlayers=false
+                        switchSelectedJoueur(it)
+                    }
+                }
+            }
+            IconProfilRefreshable(
+                selectedJoueur, Modifier.size(if(isWideScreen) 150.dp else 70.dp)
+                    .graphicsLayer {
+                        rotationZ = rotation
+                    }, onClickIcon =  refreshJoueur
+            )
+        }
+
     }
 }
 
@@ -220,14 +249,15 @@ fun ProfileImage(
 fun IconProfilRefreshable(
     selectedJoueur: Joueur,
     modifier: Modifier = Modifier,
-    refreshJoueur: () -> Unit
+    isRefreshable : Boolean = true,
+    onClickIcon: () -> Unit
 ) {
 
     val apiApp = injectApiApp()
 
 
     Box(modifier.height(IntrinsicSize.Min)) {
-        Box(Modifier.fillMaxSize(0.55f).align(Alignment.Center).clickable { refreshJoueur() }) {
+        Box(Modifier.fillMaxSize(0.55f).align(Alignment.Center).clickable { onClickIcon() }) {
             AsyncImage(
                 model = apiApp.createUrlImageFromItem(selectedJoueur),
                 modifier = Modifier.clip(CircleShape).align(Alignment.Center),
@@ -236,13 +266,25 @@ fun IconProfilRefreshable(
             )
         }
 
-        Image(
-            painterResource(Res.drawable.refreshSymbol),
-            "refresh",
-            Modifier.align(Alignment.Center),
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.tertiary)
-        )
+        if(isRefreshable){
+            Image(
+                painterResource(Res.drawable.refreshSymbol),
+                "refresh",
+                Modifier.align(Alignment.Center),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.tertiary)
+            )
+        }
+    }
+}
 
+@Composable
+fun SwitchProfilPlayers(otherJoueurs: List<Joueur>, isWideScreen: Boolean,onClickJoueur:(Joueur)->Unit){
+    Row{
+        otherJoueurs.forEach {
+            IconProfilRefreshable(it, Modifier.size(if(isWideScreen) 150.dp else 70.dp), false){
+                onClickJoueur(it)
+            }
+        }
     }
 }
 

@@ -64,7 +64,9 @@ fun EcranChoixJoueur(
                 refreshData = refreshData.not()
                 isLoadingJoueur = true
             },
-            isWideScreen = iSWideScreen)//on declenche la mise à jour du joueur
+            isWideScreen = iSWideScreen,
+            joueurs,
+            onSelectedJoueurChange)//on declenche la mise à jour du joueur
 
     }
 }
