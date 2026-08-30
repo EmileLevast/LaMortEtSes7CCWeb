@@ -20,7 +20,7 @@ class Sort(
     val seuils:List<Seuil> = mutableListOf(),//en cl� c'est le facteur et en valeur c'est la liste des seuils associ�s
     val coupCritiques:String="",
     val iajMax:Int=0,
-    val descriptionEffet:String="",
+    val description:String="",
     override val nomComplet:String = "",
     override var imageNom: String="",
     override var histoire: String=""
@@ -52,7 +52,7 @@ class Sort(
                 "Seuils:\n" + textSeuils +
                 (if (coupCritiquesParsed.isNotBlank()) "CC : $coupCritiquesParsed\n" else "") +
                 "IAJ Max : $iajMax\n" +
-                "${strSimplify(descriptionEffet, isSimplify)}\n"
+                "${strSimplify(description, isSimplify)}\n"
     }
 
     override fun getStatsSimplifiedAsStrings(): String {
@@ -114,7 +114,7 @@ class Sort(
             textSeuils,
             coupCritiques,
             iajMax.toString(),
-            descriptionEffet,
+            description,
             nomComplet,
             imageNom,
             histoire
