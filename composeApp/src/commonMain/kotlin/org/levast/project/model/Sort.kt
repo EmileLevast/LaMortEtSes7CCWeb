@@ -2,7 +2,6 @@ import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable
 import lamortetses7ccweb.composeapp.generated.resources.Res
 import lamortetses7ccweb.composeapp.generated.resources.logoarachnomancie
-import lamortetses7ccweb.composeapp.generated.resources.logoarme
 import lamortetses7ccweb.composeapp.generated.resources.logomagie
 import lamortetses7ccweb.composeapp.generated.resources.logomiracle
 import lamortetses7ccweb.composeapp.generated.resources.logonecromancie
@@ -21,7 +20,7 @@ class Sort(
     val seuils:List<Seuil> = mutableListOf(),//en cl� c'est le facteur et en valeur c'est la liste des seuils associ�s
     val coupCritiques:String="",
     val iajMax:Int=0,
-    val description:String="",
+    val descriptionEffet:String="",
     override val nomComplet:String = ""
 ) :ApiableItem(){
 
@@ -51,7 +50,7 @@ class Sort(
                 "Seuils:\n" + textSeuils +
                 (if (coupCritiquesParsed.isNotBlank()) "CC : $coupCritiquesParsed\n" else "") +
                 "IAJ Max : $iajMax\n" +
-                "${strSimplify(description, isSimplify)}\n"
+                "${strSimplify(descriptionEffet, isSimplify)}\n"
     }
 
     override fun getStatsSimplifiedAsStrings(): String {
@@ -109,7 +108,7 @@ class Sort(
             textSeuils,
             coupCritiques,
             iajMax.toString(),
-            description,
+            descriptionEffet,
             nomComplet
         )
     }
