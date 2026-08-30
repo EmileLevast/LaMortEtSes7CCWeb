@@ -51,7 +51,7 @@ class Equipe(
             "elements découverts : $TYPE_LISTE_CHAINE",
             "elements anonyme: $TYPE_LISTE_CHAINE",
             "nom Image : String",
-            "description : String"
+            "histoire : String"
             )
     }
 

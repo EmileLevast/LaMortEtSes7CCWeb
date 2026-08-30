@@ -58,7 +58,7 @@ class Bouclier(
             "Capacite speciale : String",
             "nom complet : String",
             "nom Image : String",
-            "description : String"
+            "histoire : String"
         )
     }
 

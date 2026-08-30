@@ -73,7 +73,7 @@ class Sort(
             "Description : String",
             "nom complet : String",
             "nom Image : String",
-            "description : String"
+            "histoire : String"
         )
     }
 

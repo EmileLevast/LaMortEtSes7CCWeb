@@ -36,7 +36,7 @@ class ClasseType(
             "caracOrigin : vie/force/EffectType:Int|Effect:Int.../intelligence/energie/humanite/ame",
             "equipement : $TYPE_LISTE_CHAINE",
             "nom Image : String",
-            "description : String"
+            "histoire : String"
         )
     }
 

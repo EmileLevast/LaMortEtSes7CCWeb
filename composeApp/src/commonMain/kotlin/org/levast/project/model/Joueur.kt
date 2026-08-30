@@ -63,7 +63,7 @@ class Joueur(
             "equipement équipé: $TYPE_LISTE_CHAINE",
             "utilisations restantes: ${CHAR_SEP_EQUIPEMENT}String:Int$CHAR_SEP_EQUIPEMENT${CHAR_SEP_EQUIPEMENT}String:Int${CHAR_SEP_EQUIPEMENT}",
             "nom Image : String",
-            "description : String"
+            "histoire : String"
         )
     }
 
