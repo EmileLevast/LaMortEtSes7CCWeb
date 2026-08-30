@@ -13,6 +13,8 @@ class Equipe(
     override val nomComplet:String = "",
     var chaineDecouvertSerialisee: String ="",
     var chaineDecouvertAnonyme: String ="",
+    override var imageNom: String="",
+    override var description: String=""
 ) : ApiableItem() {
 
     override val _id = nom.hashCode()
@@ -30,7 +32,9 @@ class Equipe(
             listStringElement[1],
             listStringElement[2],
             listStringElement[3],
-            listStringElement[4]
+            listStringElement[4],
+            listStringElement[5],
+            listStringElement[6]
         )
     }
 
@@ -46,6 +50,8 @@ class Equipe(
             "nom complet : String",
             "elements découverts : $TYPE_LISTE_CHAINE",
             "elements anonyme: $TYPE_LISTE_CHAINE",
+            "nom Image : String",
+            "description : String"
             )
     }
 
@@ -55,7 +61,9 @@ class Equipe(
             chaineJoueurSerialisee,
             nomComplet,
             chaineDecouvertSerialisee,
-            chaineDecouvertAnonyme
+            chaineDecouvertAnonyme,
+            imageNom,
+            description
         )
     }
 

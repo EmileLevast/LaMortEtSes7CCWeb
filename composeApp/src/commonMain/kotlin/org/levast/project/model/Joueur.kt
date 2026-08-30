@@ -15,10 +15,13 @@ class Joueur(
     override val nomComplet:String = "",
     var chaineEquipementSelectionneSerialisee: String ="",
     var utilisationsRestantesItem:MutableMap<String,Int> = mutableMapOf(),
+    override var imageNom: String="",
+    override var description: String="",
     //on parse pas les attributs ci-dessous c'est trop chiant
     var race:Race = Race(),
     var classeType:ClasseType = ClasseType(),
     var notesPnj:MutableMap<String,String> = mutableMapOf(),
+
 ) : ApiableItem() {
 
     override val _id = nom.hashCode()
@@ -42,7 +45,9 @@ class Joueur(
             listStringElement[5].getIntOrZero(),
             listStringElement[6],
             listStringElement[7],
-            getDeparseStringAsMapStrInt(listStringElement[8])
+            getDeparseStringAsMapStrInt(listStringElement[8]),
+            listStringElement[9],
+            listStringElement[10]
         )
     }
 
@@ -57,6 +62,8 @@ class Joueur(
             "nom complet : String",
             "equipement équipé: $TYPE_LISTE_CHAINE",
             "utilisations restantes: ${CHAR_SEP_EQUIPEMENT}String:Int$CHAR_SEP_EQUIPEMENT${CHAR_SEP_EQUIPEMENT}String:Int${CHAR_SEP_EQUIPEMENT}",
+            "nom Image : String",
+            "description : String"
         )
     }
 
@@ -74,7 +81,9 @@ class Joueur(
             niveau.toString(),
             nomComplet,
             chaineEquipementSelectionneSerialisee,
-            utilisationsRestantesItem.getAsString()
+            utilisationsRestantesItem.getAsString(),
+            imageNom,
+            description
         )
     }
 

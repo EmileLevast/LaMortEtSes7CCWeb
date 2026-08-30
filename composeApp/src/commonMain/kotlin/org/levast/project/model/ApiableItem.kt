@@ -24,10 +24,6 @@ sealed class ApiableItem() : IListItem {
     @Transient
     val downloadForApi = "download$nameForApi"
 
-    //S'il n'y a pas de nom d'image alors on renvoit le nom tout court
-    override var imageNom: String=""
-        get() = field.ifBlank { nom}
-
     fun decomposeCSV(sequenceLinesFile: Sequence<String>): List<ApiableItem> {
         val listApiableItem = mutableListOf<ApiableItem>()
         val numberOfSemiColonByLine = sequenceLinesFile.first().count { it == ';' }

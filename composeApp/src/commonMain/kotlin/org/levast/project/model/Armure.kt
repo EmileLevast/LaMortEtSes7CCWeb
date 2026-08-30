@@ -12,7 +12,9 @@ class Armure(
     val contraintes:String="Aucune contraintes",
     val poids:Int=0,
     val capaciteSpeciale:String="",
-    override val nomComplet:String = ""
+    override val nomComplet:String = "",
+    override var imageNom: String="",
+    override var description: String=""
 )
     :ApiableItem(){
 
@@ -42,7 +44,9 @@ class Armure(
                listStringElement[2],
                listStringElement[3].run{ if(isNotBlank()) toInt() else{0} },
                listStringElement[4],
-               listStringElement[5]
+               listStringElement[5],
+               listStringElement[6],
+               listStringElement[7]
             )
     }
 
@@ -53,7 +57,9 @@ class Armure(
             "Contraintes : String",
             "Poids : Int",
             "Capacite speciale : String",
-            "nom complet : String"
+            "nom complet : String",
+            "nom Image : String",
+            "description : String"
         )
     }
 
@@ -64,7 +70,9 @@ class Armure(
             contraintes,
             poids.toString(),
             capaciteSpeciale,
-            nomComplet
+            nomComplet,
+            imageNom,
+            description
         )
     }
 

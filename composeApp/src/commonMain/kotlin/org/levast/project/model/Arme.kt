@@ -16,7 +16,7 @@ class Arme(
     val capaciteSpeciale: String = "",
     override val nomComplet: String = "",
     override var imageNom: String="",
-    override var description: String="",
+    override var description: String=""
 ) : ApiableItem() {
 
 

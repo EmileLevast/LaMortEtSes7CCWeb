@@ -10,6 +10,8 @@ class ClasseType(
     override val nomComplet:String = "",
     var carac: Carac = Carac(),
     var chaineEquipementSerialisee: String ="",
+    override var imageNom: String="",
+    override var description: String=""
     ) : ApiableItem() {
 
     override val _id = nom.hashCode()
@@ -33,6 +35,8 @@ class ClasseType(
             "nom complet : String",
             "caracOrigin : vie/force/EffectType:Int|Effect:Int.../intelligence/energie/humanite/ame",
             "equipement : $TYPE_LISTE_CHAINE",
+            "nom Image : String",
+            "description : String"
         )
     }
 
@@ -41,7 +45,9 @@ class ClasseType(
             nom,
             nomComplet,
             carac.toFormattedString(),
-            chaineEquipementSerialisee
+            chaineEquipementSerialisee,
+            imageNom,
+            description
         )
     }
 
@@ -50,7 +56,9 @@ class ClasseType(
             listStringElement[0].cleanupForDB(),
             listStringElement[1],
             Carac.fromFormattedString(listStringElement[2]),
-            listStringElement[3]
+            listStringElement[3],
+            listStringElement[4],
+            listStringElement[5]
         )
     }
 }
