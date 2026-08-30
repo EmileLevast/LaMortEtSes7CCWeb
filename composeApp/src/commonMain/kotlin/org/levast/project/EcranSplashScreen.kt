@@ -56,11 +56,11 @@ fun EcranSplashScreen(
         }
     ) {
         if (adminUiState.isAdminModeOn == null) {
+            imageBandeau(
+                if (adminUiState.isWideScreen) Res.drawable.joueurbandeau else Res.drawable.joueurmenu,
+                Modifier
+            )
             Box(Modifier.weight(1f).fillMaxHeight(0.5f), contentAlignment = Alignment.Center) {
-                imageBandeau(
-                    if (adminUiState.isWideScreen) Res.drawable.joueurbandeau else Res.drawable.joueurmenu,
-                    Modifier
-                )
                 Button({
                     adminViewModel.changeMode(false)
                 }) {
@@ -68,10 +68,6 @@ fun EcranSplashScreen(
                 }
             }
             Box(Modifier.weight(1f).fillMaxHeight(0.5f), contentAlignment = Alignment.Center) {
-                imageBandeau(
-                    if (adminUiState.isWideScreen) Res.drawable.mjbandeau else Res.drawable.mjmenu,
-                    Modifier.rotate(180f)
-                )
                 Button({
                     adminViewModel.changeMode(true)
                 }) {
@@ -90,7 +86,7 @@ fun EcranSplashScreen(
 fun imageBandeau(image: DrawableResource, modifier: Modifier) {
     Image(
         painterResource(image), "bandeau",
-        contentScale = ContentScale.FillBounds,
+        contentScale = ContentScale.Fit,
         modifier = modifier.fillMaxSize()
             .graphicsLayer {
                 this.alpha = 0.65f
