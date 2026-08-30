@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
@@ -29,14 +30,19 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import deserializeToListElements
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import lamortetses7ccweb.composeapp.generated.resources.Res
+import lamortetses7ccweb.composeapp.generated.resources.UnknownImage
+import org.jetbrains.compose.resources.painterResource
 import org.levast.project.configuration.injectApiApp
 import org.levast.project.configuration.injectGraphicConstants
 import org.levast.project.configuration.injectNotification
@@ -101,14 +107,11 @@ fun layoutEdition(
 
                 Row {
                     Text(
-                        modifier = Modifier.onGloballyPositioned { coordinates ->
-                            // Set column height using the LayoutCoordinates
-                            rowHeightDp = with(localDensity) { coordinates.size.height.toDp() }
-                        },
                         text = itemToEdit.nomComplet.ifBlank { itemToEdit.nom },
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleLarge,
                     )
+
                 }
 
 
@@ -124,7 +127,10 @@ fun layoutEdition(
                         }
                     }
 
-                    Row(Modifier.align(Alignment.Center),horizontalArrangement = Arrangement.spacedBy(graphicsConsts.cellSpace)) {
+                    Row(Modifier.align(Alignment.Center).onGloballyPositioned { coordinates ->
+                        // Set column height using the LayoutCoordinates
+                        rowHeightDp = with(localDensity) { coordinates.size.height.toDp() }
+                    },horizontalArrangement = Arrangement.spacedBy(graphicsConsts.cellSpace)) {
                         Button( {
                             val itemParsed = deparseStringToCreateItem(listAttributs)
 
@@ -154,6 +160,14 @@ fun layoutEdition(
                         }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.errorContainer)){
                             Text("Supprimer", color = MaterialTheme.colorScheme.onErrorContainer)
                         }
+
+                        Spacer(Modifier.width(8.dp))
+                        AsyncImage(
+                            model = apiApp.createUrlImageFromItem(itemToEdit),
+                            modifier = Modifier.clip(RoundedCornerShape(10.dp)).height(rowHeightDp),
+                            contentDescription = null,
+                            error = painterResource(Res.drawable.UnknownImage),
+                        )
                     }
                 }
 
