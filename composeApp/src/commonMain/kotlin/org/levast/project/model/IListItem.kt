@@ -14,6 +14,9 @@ interface IListItem : HeadBodyShowable {
     val color: Color
     var isAttached:Boolean
 
+    var description:String
+    var imageNom:String
+
     fun getImageDrawable() : DrawableResource
     fun getStatsAsStrings():String
     fun getStatsSimplifiedAsStrings():String
