@@ -14,7 +14,9 @@ class Arme(
     val fajMax: Int = 0,
     val poids: Int = 0,
     val capaciteSpeciale: String = "",
-    override val nomComplet:String = ""
+    override val nomComplet: String = "",
+    override var imageNom: String="",
+    override var description: String="",
 ) : ApiableItem() {
 
 
@@ -29,7 +31,12 @@ class Arme(
             textSeuils += "|   ${it.toPrettyString()}\n"
         }
         return "Seuils:\n" + textSeuils +
-                (if (coupCritiques.isNotBlank()) "CC : ${strSimplify(coupCritiques, false)}\n" else "") +
+                (if (coupCritiques.isNotBlank()) "CC : ${
+                    strSimplify(
+                        coupCritiques,
+                        false
+                    )
+                }\n" else "") +
                 "Max énergie : $maximumEnergie\n" +
                 "FAJ Max : $fajMax\n" +
                 (if (contraintes.isNotBlank()) "${strSimplify(contraintes, false)}\n" else "") +
@@ -43,7 +50,12 @@ class Arme(
             textSeuils += "|   ${it.toPrettyString()}\n"
         }
         return "Seuils:\n" + textSeuils +
-                (if (coupCritiques.isNotBlank()) "CC : ${strSimplify(coupCritiques, true)}\n" else "") +
+                (if (coupCritiques.isNotBlank()) "CC : ${
+                    strSimplify(
+                        coupCritiques,
+                        true
+                    )
+                }\n" else "") +
                 "FAJ Max : $fajMax\n" +
                 (if (contraintes.isNotBlank()) " ${strSimplify(contraintes, true)}\n" else "") +
                 "Poids : $poids\n" +
@@ -60,10 +72,11 @@ class Arme(
             listStringElement[5].getIntOrZero(),
             listStringElement[6].getIntOrZero(),
             listStringElement[7],
-            listStringElement[8]
-            )
+            listStringElement[8],
+            listStringElement[9],
+            listStringElement[10]
+        )
     }
-
 
 
     override fun getParsingRulesAttributesAsList(): List<String> {
@@ -76,7 +89,9 @@ class Arme(
             "FAJ Max : Int",
             "Poids : Int",
             "Capacite speciale : String",
-            "nom complet : String"
+            "nom complet : String",
+            "nom Image : String",
+            "description : String"
         )
     }
 
@@ -98,7 +113,9 @@ class Arme(
             fajMax.toString(),
             poids.toString(),
             capaciteSpeciale,
-            nomComplet
+            nomComplet,
+            imageNom,
+            description
         )
     }
 
