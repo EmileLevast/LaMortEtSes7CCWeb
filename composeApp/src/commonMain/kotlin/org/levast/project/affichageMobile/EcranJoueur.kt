@@ -63,7 +63,7 @@ fun EcranJoueur(
     joueurLoaded: () -> Unit,
     isRefreshedJoueur: Boolean,
     refreshJoueur: () -> Unit,
-    isWideScreen:Boolean,
+    isWideScreen: Boolean,
     joueurs: List<Joueur>,
     setSelectedJoueur: (Joueur) -> Unit,
     filterViewModel: FilterViewModel = viewModel { FilterViewModel() },
@@ -119,9 +119,10 @@ fun EcranJoueur(
 
     remember {
         coroutineScope.launch(Dispatchers.Default) {
-            adminViewModel.uiStateJoueur.debounce(DEBOUNCE_TIME_OUT_REQUEST_MS).collect { stateJoueur ->
-                apiApp.updateJoueur(stateJoueur)
-            }
+            adminViewModel.uiStateJoueur.debounce(DEBOUNCE_TIME_OUT_REQUEST_MS)
+                .collect { stateJoueur ->
+                    apiApp.updateJoueur(stateJoueur)
+                }
         }
     }
 
@@ -145,7 +146,12 @@ fun EcranJoueur(
         //si la selection c'est tout les equipements
         when (filterUiState.filterUser) {
             FilterUser.DECOUVERTES -> {
-                EcranDecouverteEquipe(selectedEquipe, isRefreshedJoueur, selectedJoueur, isWideScreen)
+                EcranDecouverteEquipe(
+                    selectedEquipe,
+                    isRefreshedJoueur,
+                    selectedJoueur,
+                    isWideScreen
+                )
             }//si la selection c'est l'affichage des statistiques
             FilterUser.STATISTIQUES -> {
                 EcranStatistiques(selectedJoueur, isWideScreen) {
@@ -167,7 +173,14 @@ fun EcranJoueur(
             }
         }
 
-        ProfileImage(selectedJoueur, isLoadingJoueur, refreshJoueur, isWideScreen, joueurs, setSelectedJoueur)
+        ProfileImage(
+            selectedJoueur,
+            isLoadingJoueur,
+            refreshJoueur,
+            isWideScreen,
+            joueurs,
+            setSelectedJoueur
+        )
     }
 
 }
@@ -181,7 +194,7 @@ fun FilterListItem(
     togglePinItem: (String, Boolean) -> Unit = { _: String, _: Boolean -> },
     itemsUtilisations: Map<String, Int>? = null,
     onUtilisationItem: (IListItem, Int) -> Unit,
-    isWideScreen:Boolean,
+    isWideScreen: Boolean,
 ) {
 
     EcranListItem(
@@ -203,7 +216,7 @@ fun ProfileImage(
     refreshJoueur: () -> Unit,
     isWideScreen: Boolean,
     joueurs: List<Joueur>,
-    switchSelectedJoueur:(Joueur)->Unit
+    switchSelectedJoueur: (Joueur) -> Unit
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "infinite transition")
     val rotation by infiniteTransition.animateFloat(
@@ -217,8 +230,8 @@ fun ProfileImage(
 
     //Affichage de l'image et du nom de profil
     Box(Modifier.fillMaxSize()) {
-        Row(Modifier.align(Alignment.TopEnd)){
-            if(showSwitchPlayers){
+        Row(Modifier.align(Alignment.TopEnd)) {
+            if (showSwitchPlayers) {
                 AnimatedVisibility(
                     visible = true,
                     enter = slideInHorizontally(
@@ -228,17 +241,25 @@ fun ProfileImage(
                         targetOffsetX = { -it }
                     )
                 ) {
-                    SwitchProfilPlayers(joueurs.filter { it.nom != selectedJoueur.nom }, isWideScreen){
-                        showSwitchPlayers=false
+                    SwitchProfilPlayers(
+                        joueurs.filter { it.nom != selectedJoueur.nom },
+                        isWideScreen
+                    ) {
+                        showSwitchPlayers = false
                         switchSelectedJoueur(it)
                     }
                 }
             }
             IconProfilRefreshable(
-                selectedJoueur, Modifier.size(if(isWideScreen) 150.dp else 70.dp)
+                selectedJoueur, Modifier.size(if (isWideScreen) 150.dp else 70.dp)
                     .graphicsLayer {
                         rotationZ = rotation
-                    }, onClickIcon =  refreshJoueur
+                    }, onClickIcon = {
+                    if (!isLoadingJoueur) {
+                        refreshJoueur()
+                    }
+                    showSwitchPlayers = !showSwitchPlayers
+                }
             )
         }
 
@@ -249,7 +270,7 @@ fun ProfileImage(
 fun IconProfilRefreshable(
     selectedJoueur: Joueur,
     modifier: Modifier = Modifier,
-    isRefreshable : Boolean = true,
+    isRefreshable: Boolean = true,
     onClickIcon: () -> Unit
 ) {
 
@@ -266,7 +287,7 @@ fun IconProfilRefreshable(
             )
         }
 
-        if(isRefreshable){
+        if (isRefreshable) {
             Image(
                 painterResource(Res.drawable.refreshSymbol),
                 "refresh",
@@ -278,10 +299,14 @@ fun IconProfilRefreshable(
 }
 
 @Composable
-fun SwitchProfilPlayers(otherJoueurs: List<Joueur>, isWideScreen: Boolean,onClickJoueur:(Joueur)->Unit){
-    Row{
+fun SwitchProfilPlayers(
+    otherJoueurs: List<Joueur>,
+    isWideScreen: Boolean,
+    onClickJoueur: (Joueur) -> Unit
+) {
+    Row {
         otherJoueurs.forEach {
-            IconProfilRefreshable(it, Modifier.size(if(isWideScreen) 150.dp else 70.dp), false){
+            IconProfilRefreshable(it, Modifier.size(if (isWideScreen) 150.dp else 70.dp), false) {
                 onClickJoueur(it)
             }
         }
