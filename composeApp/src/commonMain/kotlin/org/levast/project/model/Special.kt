@@ -33,8 +33,8 @@ class Special(
             parseSpecialItemType(listStringElement[1]),
             listStringElement[2],
             listStringElement[3],
-            listStringElement[3],
-            listStringElement[4]
+            listStringElement[4],
+            listStringElement[5]
         )
     }
 

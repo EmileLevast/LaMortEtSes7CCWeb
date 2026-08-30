@@ -124,7 +124,7 @@ fun layoutBigImage(
                                 text = equipement.histoire,
                                 textAlign = TextAlign.Center,
                                 fontStyle = FontStyle.Italic,
-                                style = MaterialTheme.typography.bodySmall,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.tertiary
                             )
                         }

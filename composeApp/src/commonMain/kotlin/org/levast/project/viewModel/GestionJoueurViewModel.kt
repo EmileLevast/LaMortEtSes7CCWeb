@@ -73,7 +73,8 @@ class GestionJoueurViewModel : ViewModel() {
                 caracActuel = caracInitial,
                 niveau = 1,
                 race = race,
-                classeType = classeType)
+                classeType = classeType,
+                imageNom = race.imageNom.ifBlank { race.nom })
 
             viewModelScope.launch {
                 apiApp.insertItem(joueur)
