@@ -398,7 +398,7 @@ class ApiApp(val config: IConfiguration, val notification: NotificationRepositor
     }
 
     fun createUrlImageFromItem(item: IListItem) =
-        endpoint + "/images/" + item.nom.cleanupForDB().replace(" ", "") + ".jpg"
+        endpoint + "/images/" + item.imageNom.ifBlank { item.nom }.cleanupForDB().replace(" ", "") + ".jpg"
 }
 
 

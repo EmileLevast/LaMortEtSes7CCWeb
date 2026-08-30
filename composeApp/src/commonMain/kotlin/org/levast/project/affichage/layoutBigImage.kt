@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -115,6 +116,18 @@ fun layoutBigImage(
                             contentDescription = null,
                             error = painterResource(Res.drawable.UnknownImage),
                         )
+                    }
+
+                    if(equipement.histoire.isNotBlank()){
+                        item {
+                            Text(
+                                text = equipement.histoire,
+                                textAlign = TextAlign.Center,
+                                fontStyle = FontStyle.Italic,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.tertiary
+                            )
+                        }
                     }
 
                     if (isShowingStats) {
