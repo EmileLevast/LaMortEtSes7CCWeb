@@ -10,6 +10,8 @@ class Race(
     override val nomComplet:String = "",
     var carac: Carac = Carac(),
     var capacites:MutableMap<String,Int> = mutableMapOf(),
+    override var imageNom: String="",
+    override var histoire: String=""
     ) : ApiableItem() {
 
     override val _id = nom.hashCode()
@@ -33,6 +35,8 @@ class Race(
             "caracteristiques : vie/force/EffectType:Int|Effect:Int.../intelligence/energie/humanite/ame",
             "nom complet : String",
             "capacites: ${CHAR_SEP_EQUIPEMENT}String:Int$CHAR_SEP_EQUIPEMENT${CHAR_SEP_EQUIPEMENT}String:Int${CHAR_SEP_EQUIPEMENT}",
+            "nom Image : String",
+            "histoire : String"
         )
     }
 
@@ -41,7 +45,9 @@ class Race(
             nom,
             carac.toFormattedString(),
             nomComplet,
-            capacites.getAsString()
+            capacites.getAsString(),
+            imageNom,
+            histoire
         )
     }
 
@@ -50,7 +56,9 @@ class Race(
             listStringElement[0].cleanupForDB(),
             listStringElement[2],
             Carac.fromFormattedString(listStringElement[1]),
-            getDeparseStringAsMapStrInt(listStringElement[3])
+            getDeparseStringAsMapStrInt(listStringElement[3]),
+            listStringElement[4],
+            listStringElement[5]
         )
     }
 }
