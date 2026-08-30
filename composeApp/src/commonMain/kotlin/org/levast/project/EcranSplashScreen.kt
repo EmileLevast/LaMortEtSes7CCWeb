@@ -9,6 +9,7 @@ import org.levast.project.affichageMobile.EcranPrincipal
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
@@ -48,7 +49,12 @@ fun EcranSplashScreen(
     remember {
         adminViewModel.changeMode(configuration.getMode())
     }
-
+    if(adminUiState.isAdminModeOn ==null){
+        imageBandeau(
+            Res.drawable.joueurmenu,
+            Modifier
+        )
+    }
     Column(
         Modifier.fillMaxSize().onGloballyPositioned { coordinates ->
             adminViewModel.changeIsWideScreen(
@@ -56,30 +62,29 @@ fun EcranSplashScreen(
         }
     ) {
         if (adminUiState.isAdminModeOn == null) {
-            imageBandeau(
-                if (adminUiState.isWideScreen) Res.drawable.joueurbandeau else Res.drawable.joueurmenu,
-                Modifier
-            )
-            Box(Modifier.weight(1f).fillMaxHeight(0.5f), contentAlignment = Alignment.Center) {
+
+            Box(Modifier.weight(1f).fillMaxHeight(0.5f).fillMaxWidth(), contentAlignment = Alignment.Center) {
                 Button({
                     adminViewModel.changeMode(false)
                 }) {
                     Text("Joueur")
                 }
             }
-            Box(Modifier.weight(1f).fillMaxHeight(0.5f), contentAlignment = Alignment.Center) {
+            Box(Modifier.weight(1f).fillMaxHeight(0.5f).fillMaxWidth(), contentAlignment = Alignment.Center) {
                 Button({
                     adminViewModel.changeMode(true)
                 }) {
                     Text("MJ")
                 }
             }
+
         } else {
             LayoutNotification {
                 EcranPrincipal()
             }
         }
     }
+
 }
 
 @Composable
