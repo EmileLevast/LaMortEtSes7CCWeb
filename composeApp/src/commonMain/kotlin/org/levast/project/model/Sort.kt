@@ -21,7 +21,9 @@ class Sort(
     val coupCritiques:String="",
     val iajMax:Int=0,
     val descriptionEffet:String="",
-    override val nomComplet:String = ""
+    override val nomComplet:String = "",
+    override var imageNom: String="",
+    override var description: String=""
 ) :ApiableItem(){
 
     override val _id: Int = nom.hashCode()
@@ -69,7 +71,9 @@ class Sort(
             "Coups critiques :String",
             "IAJ Max : Int",
             "Description : String",
-            "nom complet : String"
+            "nom complet : String",
+            "nom Image : String",
+            "description : String"
         )
     }
 
@@ -87,7 +91,9 @@ class Sort(
             listStringElement[7],
             listStringElement[8].getIntOrZero(),
             listStringElement[9],
-            listStringElement[10]
+            listStringElement[10],
+            listStringElement[11],
+            listStringElement[12]
         )
     }
 
@@ -109,7 +115,9 @@ class Sort(
             coupCritiques,
             iajMax.toString(),
             descriptionEffet,
-            nomComplet
+            nomComplet,
+            imageNom,
+            description
         )
     }
 

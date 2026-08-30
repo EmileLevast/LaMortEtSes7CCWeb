@@ -9,7 +9,9 @@ class Special(
     override val nom:String="inconnu",
     val itemType: SpecialItemType=SpecialItemType.OUTIL,
     val capaciteSpeciale:String="",
-    override val nomComplet:String = ""
+    override val nomComplet:String = "",
+    override var imageNom: String="",
+    override var description: String=""
     ) : ApiableItem() {
 
     override val _id = nom.hashCode()
@@ -30,7 +32,9 @@ class Special(
             listStringElement[0].cleanupForDB(),
             parseSpecialItemType(listStringElement[1]),
             listStringElement[2],
-            listStringElement[3]
+            listStringElement[3],
+            listStringElement[3],
+            listStringElement[4]
         )
     }
 
@@ -39,7 +43,9 @@ class Special(
             "Nom: String",
             "Type: SpellType = (ANNEAU, TALISMAN, OUTIL, BRAISE, AMBRE, TECHNIQUE) ",
             "Capacite speciale : String",
-            "nom complet : String"
+            "nom complet : String",
+            "nom Image : String",
+            "description : String"
         )
     }
 
@@ -48,7 +54,9 @@ class Special(
             nom,
             itemType.name,
             capaciteSpeciale,
-            nomComplet
+            nomComplet,
+            imageNom,
+            description
         )
     }
 
