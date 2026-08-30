@@ -155,9 +155,9 @@ fun EcranPrincipal(
                     })
 
             if (adminUiState.filterAdminScreen != FilterAdminScreen.NONE && adminUiState.isAdminModeOn == true) {
-                if(adminUiState.filterAdminScreen == FilterAdminScreen.USER_ACCOUNT){
+                if (adminUiState.filterAdminScreen == FilterAdminScreen.USER_ACCOUNT) {
                     EcranGestionPrincipal()
-                }else{
+                } else {
                     EcranAdmin()
                 }
             } else if (selectEquipe == null) {
@@ -171,11 +171,13 @@ fun EcranPrincipal(
                     OutlinedButton({ setTriggerEquipe(triggerEquipe.not()) }) {
                         Text("Rafraîchissez-vous")
                     }
-                    if(showClassesAndRaces){
-                        LayoutClassesRace({
-                            showClassesAndRaces = false
-                        })
-                    }else{
+                    if (showClassesAndRaces) {
+                        LayoutClassesRace(
+                            adminUiState.isWideScreen,
+                            {
+                                showClassesAndRaces = false
+                            })
+                    } else {
                         LayoutListSelectableItem(equipes) { setSelectEquipe(it) }
                     }
                 }
@@ -260,7 +262,6 @@ fun EcranPrincipal(
     }
 
 
-
 }
 
 fun drawBackgroundBandeau(
@@ -316,7 +317,6 @@ private fun optionsNavigationDrawer(
 
 
     if (selectedJoueur != null) {
-
 
 
         HorizontalDivider()
@@ -451,7 +451,7 @@ private fun AdminOptions(
     //FIXME c'est très lourd la présentation des options administratrices
     val adminUiState by adminViewModel.uiState.collectAsState()
 
-    if(adminUiState.isAdminModeOn == true){
+    if (adminUiState.isAdminModeOn == true) {
         val onClickResearchOption: () -> Unit = {
             if (adminUiState.filterAdminScreen != FilterAdminScreen.RESEARCH) {
                 adminViewModel.changeAdminScreen(FilterAdminScreen.RESEARCH)
@@ -481,7 +481,7 @@ private fun AdminOptions(
             TextButton(onClickUserAccountOption) {
                 ContentOptionButtonUserAccount()
             }
-        } else if (adminUiState.filterAdminScreen == FilterAdminScreen.USER_ACCOUNT){
+        } else if (adminUiState.filterAdminScreen == FilterAdminScreen.USER_ACCOUNT) {
             TextButton(onClickResearchOption) {
                 ContentOptionButtonResearch()
             }
