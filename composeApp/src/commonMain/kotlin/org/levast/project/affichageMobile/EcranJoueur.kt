@@ -49,6 +49,7 @@ import coil3.compose.AsyncImage
 import getListItemFiltered
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -236,6 +237,14 @@ fun ProfileImage(
 
     var showSwitchPlayers by remember { mutableStateOf(false) }
 
+    //on désactive les autres joueurs après 5 secondes
+    LaunchedEffect(showSwitchPlayers){
+        if(showSwitchPlayers){
+            delay(5000)
+            showSwitchPlayers = false
+        }
+    }
+
     //Affichage de l'image et du nom de profil
     Box(Modifier.fillMaxSize()) {
         Row(Modifier.align(Alignment.TopEnd), verticalAlignment = Alignment.CenterVertically) {
@@ -286,7 +295,7 @@ fun IconProfilRefreshable(
 
 
     Box(modifier.height(IntrinsicSize.Min)) {
-        Box(Modifier.fillMaxSize(if(isRefreshable) 0.50f else 1f).align(Alignment.Center).clickable { onClickIcon() }) {
+        Box(Modifier.fillMaxSize(if(isRefreshable) 0.50f else 1f).align(Alignment.Center).clip(CircleShape).clickable { onClickIcon() }) {
             AsyncImage(
                 model = apiApp.createUrlImageFromItem(selectedJoueur),
                 modifier = Modifier.clip(CircleShape).align(Alignment.Center),
