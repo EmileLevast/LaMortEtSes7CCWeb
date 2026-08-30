@@ -23,7 +23,7 @@ class Sort(
     val descriptionEffet:String="",
     override val nomComplet:String = "",
     override var imageNom: String="",
-    override var description: String=""
+    override var histoire: String=""
 ) :ApiableItem(){
 
     override val _id: Int = nom.hashCode()
@@ -117,7 +117,7 @@ class Sort(
             descriptionEffet,
             nomComplet,
             imageNom,
-            description
+            histoire
         )
     }
 

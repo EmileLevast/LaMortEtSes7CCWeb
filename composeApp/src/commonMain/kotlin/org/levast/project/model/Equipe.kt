@@ -14,7 +14,7 @@ class Equipe(
     var chaineDecouvertSerialisee: String ="",
     var chaineDecouvertAnonyme: String ="",
     override var imageNom: String="",
-    override var description: String=""
+    override var histoire: String=""
 ) : ApiableItem() {
 
     override val _id = nom.hashCode()
@@ -63,7 +63,7 @@ class Equipe(
             chaineDecouvertSerialisee,
             chaineDecouvertAnonyme,
             imageNom,
-            description
+            histoire
         )
     }
 

@@ -11,7 +11,7 @@ class ClasseType(
     var carac: Carac = Carac(),
     var chaineEquipementSerialisee: String ="",
     override var imageNom: String="",
-    override var description: String=""
+    override var histoire: String=""
     ) : ApiableItem() {
 
     override val _id = nom.hashCode()
@@ -47,7 +47,7 @@ class ClasseType(
             carac.toFormattedString(),
             chaineEquipementSerialisee,
             imageNom,
-            description
+            histoire
         )
     }
 

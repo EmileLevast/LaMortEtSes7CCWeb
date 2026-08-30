@@ -1,8 +1,6 @@
 import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable
 import lamortetses7ccweb.composeapp.generated.resources.Res
-import lamortetses7ccweb.composeapp.generated.resources.logoarme
-import lamortetses7ccweb.composeapp.generated.resources.logoarmure
 import lamortetses7ccweb.composeapp.generated.resources.logobouclier
 import org.jetbrains.compose.resources.DrawableResource
 
@@ -15,7 +13,7 @@ class Bouclier(
     val capaciteSpeciale:String="",
     override val nomComplet:String = "",
     override var imageNom: String="",
-    override var description: String=""
+    override var histoire: String=""
 )
     :ApiableItem(){
 
@@ -73,7 +71,7 @@ class Bouclier(
             capaciteSpeciale,
             nomComplet,
             imageNom,
-            description
+            histoire
         )
     }
 

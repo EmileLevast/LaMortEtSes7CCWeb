@@ -1,10 +1,6 @@
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import lamortetses7ccweb.composeapp.generated.resources.Res
-import lamortetses7ccweb.composeapp.generated.resources.logospecial
 import model.HeadBodyShowable
 import org.jetbrains.compose.resources.DrawableResource
-import org.levast.project.network.ApiApp
 import org.levast.project.viewModel.stateviewmodel.FilterUser
 
 interface IListItem : HeadBodyShowable {
@@ -14,7 +10,7 @@ interface IListItem : HeadBodyShowable {
     val color: Color
     var isAttached:Boolean
 
-    var description:String
+    var histoire:String
     var imageNom:String
 
     fun getImageDrawable() : DrawableResource

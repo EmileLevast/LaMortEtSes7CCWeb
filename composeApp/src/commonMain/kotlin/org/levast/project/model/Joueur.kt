@@ -16,13 +16,13 @@ class Joueur(
     var chaineEquipementSelectionneSerialisee: String ="",
     var utilisationsRestantesItem:MutableMap<String,Int> = mutableMapOf(),
     override var imageNom: String="",
-    override var description: String="",
+    override var histoire: String="",
     //on parse pas les attributs ci-dessous c'est trop chiant
     var race:Race = Race(),
     var classeType:ClasseType = ClasseType(),
     var notesPnj:MutableMap<String,String> = mutableMapOf(),
 
-) : ApiableItem() {
+    ) : ApiableItem() {
 
     override val _id = nom.hashCode()
     override var isAttached = false
@@ -83,7 +83,7 @@ class Joueur(
             chaineEquipementSelectionneSerialisee,
             utilisationsRestantesItem.getAsString(),
             imageNom,
-            description
+            histoire
         )
     }
 

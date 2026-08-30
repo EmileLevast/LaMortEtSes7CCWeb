@@ -1,7 +1,6 @@
 import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable
 import lamortetses7ccweb.composeapp.generated.resources.Res
-import lamortetses7ccweb.composeapp.generated.resources.logoarme
 import lamortetses7ccweb.composeapp.generated.resources.logoarmure
 import org.jetbrains.compose.resources.DrawableResource
 
@@ -14,7 +13,7 @@ class Armure(
     val capaciteSpeciale:String="",
     override val nomComplet:String = "",
     override var imageNom: String="",
-    override var description: String=""
+    override var histoire: String=""
 )
     :ApiableItem(){
 
@@ -72,7 +71,7 @@ class Armure(
             capaciteSpeciale,
             nomComplet,
             imageNom,
-            description
+            histoire
         )
     }
 

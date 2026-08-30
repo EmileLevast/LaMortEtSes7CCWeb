@@ -1,7 +1,6 @@
 import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable
 import lamortetses7ccweb.composeapp.generated.resources.Res
-import lamortetses7ccweb.composeapp.generated.resources.logoarme
 import lamortetses7ccweb.composeapp.generated.resources.logomonstre
 import org.jetbrains.compose.resources.DrawableResource
 
@@ -18,7 +17,7 @@ data class Monster(
     val capaciteSpeciale:String="",
     override val nomComplet:String = "",
     override var imageNom: String="",
-    override var description: String=""
+    override var histoire: String=""
 ) : ApiableItem(){
 
     override val _id = nom.hashCode()
@@ -112,7 +111,7 @@ data class Monster(
             capaciteSpeciale,
             nomComplet,
             imageNom,
-            description
+            histoire
         )
     }
 

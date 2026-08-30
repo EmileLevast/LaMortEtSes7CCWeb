@@ -11,7 +11,7 @@ class Special(
     val capaciteSpeciale:String="",
     override val nomComplet:String = "",
     override var imageNom: String="",
-    override var description: String=""
+    override var histoire: String=""
     ) : ApiableItem() {
 
     override val _id = nom.hashCode()
@@ -56,7 +56,7 @@ class Special(
             capaciteSpeciale,
             nomComplet,
             imageNom,
-            description
+            histoire
         )
     }
 
