@@ -1,5 +1,7 @@
 import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import lamortetses7ccweb.composeapp.generated.resources.Res
 import lamortetses7ccweb.composeapp.generated.resources.logojoueur
 import org.jetbrains.compose.resources.DrawableResource
@@ -17,7 +19,6 @@ class Joueur(
     var utilisationsRestantesItem:MutableMap<String,Int> = mutableMapOf(),
     override var imageNom: String="",
     override var histoire: String="",
-    //on parse pas les attributs ci-dessous c'est trop chiant
     var race:Race = Race(),
     var classeType:ClasseType = ClasseType(),
     var notesPnj:MutableMap<String,String> = mutableMapOf(),
@@ -47,7 +48,10 @@ class Joueur(
             listStringElement[7],
             getDeparseStringAsMapStrInt(listStringElement[8]),
             listStringElement[9],
-            listStringElement[10]
+            listStringElement[10],
+            Json.decodeFromString(listStringElement[11]),
+            Json.decodeFromString(listStringElement[12]),
+            Json.decodeFromString(listStringElement[13])
         )
     }
 
@@ -63,7 +67,10 @@ class Joueur(
             "equipement équipé: $TYPE_LISTE_CHAINE",
             "utilisations restantes: ${CHAR_SEP_EQUIPEMENT}String:Int$CHAR_SEP_EQUIPEMENT${CHAR_SEP_EQUIPEMENT}String:Int${CHAR_SEP_EQUIPEMENT}",
             "nom Image : String",
-            "histoire : String"
+            "histoire : String",
+            "race : JSON",
+            "classe : JSON",
+            "notes Pnj : JSON",
         )
     }
 
@@ -83,7 +90,10 @@ class Joueur(
             chaineEquipementSelectionneSerialisee,
             utilisationsRestantesItem.getAsString(),
             imageNom,
-            histoire
+            histoire,
+            Json.encodeToString(race),
+            Json.encodeToString(classeType),
+            Json.encodeToString(notesPnj)
         )
     }
 
