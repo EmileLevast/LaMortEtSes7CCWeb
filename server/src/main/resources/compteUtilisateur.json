@@ -1,0 +1,10 @@
+[
+{"_id":{"$numberInt":"108398393"},"nom":"remihaverland","motDePasse":"dragon","roles":["remih"]},
+{"_id":{"$numberInt":"24595903"},"nom":"emilelevast","motDePasse":"milou3441","roles":["admin"]},
+{"_id":{"$numberInt":"1169423639"},"nom":"aymericroge","motDePasse":"carbonara","roles":["tomek gil sayan"]},
+{"_id":{"$numberInt":"756486211"},"nom":"nathandumoulin","motDePasse":"nathanounet","roles":["nathan"]},
+{"_id":{"$numberInt":"8571269"},"nom":"vivienbernard","motDePasse":"marseille","roles":["vivien","aigle de l eau"]},
+{"_id":{"$numberInt":"-7637429"},"nom":"leonarnaud","motDePasse":"barbeapapa","roles":["leon","vague de feu"]},
+{"_id":{"$numberInt":"-634591257"},"nom":"thomasfirmin","motDePasse":"weshthefuck","roles":["thomas","monsieur lulu"]},
+{"_id":{"$numberInt":"898208400"},"nom":"clss_annecy","motDePasse":"citrouille","roles":["andhrimnis","andhrimnae","tadel","iase","203"]}
+]
