@@ -5,8 +5,7 @@ import org.levast.project.network.IImageDownloader
 import org.levast.project.repository.IPdfGeneratorRepository
 
 private val configurationImplDesktop = ConfigurationImplDesktop()
+private val pdfGeneratorRepository = PdfGeneratorRepository()
 
 actual fun injectConfiguration(): IConfiguration = configurationImplDesktop
-actual fun injectPdfGeneratorRepository(): IPdfGeneratorRepository {
-    TODO("Not yet implemented")
-}
+actual fun injectPdfGeneratorRepository(): IPdfGeneratorRepository = pdfGeneratorRepository

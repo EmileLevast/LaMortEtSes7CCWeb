@@ -31,6 +31,7 @@ import kotlinx.coroutines.withContext
 import org.levast.project.affichageMobile.EcranListItem
 import org.levast.project.configuration.injectApiApp
 import org.levast.project.configuration.injectGraphicConstants
+import org.levast.project.configuration.injectPdfGeneratorRepository
 import org.levast.project.viewModel.AdminViewModel
 
 
@@ -42,6 +43,9 @@ fun EcranRecherche(
     scrollStateRecherche : LazyGridState,
     adminViewModel: AdminViewModel = viewModel{ AdminViewModel() }
 ) {
+
+    val pdfGeneratorRepository = remember { injectPdfGeneratorRepository()}
+
     var nameSearched by remember { mutableStateOf("") }
     var loading by mutableStateOf(false)
     var isDetailedModeOn by remember { mutableStateOf(true) }
@@ -112,6 +116,11 @@ fun EcranRecherche(
                     isDetailedModeOn = it
                 }
             )
+            Button({
+                pdfGeneratorRepository.generatePdf(adminUiState.listitems)
+            }){
+                Text("Generer pdf")
+            }
 
         }
         EcranListItem(
