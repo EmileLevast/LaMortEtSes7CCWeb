@@ -20,14 +20,14 @@ class Sort(
     val seuils:List<Seuil> = mutableListOf(),//en cl� c'est le facteur et en valeur c'est la liste des seuils associ�s
     val coupCritiques:String="",
     val iajMax:Int=0,
-    override var capaciteSpeciale: String = "",
+    val description:String="",
     override val nomComplet:String = "",
     override var imageNom: String="",
     override var histoire: String=""
 ) :ApiableItem(){
 
     override val _id: Int = nom.hashCode()
-
+    override var capaciteSpeciale: String = description
     override var isAttached: Boolean = false
     override val color: Color
         get() = Color(0xFF00AEEF)

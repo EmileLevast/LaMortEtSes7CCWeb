@@ -8,7 +8,7 @@ import org.jetbrains.compose.resources.DrawableResource
 class Special(
     override val nom:String="inconnu",
     val itemType: SpecialItemType=SpecialItemType.OUTIL,
-    val capaciteSpeciale:String="",
+    override var capaciteSpeciale: String = "",
     override val nomComplet:String = "",
     override var imageNom: String="",
     override var histoire: String=""
