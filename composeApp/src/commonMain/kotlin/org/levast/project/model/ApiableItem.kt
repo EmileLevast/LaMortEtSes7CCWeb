@@ -1,5 +1,6 @@
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import org.jetbrains.compose.resources.DrawableResource
 
 @Serializable
 sealed class ApiableItem() : IListItem {
@@ -23,6 +24,8 @@ sealed class ApiableItem() : IListItem {
 
     @Transient
     val downloadForApi = "download$nameForApi"
+
+    override fun getImageUrl(): String = "drawable/logo${nameForApi?.lowercase()}.png"
 
     fun decomposeCSV(sequenceLinesFile: Sequence<String>): List<ApiableItem> {
         val listApiableItem = mutableListOf<ApiableItem>()

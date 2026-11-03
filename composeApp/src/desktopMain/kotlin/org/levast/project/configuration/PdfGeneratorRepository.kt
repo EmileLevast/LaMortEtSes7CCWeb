@@ -78,14 +78,48 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
         val bodyBold = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9f)
 
 
-        // 1. COLONNE TITRE
         val titleCell = PdfPCell().apply {
             defaultCellStyle(this)
             horizontalAlignment = Element.ALIGN_CENTER
             verticalAlignment = Element.ALIGN_TOP
             setFixedHeight(fixedCardHeight)
 
-            phrase = Phrase(item.nom.uppercase(), titleFont)
+            // Création d'une table interne pour mettre le titre et l'icône côte à côte
+            val titleHeaderTable = PdfPTable(floatArrayOf(0.8f, 0.2f)).apply {
+                widthPercentage = 100f
+            }
+
+            // Le Texte du Titre
+            val textCell = PdfPCell(Phrase(item.nom.uppercase(), titleFont)).apply {
+                border = Rectangle.NO_BORDER
+                verticalAlignment = Element.ALIGN_MIDDLE
+            }
+            titleHeaderTable.addCell(textCell)
+
+            // L'icône (Image)
+            val iconCell = try {
+                // Supposons que getImageDrawable() retourne le nom du fichier (ex: "drawable/mon_image.png")
+                // Vous devez passer le chemin relatif au dossier resources
+                val resourcePath = item.getImageUrl()
+                val img = getPdfImageFromResource(resourcePath)
+
+                if (img != null) {
+                    img.scaleToFit(20f, 20f)
+                    PdfPCell(img).apply {
+                        border = Rectangle.NO_BORDER
+                        horizontalAlignment = Element.ALIGN_RIGHT
+                        verticalAlignment = Element.ALIGN_MIDDLE
+                    }
+                } else {
+                    PdfPCell().apply { border = Rectangle.NO_BORDER }
+                }
+            } catch (e: Exception) {
+                PdfPCell().apply { border = Rectangle.NO_BORDER }
+            }
+            titleHeaderTable.addCell(iconCell)
+
+            // On ajoute cette mini-table à la cellule principale
+            addElement(titleHeaderTable)
         }
         cardTable.addCell(titleCell)
 
@@ -161,6 +195,20 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
         addElement(line)
     }
 
-
+    private fun getPdfImageFromResource(resourcePath: String): Image? {
+        return try {
+            // Charge le fichier depuis les ressources du projet (desktopMain/resources ou commonMain/composeResources)
+            val inputStream = this::class.java.classLoader.getResourceAsStream(resourcePath)
+            val bytes = inputStream?.readAllBytes()
+            if (bytes != null) {
+                Image.getInstance(bytes)
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
 
 }

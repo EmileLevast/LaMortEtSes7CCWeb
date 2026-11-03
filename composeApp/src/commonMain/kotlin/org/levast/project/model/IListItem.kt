@@ -16,6 +16,7 @@ interface IListItem : HeadBodyShowable {
 
 
     fun getImageDrawable() : DrawableResource
+    fun getImageUrl() : String
     fun getStatsAsStrings():String
     fun getStatsSimplifiedAsStrings():String
     fun getParsingRulesAttributesAsList():List<String>

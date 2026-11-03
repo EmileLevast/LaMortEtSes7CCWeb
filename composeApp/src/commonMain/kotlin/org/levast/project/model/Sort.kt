@@ -151,4 +151,15 @@ class Sort(
         }
     }
 
+    override fun getImageUrl(): String {
+        return when(sortType){
+            SpellType.AME -> "drawable/logomagie.png"
+            SpellType.PYROMANCIE -> "drawable/logopyromancie.png"
+            SpellType.PSIONIQUE -> "drawable/logopsionique.png"
+            SpellType.MIRACLE -> "drawable/logomiracle.png"
+            SpellType.NECROMANCIE -> "drawable/logonecromancie.png"
+            SpellType.ARACHNOMANCIE -> "drawable/logoarachnomancie.png"
+        }
+    }
+
 }
