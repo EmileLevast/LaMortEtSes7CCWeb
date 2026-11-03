@@ -71,8 +71,8 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
         // 1. COLONNE TITRE
         val titleCell = PdfPCell().apply {
             defaultCellStyle(this)
-            horizontalAlignment = androidx.wear.compose.foundation.Element.ALIGN_CENTER
-            verticalAlignment = androidx.wear.compose.foundation.Element.ALIGN_MIDDLE
+            horizontalAlignment = Element.ALIGN_CENTER
+            verticalAlignment = Element.ALIGN_MIDDLE
             rotation = 90 // Rotation verticale pour un look "carte de jeu"
 
             val font = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12f,
