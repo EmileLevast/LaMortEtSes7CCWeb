@@ -13,6 +13,9 @@ import java.io.FileOutputStream
 
 class PdfGeneratorRepository : IPdfGeneratorRepository  {
     override fun generatePdf(items: List<IListItem>) {
+        // Définition des marges
+        val margin = 10f
+
         // A4 = 210 x 297 mm. On réduit les marges pour maximiser l'espace des cartes
         val document = Document(PageSize.A4, 10f, 10f, 10f, 10f)
         PdfWriter.getInstance(document, FileOutputStream("items.pdf"))
@@ -23,19 +26,21 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
             widthPercentage = 100f
         }
 
+        // Calcul de la hauteur exacte pour 4 cartes (Hauteur A4 - marges haut/bas)
+        val fixedCardHeight = (document.pageSize.height - (margin * 2)-15f) / 4f
+
         items.forEach { arme ->
             val cardContainerCell = PdfPCell().apply {
                 paddingTop = 5f
                 paddingBottom = 5f
                 paddingRight = 5f
                 paddingLeft = 5f
+                // On force la cellule du conteneur à la taille exacte
+                setFixedHeight(fixedCardHeight)
                 border = Rectangle.NO_BORDER
-                // Calcul de la hauteur pour que 2 lignes tiennent pile sur une page A4
-                // Hauteur A4 (842pt) - marges / 2
-                minimumHeight = (PageSize.A4.height - 40f) / 4f
 
                 // On ajoute la carte à l'intérieur de ce conteneur
-                addElement(createItemCard(arme))
+                addElement(createItemCard(arme, fixedCardHeight))
             }
             mainGrid.addCell(cardContainerCell)
         }
@@ -44,11 +49,12 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
         document.close()
     }
 
-    private fun createItemCard(item: IListItem): PdfPTable {
+    private fun createItemCard(item: IListItem, fixedCardHeight: Float): PdfPTable {
         // La carte est un tableau de 3 colonnes
         // Colonne 1 (Titre) : 15% | Colonne 2 (Stats) : 35% | Colonne 3 (Capacités) : 50%
-        val cardTable = PdfPTable(floatArrayOf(0.20f, 0.30f, 0.50f)).apply {
+        val cardTable = PdfPTable(floatArrayOf(0.30f, 0.20f, 0.50f)).apply {
             widthPercentage = 100f
+
         }
 
         // --- STYLISATION DE LA CARTE (Bordure noire et Fond blanc) ---
@@ -60,6 +66,7 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
             cell.paddingBottom = 5f
             cell.paddingRight = 5f
             cell.paddingLeft = 5f
+
         }
 
         val bodyFont = FontFactory.getFont(FontFactory.HELVETICA, 9f)
@@ -73,6 +80,7 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
             defaultCellStyle(this)
             horizontalAlignment = Element.ALIGN_CENTER
             verticalAlignment = Element.ALIGN_TOP
+            setFixedHeight(fixedCardHeight)
 
             phrase = Phrase(item.nom.uppercase(), titleFont)
         }
