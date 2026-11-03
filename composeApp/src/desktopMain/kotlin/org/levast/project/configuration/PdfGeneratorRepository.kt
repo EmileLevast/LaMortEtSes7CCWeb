@@ -4,6 +4,7 @@ import Arme
 import Armure
 import Bouclier
 import IListItem
+import Monster
 import Sort
 import Special
 import org.levast.project.repository.IPdfGeneratorRepository
@@ -140,6 +141,8 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
                 stylingArmureCard(item,bodyFont, bodyBold)
             }else if(item is Bouclier){
                 stylingBouclierCard(item,bodyFont, bodyBold)
+            }else if(item is Monster){
+                stylingMonsterCard(item,bodyFont, bodyBold)
             }
             else{
                 // Utilise ta méthode getBody() qui contient la force, intelligence, etc.
@@ -205,6 +208,8 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
     private fun PdfPCell.stylingBouclierCard(bouclier: Bouclier, bodyFont: Font, bodyBold: Font){
         addElement(Paragraph("Défenses :", bodyBold))
         addElement(Paragraph(bouclier.getDefenseText(), bodyFont))
+        addElement(Paragraph("\n")) // Espace
+
         addInlineElement("Poids : ", bouclier.poids.toString(), bodyBold, bodyFont)
 
     }
@@ -212,8 +217,25 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
     private fun PdfPCell.stylingArmureCard(armure: Armure, bodyFont: Font, bodyBold: Font){
         addElement(Paragraph("Défenses :", bodyBold))
         addElement(Paragraph(armure.getDefenseText(), bodyFont))
+        addElement(Paragraph("\n")) // Espace
+
         addInlineElement("Poids : ", armure.poids.toString(), bodyBold, bodyFont)
 
+    }
+
+    private fun PdfPCell.stylingMonsterCard(monster: Monster, bodyFont: Font, bodyBold: Font){
+
+        addInlineElement("Vie : ", monster.vie.toString(), bodyBold, bodyFont)
+        addInlineElement("Force : ", monster.constructForceSeuils(), bodyBold, bodyFont)
+        addInlineElement("Défenses : ", monster.getDefenseText(), bodyBold, bodyFont)
+        addInlineElement("Intelligence : ", monster.intelligence.toString(), bodyBold, bodyFont)
+        addInlineElement("Energie : ", monster.energie.toString(), bodyBold, bodyFont)
+        addInlineElement("Âmes : ", monster.ames.toString(), bodyBold, bodyFont)
+
+        addElement(Paragraph("\n")) // Espace
+
+        addElement(Paragraph("Drops :", bodyBold))
+        addElement(Paragraph(monster.constructListDropsString(), bodyFont))
     }
 
     private fun PdfPCell.addInlineElement(title:String, body:String, titleFont:Font, bodyFont: Font){
@@ -223,6 +245,7 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
         }
         addElement(line)
     }
+
 
     private fun getPdfImageFromResource(resourcePath: String): Image? {
         return try {

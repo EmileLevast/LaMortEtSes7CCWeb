@@ -25,11 +25,11 @@ data class Monster(
     override val color: Color
         get() = Color(0xFFBB0B0B)
 
-    private fun constructForceSeuils():String{
+    fun constructForceSeuils():String{
         return force.values.last().toString()
     }
 
-    private fun constructListDropsString():String{
+    fun constructListDropsString():String{
         val listDroptext = StringBuilder()
         listDrops.forEach {
             listDroptext.append("  ${it.key} ${if(it.value == 0 ){"∅"}else{"/ ${it.value}+"}}\n")
@@ -49,6 +49,10 @@ data class Monster(
                 constructListDropsString() +
                 "Ames : $ames\n"+
                 "${strSimplify(capaciteSpeciale,false)}\n"
+    }
+
+    fun getDefenseText():String{
+        return convertEffectTypeStatsToString(defense)
     }
 
     override fun getStatsSimplifiedAsStrings(): String {
