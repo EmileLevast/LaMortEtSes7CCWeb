@@ -33,7 +33,7 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
         }
 
         // Calcul de la hauteur exacte pour 4 cartes (Hauteur A4 - marges haut/bas)
-        val fixedCardHeight = (document.pageSize.height - (margin * 2)-15f) / 4f
+        val fixedCardHeight = (document.pageSize.height - (margin * 2)) / 4f
 
         items.forEach { arme ->
             val cardContainerCell = PdfPCell().apply {
@@ -207,7 +207,7 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
 
     private fun PdfPCell.stylingBouclierCard(bouclier: Bouclier, bodyFont: Font, bodyBold: Font){
         addElement(Paragraph("Défenses :", bodyBold))
-        addElement(Paragraph(bouclier.getDefenseText(), bodyFont))
+        addElement(Paragraph(bouclier.getDefenseText().replace(" ","\n"), bodyFont))
         addElement(Paragraph("\n")) // Espace
 
         addInlineElement("Poids : ", bouclier.poids.toString(), bodyBold, bodyFont)
@@ -216,7 +216,7 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
 
     private fun PdfPCell.stylingArmureCard(armure: Armure, bodyFont: Font, bodyBold: Font){
         addElement(Paragraph("Défenses :", bodyBold))
-        addElement(Paragraph(armure.getDefenseText(), bodyFont))
+        addElement(Paragraph(armure.getDefenseText().replace(" ","\n"), bodyFont))
         addElement(Paragraph("\n")) // Espace
 
         addInlineElement("Poids : ", armure.poids.toString(), bodyBold, bodyFont)
@@ -228,7 +228,7 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
         addInlineElement("Vie : ", monster.vie.toString(), bodyBold, bodyFont)
         addInlineElement("Force : ", monster.constructForceSeuils(), bodyBold, bodyFont)
         addElement(Paragraph("Défenses :", bodyBold))
-        addElement(Paragraph(monster.getDefenseText(), bodyFont))
+        addElement(Paragraph(monster.getDefenseText().replace(" ","\n"), bodyFont))
         addInlineElement("Intelligence : ", monster.intelligence.toString(), bodyBold, bodyFont)
         addInlineElement("Energie : ", monster.energie.toString(), bodyBold, bodyFont)
         addInlineElement("Âmes : ", monster.ames.toString(), bodyBold, bodyFont)

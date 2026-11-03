@@ -41,7 +41,7 @@ fun convertEffectTypeStatsToString(statsToConvert:Map<EffectType,String> ) :Stri
     statsToConvert.forEach {
         listMapDefense.append("${it.key.symbol}:${it.value}")
     }
-    return listMapDefense.toString()
+    return listMapDefense.toString().trim()
 }
 
 fun strSimplify(str:String, isSimpleRulesOn:Boolean):String{

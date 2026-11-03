@@ -122,4 +122,8 @@ data class Monster(
     override fun getImageDrawable(): DrawableResource {
         return Res.drawable.logomonstre
     }
+
+    override fun getImageUrl(): String {
+        return "drawable/logomonstre.png"
+    }
 }
