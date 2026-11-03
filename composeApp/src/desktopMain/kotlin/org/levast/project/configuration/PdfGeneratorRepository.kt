@@ -218,7 +218,6 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
                     inputStream = this::class.java.classLoader.getResourceAsStream(path)
                 }
                 if (inputStream != null) {
-                    // println("PDF Success: Found resource at $path") // Debug
                     break
                 }
             }
