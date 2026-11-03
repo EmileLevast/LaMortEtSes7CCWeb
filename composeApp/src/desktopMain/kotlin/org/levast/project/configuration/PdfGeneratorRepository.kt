@@ -110,18 +110,10 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
             // Section Histoire
             addElement(Paragraph(item.histoire, loreFont))
 
-            addElement(Paragraph("\n")) // Espace
-
-            var capacite = ""
-            if(item is Arme){
-                val capacite = if (item.capaciteSpeciale.isNotBlank()) item.capaciteSpeciale else ""
-            }else if(item is Sort){
-                val capacite = if (item.capaciteSpeciale.isNotBlank()) item.capaciteSpeciale else ""
+            if(item.capaciteSpeciale.isNotBlank()){
+                addElement(Paragraph("\n")) // Espace
+                addElement(Paragraph(item.capaciteSpeciale, abilityFont))
             }
-
-            addElement(Paragraph(capacite, abilityFont))
-
-
 
         }
         cardTable.addCell(infoCell)
