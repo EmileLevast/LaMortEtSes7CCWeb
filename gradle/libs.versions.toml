@@ -30,10 +30,11 @@ datastorePreferencesRxjava3 = "1.1.1"
 kmongoCoroutine = "5.1.0"
 materialIconsCore = "1.7.3"
 regions = "2.32.23"
-
+openpdf = "2.0.3"
 
 
 [libraries]
+openpdf = { module = "com.github.librepdf:openpdf", version.ref = "openpdf" }
 androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastorePreferences" }
 androidx-datastore-preferences-rxjava3 = { module = "androidx.datastore:datastore-preferences-rxjava3", version.ref = "datastorePreferencesRxjava3" }
 androidx-datastore-preferences-rxjava2 = { module = "androidx.datastore:datastore-preferences-rxjava2", version.ref = "datastorePreferencesRxjava2" }

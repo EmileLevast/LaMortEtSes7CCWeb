@@ -1,7 +1,9 @@
 package org.levast.project.configuration
 
+import androidx.compose.runtime.Composable
 import org.levast.project.network.ApiApp
 import org.levast.project.network.IImageDownloader
+import org.levast.project.repository.IPdfGeneratorRepository
 
 @Composable
 actual fun injectConfiguration(): IConfiguration {
@@ -20,5 +22,9 @@ actual fun getImageDownloader(): IImageDownloader {
 
 @Composable
 actual fun getGraphicConstants(): GraphicConstantsFullGrid {
+    TODO("Not yet implemented")
+}
+
+actual fun injectPdfGeneratorRepository(): IPdfGeneratorRepository {
     TODO("Not yet implemented")
 }
