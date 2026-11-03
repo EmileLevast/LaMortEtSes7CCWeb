@@ -116,7 +116,7 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
             if(item is Arme){
                 val capacite = if (item.capaciteSpeciale.isNotBlank()) item.capaciteSpeciale else ""
             }else if(item is Sort){
-                val capacite = if (item.description.isNotBlank()) item.description else ""
+                val capacite = if (item.capaciteSpeciale.isNotBlank()) item.capaciteSpeciale else ""
             }
 
             addElement(Paragraph(capacite, abilityFont))
