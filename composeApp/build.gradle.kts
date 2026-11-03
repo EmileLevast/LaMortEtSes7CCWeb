@@ -96,7 +96,6 @@ kotlin {
             //Coil pour les images
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor3)
-            implementation(libs.openpdf)
 
         }
 
@@ -108,6 +107,8 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.ktor.client.cio)
+            implementation(libs.openpdf)
+
 
         }
     }
