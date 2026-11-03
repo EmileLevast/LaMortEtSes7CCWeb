@@ -1,6 +1,8 @@
 package org.levast.project.configuration
 
+import Arme
 import IListItem
+import Sort
 import org.levast.project.repository.IPdfGeneratorRepository
 import kotlin.text.uppercase
 
@@ -73,6 +75,7 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
         val titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11f)
         val abilityFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9f, Color(0xDFAF2C))
         val loreFont = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 8f, Color.DARK_GRAY)
+        val bodyBold = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9f)
 
 
         // 1. COLONNE TITRE
@@ -90,8 +93,13 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
         val statsCell = PdfPCell().apply {
             defaultCellStyle(this)
 
-            // Utilise ta méthode getBody() qui contient la force, intelligence, etc.
-            addElement(Paragraph(item.getBody(), bodyFont))
+            if(item is Arme) {
+                stylingArmeCard(item, bodyFont, bodyBold)
+            }else{
+                // Utilise ta méthode getBody() qui contient la force, intelligence, etc.
+                addElement(Paragraph(item.getBody(), bodyFont))
+            }
+
         }
         cardTable.addCell(statsCell)
 
@@ -99,17 +107,41 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
         val infoCell = PdfPCell().apply {
             defaultCellStyle(this)
 
-            val cap = if (item.histoire.isNotBlank()) item.histoire else "Aucune"
-            addElement(Paragraph(cap, abilityFont))
+            // Section Histoire
+            addElement(Paragraph(item.histoire, loreFont))
 
             addElement(Paragraph("\n")) // Espace
 
-            // Section Histoire
-            addElement(Paragraph(item.histoire, loreFont))
+            var capacite = ""
+            if(item is Arme){
+                val capacite = if (item.capaciteSpeciale.isNotBlank()) item.capaciteSpeciale else ""
+            }else if(item is Sort){
+                val capacite = if (item.description.isNotBlank()) item.description else ""
+            }
+
+            addElement(Paragraph(capacite, abilityFont))
+
+
+
         }
         cardTable.addCell(infoCell)
 
         return cardTable
+    }
+
+    private fun PdfPCell.stylingArmeCard(arme : Arme, bodyFont: Font, bodyBold: Font){
+        addElement(Paragraph("Seuils:", bodyBold))
+        addElement(Paragraph(arme.getTextSeuils(), bodyFont))
+        addElement(Paragraph("\n")) // Espace
+
+        addElement(Paragraph("Coup critique:", bodyBold))
+        addElement(Paragraph(arme.getTextCoupCritique(), bodyFont))
+
+        addElement(Paragraph("Nombre de dés max:", bodyBold))
+        addElement(Paragraph(arme.maximumEnergie.toString(), bodyFont))
+
+        addElement(Paragraph("Poids:", bodyBold))
+        addElement(Paragraph(arme.maximumEnergie.toString(), bodyFont))
     }
 
 }

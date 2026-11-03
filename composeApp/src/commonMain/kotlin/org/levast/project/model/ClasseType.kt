@@ -14,6 +14,7 @@ class ClasseType(
     override var histoire: String=""
     ) : ApiableItem() {
 
+    override var capaciteSpeciale: String = ""
     override val _id = nom.hashCode()
 
     override val color: Color

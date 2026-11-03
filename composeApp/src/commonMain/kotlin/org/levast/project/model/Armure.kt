@@ -10,7 +10,7 @@ class Armure(
     val defense:Map<EffectType,String> = mapOf(),
     val contraintes:String="Aucune contraintes",
     val poids:Int=0,
-    val capaciteSpeciale:String="",
+    override var capaciteSpeciale: String = "",
     override val nomComplet:String = "",
     override var imageNom: String="",
     override var histoire: String=""

@@ -17,6 +17,7 @@ class Equipe(
     override var histoire: String=""
 ) : ApiableItem() {
 
+    override var capaciteSpeciale: String = ""
     override val _id = nom.hashCode()
     override var isAttached = false
     override val color: Color

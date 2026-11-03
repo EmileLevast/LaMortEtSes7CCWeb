@@ -16,6 +16,7 @@ class Race(
 
     override val _id = nom.hashCode()
 
+    override var capaciteSpeciale: String = "" //TODO retourner une string representant toutes les capacites
     override val color: Color
         get() = Color(0xFFD2A12A)
     override var isAttached = false

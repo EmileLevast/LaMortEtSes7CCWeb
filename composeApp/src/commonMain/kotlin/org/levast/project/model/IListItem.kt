@@ -12,6 +12,8 @@ interface IListItem : HeadBodyShowable {
 
     var histoire:String
     var imageNom:String
+    var capaciteSpeciale: String
+
 
     fun getImageDrawable() : DrawableResource
     fun getStatsAsStrings():String

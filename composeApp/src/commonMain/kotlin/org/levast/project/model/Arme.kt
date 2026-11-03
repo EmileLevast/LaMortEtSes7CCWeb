@@ -13,10 +13,10 @@ class Arme(
     val contraintes: String = "Aucune",
     val fajMax: Int = 0,
     val poids: Int = 0,
-    val capaciteSpeciale: String = "",
+    override var capaciteSpeciale: String = "",
     override val nomComplet: String = "",
-    override var imageNom: String="",
-    override var histoire: String=""
+    override var imageNom: String = "",
+    override var histoire: String = ""
 ) : ApiableItem() {
 
 
@@ -26,17 +26,9 @@ class Arme(
         get() = Color(0xFF7F7F7F)
 
     override fun getStatsAsStrings(): String {
-        var textSeuils = ""
-        seuils.forEach {
-            textSeuils += "|   ${it.toPrettyString()}\n"
-        }
-        return "Seuils:\n" + textSeuils +
-                (if (coupCritiques.isNotBlank()) "CC : ${
-                    strSimplify(
-                        coupCritiques,
-                        false
-                    )
-                }\n" else "") +
+
+        return "Seuils:\n" + getTextSeuils() +
+                getTextCoupCritique() +
                 "Max énergie : $maximumEnergie\n" +
                 "FAJ Max : $fajMax\n" +
                 (if (contraintes.isNotBlank()) "${strSimplify(contraintes, false)}\n" else "") +
@@ -44,18 +36,27 @@ class Arme(
                 "${strSimplify(capaciteSpeciale, false)}\n"
     }
 
-    override fun getStatsSimplifiedAsStrings(): String {
+    fun getTextSeuils(): String {
         var textSeuils = ""
         seuils.forEach {
             textSeuils += "|   ${it.toPrettyString()}\n"
         }
-        return "Seuils:\n" + textSeuils +
-                (if (coupCritiques.isNotBlank()) "CC : ${
-                    strSimplify(
-                        coupCritiques,
-                        true
-                    )
-                }\n" else "") +
+        return textSeuils
+    }
+
+    fun getTextCoupCritique(): String {
+        return if (coupCritiques.isNotBlank()) "CC : ${
+            strSimplify(
+                coupCritiques,
+                false
+            )
+        }\n" else ""
+    }
+
+    override fun getStatsSimplifiedAsStrings(): String {
+
+        return "Seuils:\n" + getTextSeuils() +
+                getTextCoupCritique() +
                 "FAJ Max : $fajMax\n" +
                 (if (contraintes.isNotBlank()) " ${strSimplify(contraintes, true)}\n" else "") +
                 "Poids : $poids\n" +

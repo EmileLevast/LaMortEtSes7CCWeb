@@ -14,7 +14,7 @@ data class Monster(
     val energie:Int = 0,
     val listDrops:Map<String,Int> = mapOf(),
     val ames:Int=0,
-    val capaciteSpeciale:String="",
+    override var capaciteSpeciale: String = "",
     override val nomComplet:String = "",
     override var imageNom: String="",
     override var histoire: String=""

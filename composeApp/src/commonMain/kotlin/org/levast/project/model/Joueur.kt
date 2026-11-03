@@ -24,7 +24,7 @@ class Joueur(
     var notesPnj:MutableMap<String,String> = mutableMapOf(),
 
     ) : ApiableItem() {
-
+    override var capaciteSpeciale: String = ""
     override val _id = nom.hashCode()
     override var isAttached = false
     override val color: Color
