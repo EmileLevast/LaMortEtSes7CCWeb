@@ -197,12 +197,45 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
 
     private fun getPdfImageFromResource(resourcePath: String): Image? {
         return try {
-            // Charge le fichier depuis les ressources du projet (desktopMain/resources ou commonMain/composeResources)
-            val inputStream = this::class.java.classLoader.getResourceAsStream(resourcePath)
+            val cleanPath = resourcePath.removePrefix("/")
+
+            // Remplacez 'org.levast.project' par la valeur exacte de votre 'namespace' dans build.gradle.kts si nécessaire
+            val packageName = "org.levast.project"
+            val composeGeneratedPath = "composeResources/$packageName.generated.resources/$cleanPath"
+
+            val pathsToTry = listOf(
+                composeGeneratedPath,
+                cleanPath,
+                "composeResources/$cleanPath",
+                "/$cleanPath"
+            )
+
+            var inputStream: java.io.InputStream? = null
+
+            for (path in pathsToTry) {
+                inputStream = Thread.currentThread().contextClassLoader.getResourceAsStream(path)
+                if (inputStream == null) {
+                    inputStream = this::class.java.classLoader.getResourceAsStream(path)
+                }
+                if (inputStream != null) {
+                    // println("PDF Success: Found resource at $path") // Debug
+                    break
+                }
+            }
+
+            // Si toujours rien, on tente un accès direct au système de fichiers (utile en mode Debug IDE)
+            if (inputStream == null) {
+                val devFile = java.io.File("src/commonMain/composeResources/$cleanPath")
+                if (devFile.exists()) {
+                    return Image.getInstance(devFile.absolutePath)
+                }
+            }
+
             val bytes = inputStream?.readAllBytes()
             if (bytes != null) {
                 Image.getInstance(bytes)
             } else {
+                println("PDF Error: Resource not found. Tried paths: $pathsToTry")
                 null
             }
         } catch (e: Exception) {
@@ -210,5 +243,4 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
             null
         }
     }
-
 }
