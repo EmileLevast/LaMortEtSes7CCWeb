@@ -164,7 +164,8 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
         addElement(Paragraph("\n")) // Espace
 
         if(arme.getTextCoupCritique().isNotBlank()){
-            addInlineElement("Coup critique : ", arme.getTextCoupCritiqueSansTitre(), bodyBold, bodyFont)
+            addElement(Paragraph("Coup critique : ", bodyBold))
+            addElement(Paragraph(arme.getTextCoupCritiqueSansTitre(), bodyFont))
         }
         addInlineElement("Nombre de dés max : ", arme.maximumEnergie.toString(), bodyBold, bodyFont)
         addInlineElement("Poids : ", arme.maximumEnergie.toString(), bodyBold, bodyFont)
@@ -180,7 +181,8 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
         }
 
         if(sort.getTextCoupCritique().isNotBlank()){
-            addInlineElement("Coup critique :", sort.getTextCoupCritiqueSansTitre(), bodyBold, bodyFont)
+            addElement(Paragraph("Coup critique : ", bodyBold))
+            addElement(Paragraph(sort.getTextCoupCritiqueSansTitre(), bodyFont))
         }
         addInlineElement("Utilisations : ", sort.utilisation.toString(), bodyBold, bodyFont)
         addInlineElement("Intelligence min : ", sort.intelligenceMin.toString(), bodyBold, bodyFont)
