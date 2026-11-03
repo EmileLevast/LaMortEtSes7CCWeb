@@ -227,7 +227,8 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
 
         addInlineElement("Vie : ", monster.vie.toString(), bodyBold, bodyFont)
         addInlineElement("Force : ", monster.constructForceSeuils(), bodyBold, bodyFont)
-        addInlineElement("Défenses : ", monster.getDefenseText(), bodyBold, bodyFont)
+        addElement(Paragraph("Défenses :", bodyBold))
+        addElement(Paragraph(monster.getDefenseText(), bodyFont))
         addInlineElement("Intelligence : ", monster.intelligence.toString(), bodyBold, bodyFont)
         addInlineElement("Energie : ", monster.energie.toString(), bodyBold, bodyFont)
         addInlineElement("Âmes : ", monster.ames.toString(), bodyBold, bodyFont)
