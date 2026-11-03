@@ -1,6 +1,5 @@
 package org.levast.project.configuration
 
-import Arme
 import IListItem
 import org.levast.project.repository.IPdfGeneratorRepository
 import kotlin.text.uppercase
@@ -20,40 +19,35 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
         document.open()
 
         // Grille principale de 2 colonnes (pour faire 2x2 = 4 cartes par page)
-        val mainGrid = PdfPTable(2).apply {
+        val mainGrid = PdfPTable(1).apply {
             widthPercentage = 100f
         }
 
         items.forEach { arme ->
             val cardContainerCell = PdfPCell().apply {
-                paddingTop = 10f
-                paddingBottom = 10f
-                paddingRight = 10f
-                paddingLeft = 10f
+                paddingTop = 5f
+                paddingBottom = 5f
+                paddingRight = 5f
+                paddingLeft = 5f
                 border = Rectangle.NO_BORDER
                 // Calcul de la hauteur pour que 2 lignes tiennent pile sur une page A4
                 // Hauteur A4 (842pt) - marges / 2
-                minimumHeight = (PageSize.A4.height - 20f) / 2f
+                minimumHeight = (PageSize.A4.height - 40f) / 4f
 
                 // On ajoute la carte à l'intérieur de ce conteneur
-                addElement(createWeaponCard(arme))
+                addElement(createItemCard(arme))
             }
             mainGrid.addCell(cardContainerCell)
-        }
-
-        // Si le nombre d'items est impair, on remplit la dernière case vide
-        if (items.size % 2 != 0) {
-            mainGrid.addCell(PdfPCell().apply { border = Rectangle.NO_BORDER })
         }
 
         document.add(mainGrid)
         document.close()
     }
 
-    private fun createWeaponCard(item: IListItem): PdfPTable {
+    private fun createItemCard(item: IListItem): PdfPTable {
         // La carte est un tableau de 3 colonnes
         // Colonne 1 (Titre) : 15% | Colonne 2 (Stats) : 35% | Colonne 3 (Capacités) : 50%
-        val cardTable = PdfPTable(floatArrayOf(0.15f, 0.35f, 0.50f)).apply {
+        val cardTable = PdfPTable(floatArrayOf(0.20f, 0.30f, 0.50f)).apply {
             widthPercentage = 100f
         }
 
@@ -61,60 +55,49 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
         val defaultCellStyle = { cell: PdfPCell ->
             cell.backgroundColor = Color.WHITE
             cell.borderColor = Color.BLACK
-            cell.borderWidth = 1.5f
-            cell.paddingTop = 8f
-            cell.paddingBottom = 8f
-            cell.paddingRight = 8f
-            cell.paddingLeft = 8f
+            cell.borderWidth = 1f
+            cell.paddingTop = 5f
+            cell.paddingBottom = 5f
+            cell.paddingRight = 5f
+            cell.paddingLeft = 5f
         }
+
+        val bodyFont = FontFactory.getFont(FontFactory.HELVETICA, 9f)
+        val titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11f)
+        val abilityFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9f, Color(0xDFAF2C))
+        val loreFont = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 8f, Color.DARK_GRAY)
+
 
         // 1. COLONNE TITRE
         val titleCell = PdfPCell().apply {
             defaultCellStyle(this)
             horizontalAlignment = Element.ALIGN_CENTER
-            verticalAlignment = Element.ALIGN_MIDDLE
-            rotation = 90 // Rotation verticale pour un look "carte de jeu"
+            verticalAlignment = Element.ALIGN_TOP
 
-            val font = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12f,
-                Color.BLACK)
-            phrase = Phrase(item.nom.uppercase(), font)
+            phrase = Phrase(item.nom.uppercase(), titleFont)
         }
         cardTable.addCell(titleCell)
 
         // 2. COLONNE STATISTIQUES
         val statsCell = PdfPCell().apply {
             defaultCellStyle(this)
-            val fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9f)
-            val fontText = FontFactory.getFont(FontFactory.HELVETICA, 8f)
 
-            addElement(Paragraph("STATISTIQUES", fontTitle))
-            addElement(Paragraph("________________", fontTitle))
-            addElement(Paragraph("\n", fontText))
             // Utilise ta méthode getBody() qui contient la force, intelligence, etc.
-            addElement(Paragraph(item.getBody(), fontText))
+            addElement(Paragraph(item.getBody(), bodyFont))
         }
         cardTable.addCell(statsCell)
 
         // 3. COLONNE CAPACITÉ SPÉCIALE & HISTOIRE
         val infoCell = PdfPCell().apply {
             defaultCellStyle(this)
-            val fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9f)
-            val fontAbility = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 8f,
-                Color(0xFFDFAF2C.toInt())
-            )
-            val fontLore = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 7f,
-                Color.DARK_GRAY)
 
-            // Section Capacité
-            addElement(Paragraph("CAPACITÉ SPÉCIALE", fontTitle))
             val cap = if (item.histoire.isNotBlank()) item.histoire else "Aucune"
-            addElement(Paragraph(cap, fontAbility))
+            addElement(Paragraph(cap, abilityFont))
 
             addElement(Paragraph("\n")) // Espace
 
             // Section Histoire
-            addElement(Paragraph("HISTOIRE", fontTitle))
-            addElement(Paragraph(item.histoire, fontLore))
+            addElement(Paragraph(item.histoire, loreFont))
         }
         cardTable.addCell(infoCell)
 
