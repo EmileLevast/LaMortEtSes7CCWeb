@@ -36,6 +36,10 @@ class Armure(
                 strSimplify(capaciteSpeciale,true)
     }
 
+    fun getDefenseText():String{
+        return convertEffectTypeStatsToString(defense)
+    }
+
     override fun parseFromString(listStringElement : List<String>):ApiableItem {
            return Armure(
                listStringElement[0].cleanupForDB(),

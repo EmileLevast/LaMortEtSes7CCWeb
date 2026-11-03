@@ -36,6 +36,10 @@ class Bouclier(
                 strSimplify(capaciteSpeciale,true)
     }
 
+    fun getDefenseText():String{
+        return convertEffectTypeStatsToString(defense)
+    }
+
     override fun parseFromString(listStringElement : List<String>):ApiableItem {
            return Bouclier(
                listStringElement[0].cleanupForDB(),

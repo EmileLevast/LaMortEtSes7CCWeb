@@ -1,8 +1,11 @@
 package org.levast.project.configuration
 
 import Arme
+import Armure
+import Bouclier
 import IListItem
 import Sort
+import Special
 import org.levast.project.repository.IPdfGeneratorRepository
 import kotlin.text.uppercase
 
@@ -131,6 +134,12 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
                 stylingArmeCard(item, bodyFont, bodyBold)
             }else if(item is Sort){
                 stylingSortCard(item,bodyFont, bodyBold)
+            }else if(item is Special){
+                stylingSpecialCard(item,bodyFont, bodyBold)
+            }else if(item is Armure){
+                stylingArmureCard(item,bodyFont, bodyBold)
+            }else if(item is Bouclier){
+                stylingBouclierCard(item,bodyFont, bodyBold)
             }
             else{
                 // Utilise ta méthode getBody() qui contient la force, intelligence, etc.
@@ -168,7 +177,7 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
             addElement(Paragraph(arme.getTextCoupCritiqueSansTitre(), bodyFont))
         }
         addInlineElement("Nombre de dés max : ", arme.maximumEnergie.toString(), bodyBold, bodyFont)
-        addInlineElement("Poids : ", arme.maximumEnergie.toString(), bodyBold, bodyFont)
+        addInlineElement("Poids : ", arme.poids.toString(), bodyBold, bodyFont)
 
     }
 
@@ -186,6 +195,24 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
         }
         addInlineElement("Utilisations : ", sort.utilisation.toString(), bodyBold, bodyFont)
         addInlineElement("Intelligence min : ", sort.intelligenceMin.toString(), bodyBold, bodyFont)
+
+    }
+
+    private fun PdfPCell.stylingSpecialCard(special : Special, bodyFont: Font, bodyBold: Font){
+        addInlineElement("Type : ", special.itemType.name, bodyBold, bodyFont)
+    }
+
+    private fun PdfPCell.stylingBouclierCard(bouclier: Bouclier, bodyFont: Font, bodyBold: Font){
+        addElement(Paragraph("Défenses :", bodyBold))
+        addElement(Paragraph(bouclier.getDefenseText(), bodyFont))
+        addInlineElement("Poids : ", bouclier.poids.toString(), bodyBold, bodyFont)
+
+    }
+
+    private fun PdfPCell.stylingArmureCard(armure: Armure, bodyFont: Font, bodyBold: Font){
+        addElement(Paragraph("Défenses :", bodyBold))
+        addElement(Paragraph(armure.getDefenseText(), bodyFont))
+        addInlineElement("Poids : ", armure.poids.toString(), bodyBold, bodyFont)
 
     }
 
