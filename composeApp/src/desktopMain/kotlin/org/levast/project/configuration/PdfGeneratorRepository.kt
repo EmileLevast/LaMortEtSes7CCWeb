@@ -95,7 +95,10 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
 
             if(item is Arme) {
                 stylingArmeCard(item, bodyFont, bodyBold)
-            }else{
+            }else if(item is Sort){
+                stylingSortCard(item,bodyFont, bodyBold)
+            }
+            else{
                 // Utilise ta méthode getBody() qui contient la force, intelligence, etc.
                 addElement(Paragraph(item.getBody(), bodyFont))
             }
@@ -122,18 +125,42 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
     }
 
     private fun PdfPCell.stylingArmeCard(arme : Arme, bodyFont: Font, bodyBold: Font){
-        addElement(Paragraph("Seuils:", bodyBold))
+        addElement(Paragraph("Seuils :", bodyBold))
         addElement(Paragraph(arme.getTextSeuils(), bodyFont))
         addElement(Paragraph("\n")) // Espace
 
-        addElement(Paragraph("Coup critique:", bodyBold))
-        addElement(Paragraph(arme.getTextCoupCritique(), bodyFont))
+        if(arme.getTextCoupCritique().isNotBlank()){
+            addInlineElement("Coup critique : ", arme.getTextCoupCritiqueSansTitre(), bodyBold, bodyFont)
+        }
+        addInlineElement("Nombre de dés max : ", arme.maximumEnergie.toString(), bodyBold, bodyFont)
+        addInlineElement("Poids : ", arme.maximumEnergie.toString(), bodyBold, bodyFont)
 
-        addElement(Paragraph("Nombre de dés max:", bodyBold))
-        addElement(Paragraph(arme.maximumEnergie.toString(), bodyFont))
-
-        addElement(Paragraph("Poids:", bodyBold))
-        addElement(Paragraph(arme.maximumEnergie.toString(), bodyFont))
     }
+
+    private fun PdfPCell.stylingSortCard(sort : Sort, bodyFont: Font, bodyBold: Font){
+
+        if(sort.getTextSeuils().isNotBlank()){
+            addElement(Paragraph("Seuils :", bodyBold))
+            addElement(Paragraph(sort.getTextSeuils(), bodyFont))
+            addElement(Paragraph("\n")) // Espace
+        }
+
+        if(sort.getTextCoupCritique().isNotBlank()){
+            addInlineElement("Coup critique :", sort.getTextCoupCritiqueSansTitre(), bodyBold, bodyFont)
+        }
+        addInlineElement("Utilisations : ", sort.utilisation.toString(), bodyBold, bodyFont)
+        addInlineElement("Intelligence min : ", sort.intelligenceMin.toString(), bodyBold, bodyFont)
+
+    }
+
+    private fun PdfPCell.addInlineElement(title:String, body:String, titleFont:Font, bodyFont: Font){
+        val line = Paragraph().apply {
+            add(Phrase(title, titleFont))
+            add(Phrase(body, bodyFont))
+        }
+        addElement(line)
+    }
+
+
 
 }

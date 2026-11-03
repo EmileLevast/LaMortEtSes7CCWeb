@@ -53,6 +53,13 @@ class Arme(
         }\n" else ""
     }
 
+    fun getTextCoupCritiqueSansTitre(): String {
+        return if (coupCritiques.isNotBlank()) strSimplify(
+            coupCritiques,
+            false
+        ) else ""
+    }
+
     override fun getStatsSimplifiedAsStrings(): String {
 
         return "Seuils:\n" + getTextSeuils() +

@@ -36,21 +36,38 @@ class Sort(
         return statsAsStringAccordingToSimplifyOrNot(false)
     }
 
-    private fun statsAsStringAccordingToSimplifyOrNot(isSimplify:Boolean): String {
+    fun getTextSeuils(): String {
         var textSeuils = ""
         seuils.forEach {
             textSeuils += "|   ${it.toPrettyString()}\n"
         }
+        return textSeuils
+    }
 
-        val coupCritiquesParsed = strSimplify(coupCritiques, isSimplify)
+    fun getTextCoupCritique(): String {
+        return if (coupCritiques.isNotBlank()) "CC : ${
+            strSimplify(
+                coupCritiques,
+                false
+            )
+        }\n" else ""
+    }
 
+    fun getTextCoupCritiqueSansTitre(): String {
+        return if (coupCritiques.isNotBlank()) strSimplify(
+            coupCritiques,
+            false
+        ) else ""
+    }
+
+    private fun statsAsStringAccordingToSimplifyOrNot(isSimplify:Boolean): String {
         return sortType.symbol + "\n" +
                 "Utilisations : $utilisation\n" +
                 "Cout : $cout\n" +
                 "Intelligence Minimum : $intelligenceMin\n" +
                 (if (contraintes.isNotBlank()) "$contraintes\n" else "") +
-                "Seuils:\n" + textSeuils +
-                (if (coupCritiquesParsed.isNotBlank()) "CC : $coupCritiquesParsed\n" else "") +
+                "Seuils:\n" + getTextSeuils() +
+                getTextCoupCritique() +
                 "IAJ Max : $iajMax\n" +
                 "${strSimplify(capaciteSpeciale, isSimplify)}\n"
     }
