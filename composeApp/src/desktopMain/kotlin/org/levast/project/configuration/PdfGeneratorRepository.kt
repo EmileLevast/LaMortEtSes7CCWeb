@@ -43,7 +43,6 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
                 paddingLeft = 5f
                 // On force la cellule du conteneur à la taille exacte
                 setFixedHeight(fixedCardHeight)
-                border = Rectangle.NO_BORDER
 
                 // On ajoute la carte à l'intérieur de ce conteneur
                 addElement(createItemCard(arme, fixedCardHeight))
@@ -231,7 +230,9 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
         addElement(Paragraph(monster.getDefenseText().replace(" ","\n"), bodyFont))
         addInlineElement("Intelligence : ", monster.intelligence.toString(), bodyBold, bodyFont)
         addInlineElement("Energie : ", monster.energie.toString(), bodyBold, bodyFont)
-        addInlineElement("Âmes : ", monster.ames.toString(), bodyBold, bodyFont)
+        if(monster.ames >0){
+            addInlineElement("Âmes : ", monster.ames.toString(), bodyBold, bodyFont)
+        }
 
         addElement(Paragraph("\n")) // Espace
 
