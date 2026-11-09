@@ -76,7 +76,7 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
 
         val bodyFont = FontFactory.getFont(FontFactory.HELVETICA, 9f)
         val titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11f)
-        val abilityFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9f, Color(0xDFAF2C))
+        val abilityFont = FontFactory.getFont(FontFactory.HELVETICA, 9f, Color(0x9A6A06))
         val loreFont = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 8f, Color.DARK_GRAY)
         val bodyBold = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9f)
 
@@ -236,8 +236,9 @@ class PdfGeneratorRepository : IPdfGeneratorRepository  {
 
         addElement(Paragraph("\n")) // Espace
 
-        addElement(Paragraph("Drops :", bodyBold))
-        addElement(Paragraph(monster.constructListDropsString(), bodyFont))
+        if(monster.listDrops.isNotEmpty()){
+            addElement(Paragraph(monster.constructListDropsString(), bodyFont))
+        }
     }
 
     private fun PdfPCell.addInlineElement(title:String, body:String, titleFont:Font, bodyFont: Font){
