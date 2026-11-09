@@ -117,7 +117,7 @@ fun EcranRecherche(
                 }
             )
             Button({
-                pdfGeneratorRepository.generatePdf(adminUiState.listitems)
+                pdfGeneratorRepository.generatePdf(adminUiState.listitems.distinctBy { it.nom })
             }){
                 Text("Generer pdf")
             }
